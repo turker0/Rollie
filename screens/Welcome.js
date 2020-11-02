@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   StatusBar,
@@ -12,35 +12,26 @@ import CouchSVG from "../components/couchsvg";
 import AvatarsList from "../components/avatarslist";
 import Input from "../components/input";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
-import Animated from "react-native-reanimated";
+import Animated, { Easing } from "react-native-reanimated";
 import top10 from "../database/top10.json";
 
 const { width, height } = Dimensions.get("window");
 
 const SPACING = 30;
+const scrollXAnimated = new Animated.Value(0);
 
 export default function Welcome({ navigation }) {
-  const scrollXIndex = new Animated.Value(0);
-  const scrollXAnimated = new Animated.Value(0);
   const [index, setIndex] = useState(0);
-  const setActiveIndex = useCallback((activeIndex) => {
-    setIndex(activeIndex);
-    scrollXIndex.setValue(activeIndex);
-  });
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    setActiveIndex(index);
-  }, [index]);
-
-  /*
-  React.useEffect(() => {
-    Animated.spring(scrollXAnimated, {
-      toValue: scrollXIndex,
-      useNativeDriver: true,
+    console.log(movies);
+    Animated.timing(scrollXAnimated, {
+      toValue: index,
+      duration: 666,
+      easing: Easing.linear,
     }).start();
-  });
-
-  */
+  }, [index]);
 
   return (
     <View style={styles.container}>
@@ -110,15 +101,15 @@ export default function Welcome({ navigation }) {
               const inputRange = [index - 1, index, index + 1];
               const translateX = scrollXAnimated.interpolate({
                 inputRange,
-                outputRange: [20, 0, -width * 0.14],
+                outputRange: [20, 0, -width],
               });
               const scale = scrollXAnimated.interpolate({
                 inputRange,
-                outputRange: [0.92, 1, 1.3],
+                outputRange: [0.92, 1, 1],
               });
               const opacity = scrollXAnimated.interpolate({
                 inputRange,
-                outputRange: [1 - 1 / 4, 1, 1],
+                outputRange: [1 - 1 / 5, 1, 0],
               });
               return (
                 <Animated.View
@@ -141,31 +132,49 @@ export default function Welcome({ navigation }) {
               );
             }}
           />
-          <Text style={styles.description}>{top10[index].Title}</Text>
+          <Text style={styles.description}>
+            {top10[index].Title +
+              " (" +
+              top10[index].Year +
+              ")" +
+              " " +
+              top10[index].imdbRating}
+          </Text>
           <View style={styles.buttonWrapper}>
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() => {
                 if (index === 9) {
-                  navigation.navigate("Roll");
+                  setMovies((prev) => [...prev, false]);
+                  navigation.navigate("Roll", {
+                    top10: movies,
+                  });
                 } else {
+                  setMovies((prev) => [...prev, false]);
                   setIndex((prev) => prev + 1);
                 }
               }}
             >
-              <Text style={styles.buttonText}>Nope</Text>
+              <Text style={styles.buttonText}>No</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.buttonContainer, { marginLeft: SPACING }]}
               onPress={() => {
-                if (index === 9) {
-                  navigation.navigate("Roll");
+                setIndex(0);
+                /*
+                                if (index === 9) {
+                  setMovies((prev) => [...prev, true]);
+                  navigation.navigate("Roll", {
+                    top10: movies,
+                  });
                 } else {
+                  setMovies((prev) => [...prev, true]);
                   setIndex((prev) => prev + 1);
                 }
+                */
               }}
             >
-              <Text style={styles.buttonText}>Yep</Text>
+              <Text style={styles.buttonText}>Yes</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -205,7 +214,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: "absolute",
-    //left: -(width * 0.2) + 10,
     top: 0,
     left: 0,
   },
@@ -214,8 +222,6 @@ const styles = StyleSheet.create({
     height: width * 0.4 * 1.48,
     borderColor: "#fff",
     borderWidth: 1,
-    //borderTopRightRadius: 10,
-    //borderBottomRightRadius: 10,
   },
   buttonWrapper: {
     flexDirection: "row",

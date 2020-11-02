@@ -22,13 +22,16 @@ import MaskedView from "@react-native-community/masked-view";
 const { width, height } = Dimensions.get("window");
 const DEFAULT_SPACING = 20;
 
-export default function Roll({ navigation }) {
+export default function Roll({ navigation, route }) {
   const [isFetched, setIsFetched] = useState(true);
+  const { movies } = route.params;
 
   const circle = new Animated.Value(1);
   const opacity1 = new Animated.Value(0);
   const opacity2 = new Animated.Value(0);
   const opacity3 = new Animated.Value(0);
+
+  console.log(movies);
 
   useEffect(() => {
     Animated.block([
@@ -190,7 +193,7 @@ export default function Roll({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#09141C",
+    backgroundColor: "#000",
     padding: 20,
   },
   innerContainer: {
