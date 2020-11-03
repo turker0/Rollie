@@ -18,20 +18,45 @@ import {
 } from "@expo/vector-icons";
 import Animated, { Easing } from "react-native-reanimated";
 import MaskedView from "@react-native-community/masked-view";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import top10 from "../database/top10.json";
 const { width, height } = Dimensions.get("window");
 const DEFAULT_SPACING = 20;
 
 export default function Roll({ navigation, route }) {
-  const [isFetched, setIsFetched] = useState(true);
-  const { movies } = route.params;
+  /*
+
+  TODOS
+
+  STORE TOP10 ASYNCSTORAGE
+  REMOVE TOP10 TRUES IN TOP1K
+  FETCH NEXT 10 MOVIES ON HEROKU
+
+
+
+  */
+
+  const [isFetched, setIsFetched] = useState(false);
 
   const circle = new Animated.Value(1);
   const opacity1 = new Animated.Value(0);
   const opacity2 = new Animated.Value(0);
   const opacity3 = new Animated.Value(0);
 
-  console.log(movies);
+  console.log(top10);
+
+  useEffect(() => {
+    /*
+      try {
+    const jsonValue = JSON.stringify(top10);
+    await AsyncStorage.setItem("@movies" , jsonValue);
+  } catch (e) {
+    console.log(e);
+  }
+  */
+    //STORE
+    // FETCH NEXT10
+  }, []);
 
   useEffect(() => {
     Animated.block([
@@ -67,7 +92,6 @@ export default function Roll({ navigation, route }) {
         showsVerticalScrollIndicator={false}
         bounces={false}
       >
-        <Back navigation={navigation} />
         <View style={styles.innerContainer}>
           <View style={styles.titleWrapper}>
             <Animated.Text style={[styles.title, { opacity: opacity1 }]}>

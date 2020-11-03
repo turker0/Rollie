@@ -21,11 +21,7 @@ export default function AvatarsList({ index, setIndex }) {
                 cx={30.9}
                 cy={30.9}
                 r={30.9}
-                fill={
-                  index === 0
-                    ? "rgba(255,255,255,.1)"
-                    : "rgba(255,255,255,0.06)"
-                }
+                fill={index === 0 ? "rgba(255,255,255,.1)" : "rgba(0,0,0,.1)"}
               />
               <Path
                 fill="#f9dca4"
@@ -102,11 +98,7 @@ export default function AvatarsList({ index, setIndex }) {
                 cx={30.9}
                 cy={30.9}
                 r={30.9}
-                fill={
-                  index === 1
-                    ? "rgba(255,255,255,.1)"
-                    : "rgba(255,255,255,0.06)"
-                }
+                fill={index === 1 ? "rgba(255,255,255,.1)" : "rgba(0,0,0,.1)"}
               />
               <Path
                 fill="#f9dca4"
@@ -172,11 +164,7 @@ export default function AvatarsList({ index, setIndex }) {
                 cx={30.9}
                 cy={30.9}
                 r={30.9}
-                fill={
-                  index === 2
-                    ? "rgba(255,255,255,.1)"
-                    : "rgba(255,255,255,0.06)"
-                }
+                fill={index === 2 ? "rgba(255,255,255,.1)" : "rgba(0,0,0,.1)"}
               />
               <Path
                 d="M45.487 19.987l-29.173.175s1.048 16.148-2.619 21.21h35.701c-.92-1.35-3.353-1.785-3.909-21.385z"
@@ -259,11 +247,7 @@ export default function AvatarsList({ index, setIndex }) {
                 cx={30.9}
                 cy={30.9}
                 r={30.9}
-                fill={
-                  index === 3
-                    ? "rgba(255,255,255,.1)"
-                    : "rgba(255,255,255,0.06)"
-                }
+                fill={index === 3 ? "rgba(255,255,255,.1)" : "rgba(0,0,0,.1)"}
               />
               <Path
                 fill="#f9dca4"
@@ -369,11 +353,7 @@ export default function AvatarsList({ index, setIndex }) {
                 cx={30.9}
                 cy={30.9}
                 r={30.9}
-                fill={
-                  index === 4
-                    ? "rgba(255,255,255,.1)"
-                    : "rgba(255,255,255,0.06)"
-                }
+                fill={index === 4 ? "rgba(255,255,255,.1)" : "rgba(0,0,0,.1)"}
               />
               <Path
                 d="M16.647 25.104s1.394 18.62-1.98 23.645 16.51-.19 16.51-.19l.006-34.863z"
@@ -451,11 +431,7 @@ export default function AvatarsList({ index, setIndex }) {
                 cx={30.9}
                 cy={30.9}
                 r={30.9}
-                fill={
-                  index === 5
-                    ? "rgba(255,255,255,.1)"
-                    : "rgba(255,255,255,0.06)"
-                }
+                fill={index === 5 ? "rgba(255,255,255,.1)" : "rgba(0,0,0,.1)"}
               />
               <Path
                 d="M52.594 52.918a30.895 30.895 0 01-43.666-.292 9.206 9.206 0 014.036-4.832 19.806 19.806 0 014.075-2.321c-2.197-7.553 3.778-11.267 6.063-12.335 0 3.487 3.266 1.173 7.318 1.217 3.336.036 9.932 3.395 9.932-1.035 3.67 1.086 7.67 8.079 4.917 12.376a17.613 17.613 0 013.182 2.002 10.193 10.193 0 014.143 5.22z"
@@ -511,11 +487,7 @@ export default function AvatarsList({ index, setIndex }) {
                 cx={30.9}
                 cy={30.9}
                 r={30.9}
-                fill={
-                  index === 6
-                    ? "rgba(255,255,255,.1)"
-                    : "rgba(255,255,255,0.06)"
-                }
+                fill={index === 6 ? "rgba(255,255,255,.1)" : "rgba(0,0,0,.1)"}
               />
               <Path
                 fill="#302e33"
@@ -591,11 +563,7 @@ export default function AvatarsList({ index, setIndex }) {
                 cx={30.9}
                 cy={30.9}
                 r={30.9}
-                fill={
-                  index === 7
-                    ? "rgba(255,255,255,.1)"
-                    : "rgba(255,255,255,0.06)"
-                }
+                fill={index === 7 ? "rgba(255,255,255,.1)" : "rgba(0,0,0,.1)"}
               />
               <Path
                 fill="#f9dca4"

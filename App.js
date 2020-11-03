@@ -7,11 +7,11 @@ import {
   createStackNavigator,
 } from "@react-navigation/stack";
 import Welcome from "./screens/Welcome";
-import Roll from "./screens/Roll";
+import HomeBottomTabs from "./routes/homebottomtabs";
 
 const Stack = createStackNavigator();
 
-export default function App() {
+export default function App({ na }) {
   const [loaded, error] = useFonts({
     RalewayBlack: require("./assets/fonts/Raleway-Black.ttf"),
     RalewayBold: require("./assets/fonts/Raleway-Bold.ttf"),
@@ -28,12 +28,13 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           headerMode="none"
+          initialRouteName="HomeBottomTabs"
           screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
         >
           <Stack.Screen name="Welcome" component={Welcome} />
-          <Stack.Screen name="Roll" component={Roll} />
+          <Stack.Screen name="HomeBottomTabs" component={HomeBottomTabs} />
         </Stack.Navigator>
       </NavigationContainer>
     );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Dimensions,
   StatusBar,
@@ -6,6 +6,8 @@ import {
   Text,
   View,
   Image,
+  KeyboardAvoidingView,
+  BackHandler,
 } from "react-native";
 import ViewPager from "@react-native-community/viewpager";
 import CouchSVG from "../components/couchsvg";
@@ -14,18 +16,49 @@ import Input from "../components/input";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import Animated, { Easing } from "react-native-reanimated";
 import top10 from "../database/top10.json";
+import Toast from "react-native-toast-message";
+import { useFocusEffect } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 
 const SPACING = 30;
 const scrollXAnimated = new Animated.Value(0);
 
+<Toast ref={(ref) => Toast.setRef(ref)} />;
+
 export default function Welcome({ navigation }) {
   const [index, setIndex] = useState(0);
   const [movies, setMovies] = useState([]);
 
+  const [username, setUsername] = useState("");
+  const [detail, setDetail] = useState("");
+  const [avatarIndex, setAvatarIndex] = useState("");
+
+  /*
+
+
+  AVOIDING GOING BACK IN WELCOME SCREEN FOR INITIAL
+
+
+    const hardwareBackPressCustom = useCallback(() => {
+    return true;
+  }, []);
+
+  useFocusEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", hardwareBackPressCustom);
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        hardwareBackPressCustom
+      );
+    };
+  }, []);
+
+
+
+  */
+
   useEffect(() => {
-    console.log(movies);
     Animated.timing(scrollXAnimated, {
       toValue: index,
       duration: 666,
@@ -34,15 +67,17 @@ export default function Welcome({ navigation }) {
   }, [index]);
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <StatusBar barStyle="default" />
+      <Toast ref={(ref) => Toast.setRef(ref)} />
       <Text style={styles.title}>Rollie</Text>
       <ViewPager
         style={styles.container}
-        initialPage={1}
-        transitionStyle="curl"
+        transitionStyle="scroll"
+        //initialPage={1}
+        //showPageIndicator only works on iOS
       >
-        <View style={styles.viewPages} key={"1"}>
+        <View style={styles.viewPages} key={"page1"}>
           <Text style={styles.description}>
             Find your next favorite super duper amazing movie among over 1000
             iMDB 7+ movies.
@@ -50,21 +85,29 @@ export default function Welcome({ navigation }) {
           <CouchSVG />
           <Text style={styles.swipeText}>Swipe left and create a profile.</Text>
         </View>
-        <View style={styles.viewPages} key={"2"}>
+        <View style={styles.viewPages} key={"page2"}>
           <Text style={styles.description}>Type your profile details</Text>
-          <Input placeholder="Your name" />
-          <Input placeholder="Type something dummy" />
+          <Input
+            placeholder="Your name"
+            text={username}
+            setText={setUsername}
+            maxLength={12}
+          />
+          <Input
+            placeholder="Type something dummy"
+            text={detail}
+            setText={setDetail}
+            maxLength={20}
+          />
           <Text style={styles.description}>Pick an avatar</Text>
-          <AvatarsList />
+          <AvatarsList index={avatarIndex} setIndex={setAvatarIndex} />
           <Text style={styles.swipeText}>Swipe left to proceed.</Text>
         </View>
-        <View style={styles.viewPages} key={"3"}>
+        <View style={styles.viewPages} key={"page3"}>
           <Text style={styles.description}>Have you watched these movies?</Text>
           <FlatList
             data={top10}
-            keyExtractor={(item) => {
-              String("xd" + item.Poster);
-            }}
+            keyExtractor={(item, index) => String(item.Title)}
             horizontal
             inverted
             scrollEnabled={false}
@@ -113,7 +156,7 @@ export default function Welcome({ navigation }) {
               });
               return (
                 <Animated.View
-                  key={item.Poster}
+                  Title={item.Title}
                   style={[
                     styles.imageContainer,
                     {
@@ -144,14 +187,28 @@ export default function Welcome({ navigation }) {
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() => {
-                if (index === 9) {
-                  setMovies((prev) => [...prev, false]);
-                  navigation.navigate("Roll", {
-                    top10: movies,
+                if (username === "" || detail === "" || avatarIndex === "") {
+                  Toast.show({
+                    type: "error",
+                    position: "top",
+                    text1: "Blank details",
+                    text2: "Fill your profile details first.",
+                    visibilityTime: 2000,
+                    autoHide: true,
+                    topOffset: SPACING,
+                    onShow: () => {},
+                    onHide: () => {},
                   });
                 } else {
-                  setMovies((prev) => [...prev, false]);
-                  setIndex((prev) => prev + 1);
+                  if (index === 9) {
+                    //setMovies((prev) => [...prev, false]);
+                    navigation.navigate("HomeBottomTabs", {
+                      top10: movies,
+                    });
+                  } else {
+                    //setMovies((prev) => [...prev, false]);
+                    setIndex((prev) => prev + 1);
+                  }
                 }
               }}
             >
@@ -160,18 +217,29 @@ export default function Welcome({ navigation }) {
             <TouchableOpacity
               style={[styles.buttonContainer, { marginLeft: SPACING }]}
               onPress={() => {
-                setIndex(0);
-                /*
-                                if (index === 9) {
-                  setMovies((prev) => [...prev, true]);
-                  navigation.navigate("Roll", {
-                    top10: movies,
+                if (username === "" && detail === "" && avatarIndex === "") {
+                  Toast.show({
+                    type: "error",
+                    position: "top",
+                    text1: "Blank details",
+                    text2: "Fill your profile details first.",
+                    visibilityTime: 2000,
+                    autoHide: true,
+                    topOffset: SPACING,
+                    onShow: () => {},
+                    onHide: () => {},
                   });
                 } else {
-                  setMovies((prev) => [...prev, true]);
-                  setIndex((prev) => prev + 1);
+                  if (index === 9) {
+                    setMovies((prev) => [...prev, top10[index].Title]);
+                    navigation.navigate("HomeBottomTabs", {
+                      top10: movies,
+                    });
+                  } else {
+                    setMovies((prev) => [...prev, top10[index].Title]);
+                    setIndex((prev) => prev + 1);
+                  }
                 }
-                */
               }}
             >
               <Text style={styles.buttonText}>Yes</Text>
@@ -179,7 +247,7 @@ export default function Welcome({ navigation }) {
           </View>
         </View>
       </ViewPager>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
