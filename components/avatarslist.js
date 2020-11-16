@@ -3,6 +3,8 @@ import { StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Svg, { G, Circle, Path, Ellipse } from "react-native-svg";
 
+const SPACING = 30;
+
 export default function AvatarsList({ index, setIndex }) {
   return (
     <View style={styles.container}>
@@ -636,5 +638,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     alignItems: "center",
+    marginVertical: SPACING / 2,
   },
 });

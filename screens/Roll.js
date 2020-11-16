@@ -43,8 +43,6 @@ export default function Roll({ navigation, route }) {
   const opacity2 = new Animated.Value(0);
   const opacity3 = new Animated.Value(0);
 
-  console.log(top10);
-
   useEffect(() => {
     /*
       try {

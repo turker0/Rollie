@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
 
 const { width, height } = Dimensions.get("window");
+const SPACING = 30;
 
 export default function CouchSVG() {
   return (
@@ -122,5 +123,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
+    marginVertical: SPACING / 2,
   },
 });

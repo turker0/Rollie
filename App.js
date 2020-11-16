@@ -28,7 +28,7 @@ export default function App({ na }) {
       <NavigationContainer>
         <Stack.Navigator
           headerMode="none"
-          initialRouteName="HomeBottomTabs"
+          initialRouteName="Welcome"
           screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}

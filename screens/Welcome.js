@@ -34,13 +34,7 @@ export default function Welcome({ navigation }) {
   const [detail, setDetail] = useState("");
   const [avatarIndex, setAvatarIndex] = useState("");
 
-  /*
-
-
-  AVOIDING GOING BACK IN WELCOME SCREEN FOR INITIAL
-
-
-    const hardwareBackPressCustom = useCallback(() => {
+  const hardwareBackPressCustom = useCallback(() => {
     return true;
   }, []);
 
@@ -53,10 +47,6 @@ export default function Welcome({ navigation }) {
       );
     };
   }, []);
-
-
-
-  */
 
   useEffect(() => {
     Animated.timing(scrollXAnimated, {
@@ -71,12 +61,7 @@ export default function Welcome({ navigation }) {
       <StatusBar barStyle="default" />
       <Toast ref={(ref) => Toast.setRef(ref)} />
       <Text style={styles.title}>Rollie</Text>
-      <ViewPager
-        style={styles.container}
-        transitionStyle="scroll"
-        //initialPage={1}
-        //showPageIndicator only works on iOS
-      >
+      <ViewPager style={styles.container} transitionStyle="scroll">
         <View style={styles.viewPages} key={"page1"}>
           <Text style={styles.description}>
             Find your next favorite super duper amazing movie among over 1000
@@ -87,18 +72,20 @@ export default function Welcome({ navigation }) {
         </View>
         <View style={styles.viewPages} key={"page2"}>
           <Text style={styles.description}>Type your profile details</Text>
-          <Input
-            placeholder="Your name"
-            text={username}
-            setText={setUsername}
-            maxLength={12}
-          />
-          <Input
-            placeholder="Type something dummy"
-            text={detail}
-            setText={setDetail}
-            maxLength={20}
-          />
+          <View style={{ marginVertical: SPACING / 2 }}>
+            <Input
+              placeholder="Your name"
+              text={username}
+              setText={setUsername}
+              maxLength={12}
+            />
+            <Input
+              placeholder="Type something dummy"
+              text={detail}
+              setText={setDetail}
+              maxLength={20}
+            />
+          </View>
           <Text style={styles.description}>Pick an avatar</Text>
           <AvatarsList index={avatarIndex} setIndex={setAvatarIndex} />
           <Text style={styles.swipeText}>Swipe left to proceed.</Text>
@@ -201,12 +188,10 @@ export default function Welcome({ navigation }) {
                   });
                 } else {
                   if (index === 9) {
-                    //setMovies((prev) => [...prev, false]);
                     navigation.navigate("HomeBottomTabs", {
                       top10: movies,
                     });
                   } else {
-                    //setMovies((prev) => [...prev, false]);
                     setIndex((prev) => prev + 1);
                   }
                 }
@@ -259,7 +244,6 @@ const styles = StyleSheet.create({
   viewPages: {
     paddingHorizontal: SPACING,
     paddingVertical: SPACING / 2,
-    justifyContent: "space-between",
     position: "relative",
   },
   title: {
