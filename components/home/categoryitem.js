@@ -3,7 +3,7 @@ import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const SPACING = 30;
 const fetchURL = "http://www.omdbapi.com/?t=",
   apiTail = "&apikey=3c88863d";
@@ -12,10 +12,6 @@ export default function CategoryItem({ title, navigation }) {
   const [movie, setMovie] = useState({});
 
   useEffect(() => {
-    getMovie();
-  }, []);
-
-  const getMovie = () => {
     fetch(fetchURL + title + apiTail, {
       method: "GET",
       headers: {
@@ -28,7 +24,7 @@ export default function CategoryItem({ title, navigation }) {
         setMovie(res);
       })
       .catch((err) => console.log(err));
-  };
+  }, []);
 
   return (
     <TouchableOpacity
@@ -52,7 +48,7 @@ export default function CategoryItem({ title, navigation }) {
           {movie.Title}
         </Text>
         <View style={styles.ratingWrapper}>
-          <FontAwesome name="star" size={14} color="yellow" />
+          <FontAwesome name="star" size={14} color="#fcf300" />
           <Text style={[styles.movieText1, { marginLeft: 5 }]}>
             {movie.imdbRating} {"  "} {movie.Year}
           </Text>
@@ -67,9 +63,11 @@ export default function CategoryItem({ title, navigation }) {
 
 const styles = StyleSheet.create({
   itemContainer: {
-    width: width * 0.35,
-    height: width * 0.35 * 1.48 + 100,
+    width: width * 0.35 + 2,
+    height: width * 0.35 * 1.48 + 100 + 2,
     backgroundColor: "#1F1F1F",
+    borderWidth: 1,
+    borderColor: "#2e2e2e",
     marginRight: SPACING / 4,
     borderRadius: 4,
     elevation: 5,
@@ -93,6 +91,7 @@ const styles = StyleSheet.create({
   movieDetailContainer: {
     paddingVertical: SPACING / 6,
     paddingHorizontal: SPACING / 3,
+    flex: 1,
   },
   movieTitle: {
     fontSize: 14,

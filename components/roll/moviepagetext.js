@@ -15,25 +15,23 @@ export default function MoviePageText({ text, title }) {
 const styles = StyleSheet.create({
   container: {
     paddingVertical: SPACING / 3,
-    borderTopWidth: 1,
-    borderColor: "#fafafa",
     marginBottom: SPACING,
   },
   text: {
     fontSize: 16,
-    fontFamily: "RalewaySemiBold",
+    fontFamily: "RalewayRegular",
     color: "#fafafa",
     lineHeight: SPACING,
   },
   title: {
     fontSize: 18,
-    color: "#fff",
+    color: "#665DF5",
     fontFamily: "RalewayBold",
-    position: "absolute",
-    top: -SPACING / 2,
-    alignSelf: "center",
-    zIndex: 2,
-    elevation: 2,
-    backgroundColor: "#000",
+    paddingBottom: SPACING / 10,
+    paddingRight: SPACING / 4,
+    borderBottomWidth: 2,
+    borderRadius: 2,
+    borderColor: "#665DF5",
+    alignSelf: "flex-start",
   },
 });

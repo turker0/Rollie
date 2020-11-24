@@ -6,9 +6,7 @@ import HomeStack from "./homestack";
 
 const Tab = createBottomTabNavigator();
 
-export default function HomeBottomTabs({ navigation, route }) {
-  const { top10 } = route.params;
-
+export default function HomeBottomTabs({}) {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -39,13 +37,7 @@ export default function HomeBottomTabs({ navigation, route }) {
         },
       }}
     >
-      <Tab.Screen
-        name="Home"
-        component={HomeStack}
-        initialParams={{
-          top10: top10,
-        }}
-      />
+      <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Roll" component={Roll} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>

@@ -2,16 +2,16 @@ import { AppLoading } from "expo";
 import React from "react";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  CardStyleInterpolators,
-  createStackNavigator,
-} from "@react-navigation/stack";
 import Welcome from "./screens/Welcome";
-import HomeBottomTabs from "./routes/homebottomtabs";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import reducer from "./redux/reducers";
+import { createStackNavigator } from "@react-navigation/stack";
 
+const store = createStore(reducer);
 const Stack = createStackNavigator();
 
-export default function App({ na }) {
+export default function App() {
   const [loaded, error] = useFonts({
     RalewayBlack: require("./assets/fonts/Raleway-Black.ttf"),
     RalewayBold: require("./assets/fonts/Raleway-Bold.ttf"),
@@ -25,18 +25,17 @@ export default function App({ na }) {
     return <AppLoading />;
   } else {
     return (
-      <NavigationContainer>
-        <Stack.Navigator
-          headerMode="none"
-          initialRouteName="Welcome"
-          screenOptions={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }}
-        >
-          <Stack.Screen name="Welcome" component={Welcome} />
-          <Stack.Screen name="HomeBottomTabs" component={HomeBottomTabs} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="Welcome" component={Welcome} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     );
   }
 }

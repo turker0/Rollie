@@ -1,35 +1,82 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
-import { ScrollView } from "react-native-gesture-handler";
-import MoviePageText from "../components/roll/moviepagetext";
-import Animated, { Easing } from "react-native-reanimated";
+import MoviePageText from "./moviepagetext";
+import { useDispatch } from "react-redux";
+import { actionCreators } from "../../redux/actions";
+import Buttons from "./buttons";
 
-const SPACING = 30;
 const { width, height } = Dimensions.get("window");
 
-export default function MoviePage({ route }) {
-  const { movie } = route.params;
-  const imageOpacity = new Animated.Value(0.05);
+const SPACING = 30;
 
-  useEffect(() => {
-    Animated.timing(imageOpacity, {
-      toValue: 0.15,
-      duration: 666,
-      easing: Easing.linear,
-    }).start();
-  }, []);
+const BUTTONS = [
+  {
+    text: "Add",
+    id: "current",
+  },
+  {
+    text: "Next",
+    id: "declined",
+  },
+  {
+    text: "Later",
+    id: "later",
+  },
+  {
+    text: "Watched",
+    id: "watched",
+  },
+];
 
+const RolledMovie = ({ setIsFetched, movie, roll, navigation }) => {
+  const dispatch = useDispatch();
+
+  const handler = (key) => {
+    dispatch(actionCreators.addMovie(movie.Title, key));
+    if (key === "current") {
+      dispatch(actionCreators.setIsRolled(true));
+      setIsFetched(false);
+      navigation.navigate("Home");
+    } else {
+      roll();
+    }
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "#000" }}>
-      <Animated.Image
+      <Image
         source={{ uri: movie.Poster }}
-        style={[styles.image, { opacity: imageOpacity }]}
+        style={styles.image}
         resizeMode="cover"
-        blurRadius={0.3}
+        blurRadius={0.25}
       />
+      <View style={styles.blacked} />
       <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <View style={styles.container}>
+          <View style={styles.buttonContainer}>
+            <FlatList
+              data={BUTTONS}
+              horizontal
+              bounces={false}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item, index }) => {
+                return (
+                  <Buttons
+                    text={item.text}
+                    id={item.id}
+                    handler={handler}
+                    margin={
+                      index % 2 === 0 && index !== BUTTONS.length - 1
+                        ? SPACING / 3
+                        : 0
+                    }
+                  />
+                );
+              }}
+            />
+          </View>
           <Text style={styles.title}>{movie.Title}</Text>
           <View style={styles.rowLine}>
             <FontAwesome name="star" size={24} color="#fcf300" />
@@ -48,18 +95,16 @@ export default function MoviePage({ route }) {
           <MoviePageText text={movie.Awards} title="Awards" />
           <MoviePageText text={movie.Production} title="Production" />
         </View>
-        {
-          //remove button
-        }
       </ScrollView>
     </View>
   );
-}
+};
+
+export default RolledMovie;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
     padding: SPACING,
     elevation: 2,
     zIndex: 2,
@@ -71,7 +116,17 @@ const styles = StyleSheet.create({
     width,
     height,
     //elevation: 1,
-    zIndex: 1,
+    zIndex: 0,
+  },
+  blacked: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width,
+    height,
+    elevation: 0,
+    zIndex: 0,
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   rowLine: {
     flexDirection: "row",
@@ -100,5 +155,13 @@ const styles = StyleSheet.create({
     lineHeight: SPACING,
     borderTopWidth: 1,
     borderColor: "#fafafa",
+  },
+  buttonContainer: {
+    width: "100%",
+    alignItems: "center",
+  },
+
+  hightlighted: {
+    color: "#665DF5",
   },
 });
