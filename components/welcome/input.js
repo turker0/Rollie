@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import Animated, { Easing } from "react-native-reanimated";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actions";
 
@@ -8,28 +9,39 @@ const SPACING = 30;
 
 const Input = React.forwardRef(
   ({ placeholder, id, maxLength, nextHanler }, ref) => {
-    const [color, setColor] = useState("#000");
     const dispatch = useDispatch();
+    const opacity = useRef(new Animated.Value(0)).current;
 
     const onChangeHandler = (text) => {
+      if (text.length < 3) {
+        animateText(1);
+      } else {
+        animateText(0);
+      }
       dispatch(actionCreators.setUser(text, id));
     };
 
-    const onFocus = () => {
-      setColor("#665DF5");
+    const animateText = (toValue) => {
+      Animated.timing(opacity, {
+        toValue,
+        duration: 222,
+        easing: Easing.linear,
+      }).start();
     };
 
     return (
       <View style={styles.container}>
-        <Text style={[styles.error, { color: color }]}>
+        <Animated.Text style={[styles.error, { opacity }]}>
           Must be between 3-{maxLength} characters.
-        </Text>
+        </Animated.Text>
         <TextInput
           ref={ref}
           placeholder={placeholder}
           onChangeText={(text) => onChangeHandler(text)}
           maxLength={maxLength}
-          onFocus={onFocus}
+          onFocus={() => {
+            animateText(1);
+          }}
           onSubmitEditing={nextHanler}
           blurOnSubmit={id === "username" ? false : true}
           style={styles.input}
@@ -57,6 +69,7 @@ const styles = StyleSheet.create({
   },
   error: {
     fontSize: 12,
+    color: "#665DF5",
     fontFamily: "RalewayLight",
   },
 });

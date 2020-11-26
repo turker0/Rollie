@@ -5,6 +5,7 @@ import ProfileDropdown from "../components/profile/profiledropdown";
 import { useSelector } from "react-redux";
 import AvatarsList from "../components/profile/avatarslist";
 import { Feather } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
@@ -21,8 +22,22 @@ export default function Movies({}) {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      style={{ backgroundColor: "#000" }}
+      bounces={false}
+      contentContainerStyle={{ flexGrow: 1 }}
+      style={{ flex: 1, backgroundColor: "#000" }}
     >
+      <LinearGradient
+        colors={["#000", "#13112D"]}
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          zIndex: -1,
+          elevation: -1,
+          height: "100%",
+        }}
+      />
       <View style={styles.container}>
         <Text style={styles.name}>{user.username}</Text>
         <TouchableOpacity onPress={toggleAvatar} style={styles.emptyAvatar}>
@@ -54,7 +69,6 @@ export default function Movies({}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
     paddingVertical: SPACING / 2,
     paddingHorizontal: SPACING,
   },

@@ -49,7 +49,6 @@ export default Content;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
     paddingVertical: SPACING / 2,
   },
   title: {

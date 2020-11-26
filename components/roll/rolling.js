@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -17,6 +18,18 @@ const Rolling = ({ roll, svganim }) => {
 
   return (
     <View style={styles.container}>
+      <LinearGradient
+        colors={["#000", "#13112D"]}
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          zIndex: -1,
+          elevation: -1,
+          height: "100%",
+        }}
+      />
       <TouchableOpacity onPress={roll}>
         <Animated.View
           style={{

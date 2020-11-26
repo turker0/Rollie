@@ -1,21 +1,29 @@
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import { useSelector } from "react-redux";
-import Welcomer from "../components/home/welcomer";
 import Content from "../components/home/content";
-
-const SPACING = 30;
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Home({ navigation }) {
-  const isNew = useSelector((state) => state.isNew || false);
-
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       bounces={false}
-      style={{ backgroundColor: "#000" }}
+      contentContainerStyle={{ flexGrow: 1 }}
+      style={{ flex: 1, backgroundColor: "#000" }}
     >
-      {isNew ? <Welcomer /> : <Content navigation={navigation} />}
+      <LinearGradient
+        colors={["#000", "#13112D"]}
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          zIndex: -1,
+          elevation: -1,
+          height: "100%",
+        }}
+      />
+      <Content navigation={navigation} />
     </ScrollView>
   );
 }

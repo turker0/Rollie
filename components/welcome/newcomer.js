@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
   StatusBar,
@@ -18,6 +19,18 @@ const Newcomer = ({}) => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
+      <LinearGradient
+        colors={["#000", "#13112D"]}
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          zIndex: -1,
+          elevation: -1,
+          height: "100%",
+        }}
+      />
       <StatusBar barStyle="default" />
       <Text style={styles.title}>Rollie</Text>
       {!profile ? <Profile toggleProfile={toggleProfile} /> : <Top10Selector />}
@@ -28,7 +41,6 @@ const Newcomer = ({}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
   },
   title: {
     paddingTop: SPACING * 2,

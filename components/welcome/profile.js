@@ -1,75 +1,90 @@
-import ViewPager from "@react-native-community/viewpager";
-import React, { useRef, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { useSelector } from "react-redux";
-import CouchSVG from "./couchsvg";
-import Input from "./input";
+import React, { useRef } from "react";
+import { StyleSheet, View, Animated, Dimensions } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
+import Page1 from "./page1";
+import Page2 from "./page2";
 
 const SPACING = 30;
+const BGS = ["#665DF5", "#2e2e2e"];
+const { width } = Dimensions.get("window");
 
 const Profile = ({ toggleProfile }) => {
-  const user = useSelector((state) => state.user);
-  const [error, setError] = useState(true);
   const input1 = useRef(TextInput);
-  const input2 = useRef(TextInput);
+  const scrollX = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    if (user.username.length >= 3 && user.detail.length >= 3) {
-      if (error) {
-        setError(false);
-      }
-    } else {
-      if (!error) {
-        setError(true);
-      }
-    }
-  }, [user]);
-
-  const onPageSelectedHandler = (position) => {
-    if (position === 1) {
+  const onViewableItemsChanged = (viewableItems) => {
+    if (viewableItems.viewableItems[0].index === 1) {
       input1.current.focus();
     }
   };
-
-  const inputNextHandler = () => {
-    input2.current.focus();
-  };
   return (
-    <ViewPager
-      style={styles.container}
-      transitionStyle="scroll"
-      onPageSelected={(e) => onPageSelectedHandler(e.nativeEvent.position)}
-    >
-      <View style={styles.viewPages} key={"page1"}>
-        <Text style={styles.description}>
-          Find your <Text style={styles.highlighted}>next</Text> favorite super
-          duper amazing movie among over{" "}
-          <Text style={styles.highlighted}>1000 iMDB 7+</Text> movies.
-        </Text>
-        <CouchSVG />
-        <Text style={styles.swipeText}>
-          Swipe left and{" "}
-          <Text style={styles.highlighted}>create a profile</Text>.
-        </Text>
-      </View>
-      <View style={styles.viewPages} key={"page2"}>
-        <Text style={styles.description}>Create a profile</Text>
-        <Input
-          placeholder="Your name"
-          id="username"
-          ref={input1}
-          nextHanler={inputNextHandler}
-          maxLength={12}
+    <View style={styles.container}>
+      <View>
+        <Animated.FlatList
+          data={BGS}
+          keyExtractor={(_, index) => `Page` + index}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          pagingEnabled
+          onViewableItemsChanged={onViewableItemsChanged}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            { useNativeDriver: false }
+          )}
+          renderItem={({ _, index }) => {
+            const inputRange = [
+              ((index - 1) * width) / 2,
+              index * width,
+              ((index + 1) * width) / 2,
+            ];
+            const opacity = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.2, 1, 0.2],
+            });
+            const scale = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.95, 1, 0.95],
+            });
+            return (
+              <Animated.View style={{ opacity, transform: [{ scale }] }}>
+                {index === 0 ? (
+                  <Page1 />
+                ) : (
+                  <Page2 toggleProfile={toggleProfile} input1={input1} />
+                )}
+              </Animated.View>
+            );
+          }}
         />
-        <Input placeholder="Detail" id="detail" ref={input2} maxLength={20} />
-        {!error && (
-          <TouchableOpacity onPress={toggleProfile} style={styles.button}>
-            <Text style={styles.buttonTet}>Create</Text>
-          </TouchableOpacity>
-        )}
       </View>
-    </ViewPager>
+      <View style={styles.indicatorContainer}>
+        {BGS.map((_, index) => {
+          const inputRange = [
+            (index - 1) * width,
+            index * width,
+            (index + 1) * width,
+          ];
+          const scale = scrollX.interpolate({
+            inputRange,
+            outputRange: [0.3, 1, 0.3],
+            extrapolate: "clamp",
+          });
+          const backgroundColor = scrollX.interpolate({
+            inputRange,
+            outputRange: [BGS[1], BGS[0], BGS[1]],
+          });
+          return (
+            <Animated.View
+              key={index}
+              style={[
+                styles.indicator,
+                { transform: [{ scale }], backgroundColor },
+              ]}
+            />
+          );
+        })}
+      </View>
+    </View>
   );
 };
 
@@ -79,41 +94,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  viewPages: {
-    paddingHorizontal: SPACING,
-    paddingVertical: SPACING / 2,
-    position: "relative",
-  },
-  description: {
-    fontSize: 20,
-    fontFamily: "RalewaySemiBold",
-    color: "#f5f5f5",
-  },
-  swipeText: {
-    fontSize: 18,
-    fontFamily: "RalewaySemiBold",
-    color: "#fff",
-  },
-  button: {
-    height: SPACING * 1.2,
+  indicatorContainer: {
     flexDirection: "row",
     alignItems: "center",
-    alignSelf: "flex-start",
-    paddingHorizontal: SPACING / 2,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: "#665DF5",
-    backgroundColor: "#000",
-    marginTop: SPACING,
+    justifyContent: "center",
+    marginTop: SPACING / 2,
   },
-  buttonTet: {
-    fontSize: 18,
-    fontFamily: "RalewayBold",
-    color: "#665DF5",
-  },
-
-  highlighted: {
-    color: "#665DF5",
-    fontFamily: "RalewayBold",
+  indicator: {
+    width: SPACING / 2,
+    height: SPACING / 2,
+    borderRadius: SPACING / 2,
+    marginHorizontal: SPACING / 3,
   },
 });

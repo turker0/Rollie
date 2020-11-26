@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 
 import Newcomer from "../components/welcome/newcomer";
@@ -16,5 +15,3 @@ const Welcome = () => {
 };
 
 export default Welcome;
-
-const styles = StyleSheet.create({});

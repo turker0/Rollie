@@ -7,6 +7,7 @@ import { actionCreators } from "../../redux/actions";
 import { AppLoading } from "expo";
 import { FontAwesome } from "@expo/vector-icons";
 import Buttons from "./buttons";
+import { LinearGradient } from "expo-linear-gradient";
 
 const { width } = Dimensions.get("window"),
   SPACING = 30;
@@ -67,7 +68,14 @@ export default function CurrentMovie({ title, navigation }) {
                 movie: movie,
               })
             }
+            style={{
+              padding: 2,
+            }}
           >
+            <LinearGradient
+              colors={["#e76f51", "#2a9d8f"]}
+              style={styles.gradient}
+            />
             <Image style={styles.image} source={{ uri: movie.Poster }} />
           </TouchableOpacity>
           <View style={styles.detailsContainer}>
@@ -85,6 +93,7 @@ export default function CurrentMovie({ title, navigation }) {
               {BUTTONS.map((item) => {
                 return (
                   <Buttons
+                    key={item.id}
                     id={item.id}
                     text={item.text}
                     handler={buttonHandler}
@@ -112,13 +121,21 @@ const styles = StyleSheet.create({
     color: "#fafafa",
     marginBottom: SPACING / 3,
   },
+  gradient: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: -1,
+    elevation: -1,
+    borderRadius: 4,
+  },
   image: {
     width: width * 0.4,
     height: width * 0.4 * 1.48,
     backgroundColor: "gray",
-    borderWidth: 3,
     borderRadius: 4,
-    borderColor: "#2e2e2e",
   },
   contentContainer: {
     flexDirection: "row",
