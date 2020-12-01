@@ -11,12 +11,9 @@ import Top10Selector from "./top10selector";
 
 const SPACING = 30;
 
-const Newcomer = ({}) => {
-  const [profile, setProfile] = useState(false);
-  const toggleProfile = () => {
-    setProfile(!profile);
-  };
-
+const Newcomer = () => {
+  const [isProfileVisible, setIsProfileVisible] = useState<boolean>(false);
+  const toggleIsProfileVisible = () => setIsProfileVisible(!isProfileVisible);
   return (
     <KeyboardAvoidingView style={styles.container}>
       <LinearGradient
@@ -33,10 +30,16 @@ const Newcomer = ({}) => {
       />
       <StatusBar barStyle="default" />
       <Text style={styles.title}>Rollie</Text>
-      {!profile ? <Profile toggleProfile={toggleProfile} /> : <Top10Selector />}
+      {!isProfileVisible ? (
+        <Profile toggleIsProfileVisible={toggleIsProfileVisible} />
+      ) : (
+        <Top10Selector />
+      )}
     </KeyboardAvoidingView>
   );
 };
+
+export default Newcomer;
 
 const styles = StyleSheet.create({
   container: {
@@ -51,5 +54,3 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 });
-
-export default Newcomer;

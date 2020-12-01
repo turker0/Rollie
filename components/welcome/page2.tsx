@@ -1,33 +1,47 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { FC, RefObject, useEffect, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import Animated, { Easing } from "react-native-reanimated";
 import { useSelector } from "react-redux";
+import { Initial } from "../../redux/types";
 import Input from "./input";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
+interface Props {
+  toggleIsProfileVisible: () => void;
+  input1: RefObject<TextInput>;
+}
 
-const Page2 = ({ toggleProfile, input1 }) => {
-  const input2 = useRef(TextInput);
-  const user = useSelector((state) => state.user);
-  const [error, setError] = useState(true);
+const Page2: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
+  const input2: any = useRef<TextInput>(null);
+  const input3: any = useRef<TextInput>(null);
+  const user = useSelector((state: Initial) => state.user);
+  const [error, setError] = useState<boolean>(true);
 
   const opacity = useRef(new Animated.Value(0)).current;
 
-  const inputNextHandler = () => {
-    input2.current?.focus();
+  const input2Focus = () => {
+    if (input2.current !== null) {
+      input2.current.focus();
+    }
+  };
+
+  const input3Focus = () => {
+    if (input3.current !== null) {
+      input3.current.focus();
+    }
   };
 
   useEffect(() => {
-    if (user.username.length >= 3 && user.detail.length >= 3) {
+    if (user.username.length >= 3 && user.mail.length >= 3) {
       animateButton(1);
     } else {
       animateButton(0);
     }
   }, [user]);
 
-  const animateButton = (toValue) => {
+  const animateButton = (toValue: number) => {
     Animated.timing(opacity, {
       toValue,
       duration: 222,
@@ -45,14 +59,29 @@ const Page2 = ({ toggleProfile, input1 }) => {
     <View style={styles.page}>
       <Text style={styles.description}>Create a profile</Text>
       <Input
-        placeholder="Your name"
-        id="username"
+        placeholder="E-mail"
+        id="mail"
         ref={input1}
-        nextHanler={inputNextHandler}
-        maxLength={12}
+        nextHandler={input2Focus}
+        maxLength={32}
       />
-      <Input placeholder="Detail" id="detail" ref={input2} maxLength={20} />
-      <TouchableOpacity onPress={() => (!error ? toggleProfile() : null)}>
+      <Input
+        placeholder="Username"
+        id="username"
+        ref={input2}
+        nextHandler={input3Focus}
+        maxLength={16}
+      />
+      <Input
+        placeholder="Password"
+        id="Password"
+        isPassword
+        ref={input3}
+        maxLength={20}
+      />
+      <TouchableOpacity
+        onPress={() => (!error ? toggleIsProfileVisible() : null)}
+      >
         <Animated.Text style={[styles.buttonTet, { opacity }]}>
           Create
         </Animated.Text>

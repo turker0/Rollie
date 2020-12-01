@@ -10,10 +10,10 @@ import { LinearGradient } from "expo-linear-gradient";
 const SPACING = 30;
 const { width } = Dimensions.get("window");
 
-export default function Movies({}) {
+const Profile = ({}) => {
   const user = useSelector((state) => state.user);
   const movies = useSelector((state) => state.movies);
-  const [avatar, setAvatar] = useState(false);
+  const [avatar, setAvatar] = useState<boolean>(false);
 
   const toggleAvatar = () => {
     setAvatar(!avatar);
@@ -64,7 +64,9 @@ export default function Movies({}) {
       </View>
     </ScrollView>
   );
-}
+};
+
+export default Profile;
 
 const styles = StyleSheet.create({
   container: {
@@ -106,5 +108,8 @@ const styles = StyleSheet.create({
   },
   modal: {
     margin: 0,
+  },
+  title: {
+    fontSize: 20,
   },
 });

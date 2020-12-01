@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { StatusBar, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import Roll from "./roll";
@@ -7,7 +7,11 @@ import MovieCategory from "./moviecategory";
 
 const SPACING = 30;
 
-const Content = ({ navigation }) => {
+interface Props {
+  navigation: any;
+}
+
+const Content: FC<Props> = ({ navigation }) => {
   const isRolled = useSelector((state) => state.isRolled);
   const movies = useSelector((state) => state.movies);
 
@@ -26,7 +30,9 @@ const Content = ({ navigation }) => {
       )}
       <MovieCategory
         title="Your last movies"
-        movies={movies.watched.reverse().filter((_, index) => index < 10)}
+        movies={movies.watched
+          .reverse()
+          .filter((_: any, index: number) => index < 10)}
         navigation={navigation}
       />
       <MovieCategory

@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Animated, Dimensions, StyleSheet } from "react-native";
+import React, { FC, useEffect, useState } from "react";
+import { Animated, StyleSheet } from "react-native";
 
 import full from "../database/full.json";
 import { useSelector } from "react-redux";
 import RolledMovie from "../components/roll/rolledmovie";
 import Rolling from "../components/roll/rolling";
 import { Easing } from "react-native-reanimated";
+import { Movie } from "../redux/types";
 
 const fetchURL = "http://www.omdbapi.com/?t=",
   apiTail = "&apikey=3c88863d";
 const SPACING = 30;
 
-export default function Roll({ navigation }) {
-  const [isFetched, setIsFetched] = useState(false);
+interface Props {
+  navigation: any;
+}
+
+const Roll: FC<Props> = ({ navigation }) => {
+  const [isFetched, setIsFetched] = useState<boolean>(false);
   const movies = useSelector((state) => state.movies);
-  const [movie, setMovie] = useState();
+  const [movie, setMovie] = useState<Movie>({});
   const svganim = new Animated.Value(0);
 
   const roll = () => {
@@ -62,7 +67,9 @@ export default function Roll({ navigation }) {
       />
     );
   }
-}
+};
+
+export default Roll;
 
 const styles = StyleSheet.create({
   container: {

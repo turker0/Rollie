@@ -1,11 +1,18 @@
-import React from "react";
+import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { Movie } from "../../redux/types";
 import CategoryItem from "./categoryitem";
 
 const SPACING = 30;
 
-export default function MovieCategory({ title, movies, navigation }) {
+interface Props {
+  title: string;
+  movies: string[];
+  navigation: any;
+}
+
+const MovieCategory: FC<Props> = ({ title, movies, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleWrapper}>
@@ -33,7 +40,9 @@ export default function MovieCategory({ title, movies, navigation }) {
       ) : null}
     </View>
   );
-}
+};
+
+export default MovieCategory;
 
 const styles = StyleSheet.create({
   container: {

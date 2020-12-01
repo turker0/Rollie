@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
+import { Movie } from "../../redux/types";
 
 const { width } = Dimensions.get("window");
 const SPACING = 30;
 const fetchURL = "http://www.omdbapi.com/?t=",
   apiTail = "&apikey=3c88863d";
 
-export default function CategoryItem({ title, navigation }) {
-  const [movie, setMovie] = useState({});
+interface Props {
+  title: string;
+  navigation: any;
+}
+
+const CategoryItem: FC<Props> = ({ title, navigation }) => {
+  const [movie, setMovie] = useState<Movie>({});
 
   useEffect(() => {
     fetch(fetchURL + title + apiTail, {
@@ -59,7 +65,9 @@ export default function CategoryItem({ title, navigation }) {
       </View>
     </TouchableOpacity>
   );
-}
+};
+
+export default CategoryItem;
 
 const styles = StyleSheet.create({
   itemContainer: {

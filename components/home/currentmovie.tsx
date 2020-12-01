@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,6 +8,7 @@ import { AppLoading } from "expo";
 import { FontAwesome } from "@expo/vector-icons";
 import Buttons from "./buttons";
 import { LinearGradient } from "expo-linear-gradient";
+import { Movie } from "../../redux/types";
 
 const { width } = Dimensions.get("window"),
   SPACING = 30;
@@ -29,11 +30,16 @@ const BUTTONS = [
   },
 ];
 
-export default function CurrentMovie({ title, navigation }) {
-  const dispatch = useDispatch();
-  const [movie, setMovie] = useState();
+interface Props {
+  title: String;
+  navigation: any;
+}
 
-  const buttonHandler = (key) => {
+const CurrentMovie: FC<Props> = ({ title, navigation }) => {
+  const dispatch = useDispatch();
+  const [movie, setMovie] = useState<Movie>();
+
+  const buttonHandler = (key: string) => {
     dispatch(actionCreators.addMovie(movie.Title, key));
     dispatch(actionCreators.removeMovie(movie.Title, "current"));
     dispatch(actionCreators.setIsRolled(false));
@@ -108,7 +114,9 @@ export default function CurrentMovie({ title, navigation }) {
   } else {
     return <AppLoading />;
   }
-}
+};
+
+export default CurrentMovie;
 
 const styles = StyleSheet.create({
   container: {

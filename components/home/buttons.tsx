@@ -1,16 +1,24 @@
-import React from "react";
+import React, { FC } from "react";
 import { StyleSheet, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SPACING = 30;
 
-export default function Buttons({ handler, id, text }) {
+interface Props {
+  handler: (id: string) => void;
+  id: string;
+  text: string;
+}
+
+const Buttons: FC<Props> = ({ handler, id, text }) => {
   return (
     <TouchableOpacity onPress={() => handler(id)} style={styles.button}>
       <Text style={styles.buttonTet}>{text}</Text>
     </TouchableOpacity>
   );
-}
+};
+
+export default Buttons;
 
 const styles = StyleSheet.create({
   button: {

@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { Ref, RefObject, useRef } from "react";
+import { StyleSheet, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import Animated, { Easing } from "react-native-reanimated";
 import { useDispatch } from "react-redux";
@@ -7,23 +7,43 @@ import { actionCreators } from "../../redux/actions";
 
 const SPACING = 30;
 
-const Input = React.forwardRef(
-  ({ placeholder, id, maxLength, nextHanler }, ref) => {
+interface Props {
+  placeholder: string;
+  id: string;
+  maxLength: number;
+  ref: RefObject<TextInput>;
+  nextHandler?: () => void;
+  isPassword?: boolean;
+}
+
+const Input = React.forwardRef<TextInput, Props>(
+  (
+    { placeholder, id, maxLength, nextHandler, isPassword },
+    ref: Ref<TextInput>
+  ) => {
     const dispatch = useDispatch();
     const opacity = useRef(new Animated.Value(0)).current;
 
-    const onChangeHandler = (text) => {
+    const onChangeHandler = (text: string) => {
       if (text.length < 3) {
-        animateText(1);
+        startTextAnimation();
       } else {
-        animateText(0);
+        endTextAnimation();
       }
-      dispatch(actionCreators.setUser(text, id));
+      dispatch(actionCreators.editUserByKey(text, id));
     };
 
-    const animateText = (toValue) => {
+    const endTextAnimation = () => {
       Animated.timing(opacity, {
-        toValue,
+        toValue: 0,
+        duration: 222,
+        easing: Easing.linear,
+      }).start();
+    };
+
+    const startTextAnimation = () => {
+      Animated.timing(opacity, {
+        toValue: 1,
         duration: 222,
         easing: Easing.linear,
       }).start();
@@ -39,11 +59,12 @@ const Input = React.forwardRef(
           placeholder={placeholder}
           onChangeText={(text) => onChangeHandler(text)}
           maxLength={maxLength}
-          onFocus={() => {
-            animateText(1);
-          }}
-          onSubmitEditing={nextHanler}
+          onFocus={startTextAnimation}
+          onSubmitEditing={nextHandler}
+          autoCapitalize="none"
+          secureTextEntry={isPassword}
           blurOnSubmit={id === "username" ? false : true}
+          keyboardType={id === "mail" ? "email-address" : "default"}
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholderTextColor="#8F8D8D"

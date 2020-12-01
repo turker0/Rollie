@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
@@ -6,6 +6,7 @@ import MoviePageText from "./moviepagetext";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actions";
 import Buttons from "./buttons";
+import { Movie } from "../../redux/types";
 
 const { width, height } = Dimensions.get("window");
 
@@ -30,10 +31,17 @@ const BUTTONS = [
   },
 ];
 
-const RolledMovie = ({ setIsFetched, movie, roll, navigation }) => {
+interface Props {
+  setIsFetched: (bool: boolean) => void;
+  movie: Movie;
+  roll: any;
+  navigation: any;
+}
+
+const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll, navigation }) => {
   const dispatch = useDispatch();
 
-  const handler = (key) => {
+  const handler = (key: string) => {
     dispatch(actionCreators.addMovie(movie.Title, key));
     if (key === "current") {
       dispatch(actionCreators.setIsRolled(true));

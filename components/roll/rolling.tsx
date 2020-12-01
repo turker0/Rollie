@@ -1,12 +1,17 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { FC } from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import RollSVG from "./rollsvg";
 
 const SPACING = 30;
 
-const Rolling = ({ roll, svganim }) => {
+interface Props {
+  roll: () => void;
+  svganim: Animated.Value;
+}
+
+const Rolling: FC<Props> = ({ roll, svganim }) => {
   const rotate = svganim.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "720deg"],

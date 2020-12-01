@@ -9,7 +9,7 @@ export default function RollSVG() {
     <View style={styles.container}>
       <Svg
         data-name="Layer 1"
-        xmlns="http://www.w3.org/2000/svg"
+        //xmlns="http://www.w3.org/2000/svg"
         width={width * 0.6}
         height={(width * 0.6) / 1.4105806223251018691103079881395}
         viewBox="0 0 1004.253 711.943"

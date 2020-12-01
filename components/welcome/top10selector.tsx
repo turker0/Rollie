@@ -1,14 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import {
   Dimensions,
-  Image,
   StyleSheet,
   Text,
   View,
   Animated,
+  LayoutChangeEvent,
+  Image,
 } from "react-native";
 import {
   FlatList,
+  PanGestureHandler,
   ScrollView,
   TouchableOpacity,
 } from "react-native-gesture-handler";
@@ -18,41 +20,44 @@ import top10 from "../../database/top10.json";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actions";
 import { LinearGradient } from "expo-linear-gradient";
-import { Easing } from "react-native-reanimated";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
 
-const Top10Selector = () => {
-  const [listIndex, setListIndex] = useState(0);
-  const [height, setHeight] = useState(0);
-  const imageListRef = useRef(FlatList);
-  const titleListRef = useRef(FlatList);
+const Top10Selector: FC = () => {
+  const [listIndex, setListIndex] = useState<number>(0);
+  const [height, setHeight] = useState<number>(0);
+  const imageListRef: any = useRef(null);
+  const titleListRef: any = useRef(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    imageListRef.current.scrollToIndex({
-      index: listIndex,
-      animated: true,
-    });
-    titleListRef.current.scrollToIndex({
-      index: listIndex,
-      animated: true,
-    });
+    if (imageListRef.current !== null) {
+      imageListRef.current.scrollToIndex({
+        index: listIndex,
+        animated: true,
+      });
+    }
+    if (titleListRef.current !== null) {
+      titleListRef.current.scrollToIndex({
+        index: listIndex,
+        animated: true,
+      });
+    }
   }, [listIndex]);
 
-  const clickHandler = (key) => {
+  const clickHandler = (key?: string) => {
     if (key === "watched") {
-      dispatch(actionCreators.addMovie(top10[listIndex].Title, key));
+      //dispatch(actionCreators.addMovie(top10[listIndex].Title, key));
     }
     if (listIndex === top10.length - 1) {
-      dispatch(actionCreators.setIsNew(false));
+      //dispatch(actionCreators.setIsNew(false));
     } else {
-      setListIndex(listIndex + 1);
+      //setListIndex(listIndex + 1);
     }
   };
 
-  const measureH = (e) => {
+  const measureH = (e: LayoutChangeEvent) => {
     if (height === 0) {
       setHeight(e.nativeEvent.layout.height);
     }
@@ -85,10 +90,12 @@ const Top10Selector = () => {
                   showsHorizontalScrollIndicator={false}
                   renderItem={({ item }) => {
                     return (
-                      <Animated.Image
-                        style={styles.itemImage}
-                        source={{ uri: item.Poster }}
-                      />
+                      <PanGestureHandler>
+                        <Image
+                          style={styles.itemImage}
+                          source={{ uri: item.Poster }}
+                        />
+                      </PanGestureHandler>
                     );
                   }}
                 />
@@ -106,7 +113,7 @@ const Top10Selector = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.itemButton, { borderColor: "#e76f51" }]}
-                onPress={() => clickHandler()}
+                onPress={() => clickHandler}
               >
                 <Text style={[styles.itemButtonText, { color: "#e76f51" }]}>
                   No
@@ -136,7 +143,11 @@ const Top10Selector = () => {
                     </Text>
                     <Text style={styles.itemDetails} numberOfLines={1}>
                       <FontAwesome name="star" size={16} color="#fcf300" />{" "}
-                      {item.imdbRating} {"  "} {item.Year} {"  "} {item.Genre}
+                      {item.imdbRating} {"  "} {item.Year} {"  "}{" "}
+                      {
+                        //item.Genre
+                        "Item Genre goes here"
+                      }
                     </Text>
                   </View>
                 );

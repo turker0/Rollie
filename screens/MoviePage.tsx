@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import React, { FC, useEffect } from "react";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import MoviePageText from "../components/roll/moviepagetext";
@@ -8,7 +8,11 @@ import Animated, { Easing } from "react-native-reanimated";
 const SPACING = 30;
 const { width, height } = Dimensions.get("window");
 
-export default function MoviePage({ route }) {
+interface Props {
+  route: any;
+}
+
+const MoviePage: FC<Props> = ({ route }) => {
   const { movie } = route.params;
   const imageOpacity = new Animated.Value(0.05);
 
@@ -54,7 +58,9 @@ export default function MoviePage({ route }) {
       </ScrollView>
     </View>
   );
-}
+};
+
+export default MoviePage;
 
 const styles = StyleSheet.create({
   container: {

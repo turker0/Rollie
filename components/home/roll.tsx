@@ -1,11 +1,15 @@
-import React from "react";
+import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const SPACING = 30;
 
-export default function Roll({ roll }) {
+interface Props {
+  roll: () => void;
+}
+
+const Roll: FC<Props> = ({ roll }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>No rolled movie.</Text>
@@ -15,7 +19,7 @@ export default function Roll({ roll }) {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -49,3 +53,5 @@ const styles = StyleSheet.create({
     marginLeft: SPACING / 4,
   },
 });
+
+export default Roll;

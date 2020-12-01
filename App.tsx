@@ -1,12 +1,12 @@
-import { AppLoading } from "expo";
 import React from "react";
+import { AppLoading } from "expo";
 import { useFonts } from "expo-font";
-import { NavigationContainer } from "@react-navigation/native";
-import Welcome from "./screens/Welcome";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import reducer from "./redux/reducers";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import Welcome from "./screens/Welcome";
 
 const store = createStore(reducer);
 const Stack = createStackNavigator();

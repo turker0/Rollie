@@ -1,9 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import Content from "../components/home/content";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function Home({ navigation }) {
+interface Props {
+  navigation: any;
+}
+
+const Home: FC<Props> = ({ navigation }) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -26,4 +30,6 @@ export default function Home({ navigation }) {
       <Content navigation={navigation} />
     </ScrollView>
   );
-}
+};
+
+export default Home;

@@ -1,16 +1,22 @@
-import React from "react";
+import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 const SPACING = 30;
 
-export default function MoviePageText({ text, title }) {
+interface Props {
+  text: string;
+  title: string;
+}
+
+const MoviePageText: FC<Props> = ({ text, title }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.text}>{text}</Text>
     </View>
   );
-}
+};
+export default MoviePageText;
 
 const styles = StyleSheet.create({
   container: {
