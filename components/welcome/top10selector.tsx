@@ -1,162 +1,143 @@
-import React, { FC, useEffect, useRef, useState } from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  View,
-  Animated,
-  LayoutChangeEvent,
-  Image,
-} from "react-native";
-import {
-  FlatList,
-  PanGestureHandler,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
-import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, StyleSheet, Text, View, Image } from "react-native";
 
-import top10 from "../../database/top10.json";
+import top11 from "../../database/top10.json";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actions";
 import { LinearGradient } from "expo-linear-gradient";
+import {
+  PanGestureHandler,
+  PanGestureHandlerStateChangeEvent,
+  State,
+} from "react-native-gesture-handler";
+import Animated, { Easing } from "react-native-reanimated";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
 
-const Top10Selector: FC = () => {
+const Top10Selector = () => {
   const [listIndex, setListIndex] = useState<number>(0);
-  const [height, setHeight] = useState<number>(0);
-  const imageListRef: any = useRef(null);
-  const titleListRef: any = useRef(null);
   const dispatch = useDispatch();
+  const [top10, setTop10] = useState(top11);
+  const translateX = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (imageListRef.current !== null) {
-      imageListRef.current.scrollToIndex({
-        index: listIndex,
-        animated: true,
-      });
-    }
-    if (titleListRef.current !== null) {
-      titleListRef.current.scrollToIndex({
-        index: listIndex,
-        animated: true,
-      });
+    translateX.setValue(0);
+    translateY.setValue(0);
+    if (listIndex > 0) {
+      setTop10(
+        top10.filter((item) => item.Title !== top11[listIndex - 1].Title)
+      );
     }
   }, [listIndex]);
 
-  const clickHandler = (key?: string) => {
-    if (key === "watched") {
-      //dispatch(actionCreators.addMovie(top10[listIndex].Title, key));
+  const onHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
+    //check end
+    if (listIndex === top11.length - 1) {
+      dispatch(actionCreators.editUserByKey(false, "isNew"));
     }
-    if (listIndex === top10.length - 1) {
-      //dispatch(actionCreators.setIsNew(false));
-    } else {
-      //setListIndex(listIndex + 1);
+
+    if (event.nativeEvent.state === State.END) {
+      if (event.nativeEvent.translationX < -(width * 0.125)) {
+        nextAnimation();
+      } else if (event.nativeEvent.translationX > width * 0.125) {
+        //add movie to watchedS
+        dispatch(actionCreators.addMovie(top11[listIndex], "watched"));
+        nextAnimation();
+      } else {
+        resetAnimation();
+      }
     }
   };
 
-  const measureH = (e: LayoutChangeEvent) => {
-    if (height === 0) {
-      setHeight(e.nativeEvent.layout.height);
-    }
+  const nextAnimation = () => {
+    setListIndex(listIndex + 1);
   };
+
+  const resetAnimation = () => {
+    Animated.timing(translateX, {
+      toValue: 0,
+      duration: 200,
+      easing: Easing.bounce,
+    }).start();
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 200,
+      easing: Easing.bounce,
+    }).start();
+  };
+
+  const opacity = translateX.interpolate({
+    inputRange: [-width * 0.25, 0, width * 0.25],
+    outputRange: [0.25, 1, 0.25],
+  });
 
   return (
-    <ScrollView
-      style={{ flex: 1 }}
-      showsVerticalScrollIndicator={false}
-      bounces={false}
-    >
-      <View style={styles.container}>
-        <Text style={styles.description}>Let's get started</Text>
-        <View>
-          <Text style={styles.itemHeader}>Have you watched these movies? </Text>
-          <View style={styles.itemContainer}>
-            <View style={styles.itemImageContainer}>
-              <LinearGradient
-                colors={["#e76f51", "#2a9d8f"]}
-                style={styles.gradient}
-              />
-              <View style={styles.itemImageWrapper}>
-                <FlatList
-                  ref={imageListRef}
-                  data={top10}
-                  keyExtractor={(item) => item.Title}
-                  horizontal
-                  bounces={false}
-                  scrollEnabled={false}
-                  showsHorizontalScrollIndicator={false}
-                  renderItem={({ item }) => {
-                    return (
-                      <PanGestureHandler>
-                        <Image
-                          style={styles.itemImage}
-                          source={{ uri: item.Poster }}
-                        />
-                      </PanGestureHandler>
-                    );
-                  }}
-                />
-              </View>
-            </View>
-            <View style={styles.itemButtonWrapper}>
-              <TouchableOpacity
-                style={[styles.itemButton, { borderColor: "#2a9d8f" }]}
-                onPress={() => clickHandler("watched")}
+    <View style={styles.container}>
+      <Text style={styles.description}>Let's get started</Text>
+      <View style={styles.cardsContainer}>
+        <View style={[styles.cardsContainer]}>
+          {top10.map((item, index) => {
+            const elevation = top10.length - index,
+              zIndex = elevation;
+            const scale = 1 - index / 90;
+            const top = index * 5;
+            return (
+              <PanGestureHandler
+                onGestureEvent={Animated.event(
+                  [
+                    {
+                      nativeEvent: {
+                        translationX: translateX,
+                        translationY: translateY,
+                      },
+                    },
+                  ],
+                  {
+                    useNativeDriver: true,
+                  }
+                )}
+                onHandlerStateChange={onHandlerStateChange}
+                key={index}
               >
-                <Ionicons name="md-arrow-dropup" size={18} color="#2a9d8f" />
-                <Text style={[styles.itemButtonText, { color: "#2a9d8f" }]}>
-                  Yes
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.itemButton, { borderColor: "#e76f51" }]}
-                onPress={() => clickHandler}
-              >
-                <Text style={[styles.itemButtonText, { color: "#e76f51" }]}>
-                  No
-                </Text>
-                <Ionicons name="md-arrow-dropdown" size={18} color="#e76f51" />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={height !== 0 ? { height } : null}>
-            <FlatList
-              ref={titleListRef}
-              data={top10}
-              horizontal
-              keyExtractor={(item) => item.Title}
-              showsHorizontalScrollIndicator={false}
-              bounces={false}
-              scrollEnabled={false}
-              renderItem={({ item, index }) => {
-                return (
-                  <View
-                    style={styles.itemTextWrapper}
-                    onLayout={(e) => measureH(e)}
-                  >
-                    <Text style={styles.itemTitle} numberOfLines={1}>
-                      <Text style={styles.highlighted}>{index + 1}.</Text>{" "}
-                      {item.Title}
-                    </Text>
-                    <Text style={styles.itemDetails} numberOfLines={1}>
-                      <FontAwesome name="star" size={16} color="#fcf300" />{" "}
-                      {item.imdbRating} {"  "} {item.Year} {"  "}{" "}
-                      {
-                        //item.Genre
-                        "Item Genre goes here"
-                      }
-                    </Text>
-                  </View>
-                );
-              }}
-            />
-          </View>
+                <Animated.View
+                  style={[
+                    styles.cardWrapper,
+                    {
+                      elevation,
+                      zIndex,
+                      top,
+                    },
+                    index === 0
+                      ? {
+                          opacity,
+                          transform: [
+                            {
+                              scale,
+                              translateX,
+                              translateY,
+                            },
+                          ],
+                        }
+                      : { transform: [{ scale }] },
+                  ]}
+                >
+                  <LinearGradient
+                    colors={["#e76f51", "#2a9d8f"]}
+                    style={[styles.gradient, StyleSheet.absoluteFillObject]}
+                  />
+                  <Image
+                    style={styles.itemImage}
+                    source={{ uri: item.Poster }}
+                  />
+                </Animated.View>
+              </PanGestureHandler>
+            );
+          })}
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -166,7 +147,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: SPACING,
-    borderTopStartRadius: 120,
   },
   description: {
     fontSize: 20,
@@ -174,74 +154,37 @@ const styles = StyleSheet.create({
     marginTop: SPACING / 2,
     color: "#fff",
   },
-  itemHeader: {
-    fontSize: 18,
-    fontFamily: "RalewaySemiBold",
-    borderLeftWidth: 4,
-    borderRadius: 2,
-    borderColor: "#665DF5",
-    color: "#CDCBCB",
-    marginTop: SPACING / 2,
-    paddingLeft: SPACING / 6 + 5,
+  cardsContainer: {
+    width: width * 0.5 + 2,
+    height: width * 0.5 * 1.48 + 2,
+    alignSelf: "center",
   },
-  itemImageContainer: {
-    padding: SPACING / 6,
-    alignSelf: "flex-start",
+  cardWrapper: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    padding: 1,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 5,
     },
-    shadowOpacity: 0.29,
-    shadowRadius: 20,
-    elevation: 7,
-  },
-  gradient: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    zIndex: -1,
-    elevation: -1,
-    borderRadius: 4,
-  },
-  itemImageWrapper: {
-    width: width * 0.5,
-    height: width * 0.5 * 1.48,
-    overflow: "hidden",
-    alignItems: "center",
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
     borderRadius: 4,
   },
   itemImage: {
     width: width * 0.5,
     height: width * 0.5 * 1.48,
     resizeMode: "cover",
+    borderRadius: 4,
   },
-  itemContainer: {
-    marginVertical: SPACING / 2,
-    width: "100%",
-    flexDirection: "row",
+  gradient: {
+    zIndex: -1,
+    elevation: -1,
+    borderRadius: 4,
   },
-  itemButtonWrapper: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  itemButton: {
-    width: "60%",
-    marginVertical: SPACING / 2,
-    paddingVertical: SPACING / 2,
-    borderRadius: 12,
-    borderWidth: SPACING / 6,
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  itemButtonText: {
-    fontSize: 20,
-    fontFamily: "RalewayBlack",
-    color: "#fff",
-  },
+
   itemTextWrapper: {
     width: width - SPACING * 2,
   },

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
@@ -6,32 +6,13 @@ import { Movie } from "../../redux/types";
 
 const { width } = Dimensions.get("window");
 const SPACING = 30;
-const fetchURL = "http://www.omdbapi.com/?t=",
-  apiTail = "&apikey=3c88863d";
 
 interface Props {
-  title: string;
+  movie: Movie;
   navigation: any;
 }
 
-const CategoryItem: FC<Props> = ({ title, navigation }) => {
-  const [movie, setMovie] = useState<Movie>({});
-
-  useEffect(() => {
-    fetch(fetchURL + title + apiTail, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setMovie(res);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
+const CategoryItem: FC<Props> = ({ movie, navigation }) => {
   return (
     <TouchableOpacity
       onPress={() =>

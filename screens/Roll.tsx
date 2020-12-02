@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import RolledMovie from "../components/roll/rolledmovie";
 import Rolling from "../components/roll/rolling";
 import { Easing } from "react-native-reanimated";
-import { Movie } from "../redux/types";
+import { Initial, Movie, Movies } from "../redux/types";
 
 const fetchURL = "http://www.omdbapi.com/?t=",
   apiTail = "&apikey=3c88863d";
@@ -18,19 +18,24 @@ interface Props {
 
 const Roll: FC<Props> = ({ navigation }) => {
   const [isFetched, setIsFetched] = useState<boolean>(false);
-  const movies = useSelector((state) => state.movies);
+  const movies: Movies = useSelector((state: Initial) => state.movies);
   const [movie, setMovie] = useState<Movie>({});
   const svganim = new Animated.Value(0);
 
+  console.log(isFetched);
+
   const roll = () => {
-    if (movies.current.length === 0) {
-      let fitlered = full.filter((item) => !movies.watched.includes(item));
-      let mov = fitlered[Math.floor(Math.random() * fitlered.length)];
+    if (movies.current) {
+      let x: any = [];
+      movies.watched.map((item) => x.push(item.Title));
+      let filtered: String[] = full.filter((item) => !x.includes(item));
+
+      let mov = filtered[Math.floor(Math.random() * filtered.length)];
 
       Animated.timing(svganim, {
         toValue: 1,
         duration: 444,
-        easing: Easing.linear,
+        //easing: Easing.linear,
         useNativeDriver: true,
       }).start(() => {
         fetch(fetchURL + mov + apiTail, {
@@ -53,7 +58,7 @@ const Roll: FC<Props> = ({ navigation }) => {
     if (movie) {
       setIsFetched(true);
     }
-  }, [movie]);
+  }, [movie.Title !== undefined]);
 
   if (!isFetched) {
     return <Rolling roll={roll} svganim={svganim} />;

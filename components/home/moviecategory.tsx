@@ -8,7 +8,7 @@ const SPACING = 30;
 
 interface Props {
   title: string;
-  movies: string[];
+  movies: Movie[];
   navigation: any;
 }
 
@@ -31,7 +31,7 @@ const MovieCategory: FC<Props> = ({ title, movies, navigation }) => {
         contentContainerStyle={styles.contentContainer}
         renderItem={({ item, index }) => {
           return (
-            <CategoryItem title={item} key={index} navigation={navigation} />
+            <CategoryItem movie={item} key={index} navigation={navigation} />
           );
         }}
       />

@@ -31,22 +31,22 @@ const BUTTONS = [
 ];
 
 interface Props {
-  title: String;
+  current: Movie;
   navigation: any;
 }
 
-const CurrentMovie: FC<Props> = ({ title, navigation }) => {
+const CurrentMovie: FC<Props> = ({ current, navigation }) => {
   const dispatch = useDispatch();
   const [movie, setMovie] = useState<Movie>();
 
   const buttonHandler = (key: string) => {
-    dispatch(actionCreators.addMovie(movie.Title, key));
-    dispatch(actionCreators.removeMovie(movie.Title, "current"));
-    dispatch(actionCreators.setIsRolled(false));
+    // dispatch(actionCreators.addMovie(current, key));
+    // dispatch(actionCreators.removeMovie(current, "current"));
+    // dispatch(actionCreators.editUserByKey(false,"isRolled"));
   };
 
   useEffect(() => {
-    fetch(fetchURL + title + apiTail, {
+    fetch(fetchURL + current + apiTail, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -63,7 +63,6 @@ const CurrentMovie: FC<Props> = ({ title, navigation }) => {
   if (movie) {
     return (
       <View style={styles.container}>
-        <Text>{title}</Text>
         <Text style={styles.header}>
           <Text style={styles.highlighted}>Current:</Text> {movie.Title}
         </Text>

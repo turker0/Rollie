@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Roll from "./roll";
 import CurrentMovie from "./currentmovie";
 import MovieCategory from "./moviecategory";
+import { Initial, Movies } from "../../redux/types";
 
 const SPACING = 30;
 
@@ -12,8 +13,12 @@ interface Props {
 }
 
 const Content: FC<Props> = ({ navigation }) => {
-  const isRolled = useSelector((state) => state.isRolled);
-  const movies = useSelector((state) => state.movies);
+  const isRolled: boolean = useSelector(
+    (state: Initial) => state.user.isRolled
+  );
+  const movies: Movies = useSelector((state: Initial) => state.movies);
+
+  console.log(movies);
 
   const roll = () => {
     navigation.navigate("Roll");
@@ -26,7 +31,7 @@ const Content: FC<Props> = ({ navigation }) => {
       {!isRolled ? (
         <Roll roll={roll} />
       ) : (
-        <CurrentMovie title={movies.current} navigation={navigation} />
+        <CurrentMovie current={movies.current} navigation={navigation} />
       )}
       <MovieCategory
         title="Your last movies"
@@ -40,7 +45,6 @@ const Content: FC<Props> = ({ navigation }) => {
         movies={movies.later.reverse()}
         navigation={navigation}
       />
-
       <MovieCategory
         title="Movies you have declined"
         movies={movies.declined.reverse()}

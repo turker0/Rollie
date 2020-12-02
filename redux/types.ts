@@ -9,29 +9,28 @@ interface User {
   avatar?: Svg;
 }
 
+interface Movie {
+  Title?: string;
+  Poster?: string;
+  imdbRating?: string;
+  Year?: string;
+  Genre?: string;
+  Runtime?: string;
+  Plot?: string;
+  Director?: string;
+  Writer?: string;
+  Actors?: string;
+  Language?: string;
+  Country?: string;
+  Awards?: string;
+  Production?: string;
+}
 interface Movies {
   [key: string]: any; //bak
   watched: Movie[];
   later: Movie[];
   declined: Movie[];
   current: {};
-}
-
-interface Movie {
-  Title: string;
-  Poster: string;
-  imdbRating: string;
-  Year: string;
-  Genre: string;
-  Plot: string;
-  Runtime: string;
-  Director: string;
-  Writer: string;
-  Actors: string;
-  Language: string;
-  Country: string;
-  Awards: string;
-  Production: string;
 }
 
 interface Initial {

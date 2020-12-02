@@ -6,13 +6,14 @@ import { useSelector } from "react-redux";
 import AvatarsList from "../components/profile/avatarslist";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { Initial, Movies, User } from "../redux/types";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
 
 const Profile = ({}) => {
-  const user = useSelector((state) => state.user);
-  const movies = useSelector((state) => state.movies);
+  const user: User = useSelector((state: Initial) => state.user);
+  const movies: Movies = useSelector((state: Initial) => state.movies);
   const [avatar, setAvatar] = useState<boolean>(false);
 
   const toggleAvatar = () => {
@@ -48,7 +49,7 @@ const Profile = ({}) => {
           )}
         </TouchableOpacity>
         {avatar && <AvatarsList toggleAvatar={toggleAvatar} />}
-        <Text style={styles.dummy}>{user.detail}</Text>
+        <Text style={styles.dummy}>{user.mail}</Text>
         <ProfileDropdown
           title={"Watched " + movies.watched.length}
           list={movies.watched}

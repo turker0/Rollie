@@ -23,6 +23,7 @@ const initialState: Initial = {
   },
   movies: {
     watched: [],
+    //notWatched: [],
     later: [],
     declined: [],
     current: {},
@@ -51,7 +52,7 @@ const addMovie = (state: Initial, action: addMovieAction) => {
     ...state,
     movies: {
       ...state.movies,
-      [action.key]: action.payload,
+      [action.key]: [...state.movies[action.key], action.payload],
     },
   };
 };
