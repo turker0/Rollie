@@ -51,11 +51,11 @@ const Profile = ({}) => {
         {avatar && <AvatarsList toggleAvatar={toggleAvatar} />}
         <Text style={styles.dummy}>{user.mail}</Text>
         <ProfileDropdown
-          title={"Watched " + movies.watched.length}
+          title={"Watched (" + movies.watched.length + ")"}
           list={movies.watched}
         />
         <ProfileDropdown
-          title={"Later " + movies.later.length}
+          title={"Later (" + movies.later.length + ")"}
           list={movies.later}
         />
         <Text style={styles.title}>Your Movies</Text>

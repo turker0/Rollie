@@ -1,6 +1,7 @@
 import React, { FC } from "react";
-import { Dimensions, StyleSheet, Text } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Feather } from "@expo/vector-icons";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
@@ -9,16 +10,21 @@ interface Props {
   handler: (id: string) => void;
   id: string;
   text: string;
-  margin: number;
+  border: number;
 }
 
-const Buttons: FC<Props> = ({ handler, id, text, margin }) => {
+const Buttons: FC<Props> = ({ handler, id, text, border }) => {
   return (
-    <TouchableOpacity
-      onPress={() => handler(id)}
-      style={[styles.button, { marginHorizontal: margin }]}
-    >
-      <Text style={styles.buttonTet}>{text}</Text>
+    <TouchableOpacity onPress={() => handler(id)} style={styles.button}>
+      <Feather
+        name={text}
+        size={24}
+        color="#665DF5"
+        style={[
+          styles.border,
+          border === 0 ? { borderLeftWidth: 0 } : { borderLeftWidth: 2 },
+        ]}
+      />
     </TouchableOpacity>
   );
 };
@@ -27,18 +33,14 @@ export default Buttons;
 const styles = StyleSheet.create({
   button: {
     height: SPACING * 1.2,
+    width: width * 0.25,
     flexDirection: "row",
     alignItems: "center",
-    alignSelf: "flex-start",
-    paddingHorizontal: SPACING / 2,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: "#665DF5",
-    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center",
   },
-  buttonTet: {
-    fontSize: 18,
-    fontFamily: "RalewayBold",
-    color: "#665DF5",
+  border: {
+    flex: 1,
+    textAlign: "center",
+    borderColor: "#665DF5",
   },
 });

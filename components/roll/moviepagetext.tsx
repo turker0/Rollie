@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 const SPACING = 30;
 
 interface Props {
-  text: string;
+  text: string | undefined;
   title: string;
 }
 

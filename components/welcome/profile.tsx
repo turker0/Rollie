@@ -4,6 +4,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Page1 from "./page1";
 import Page2 from "./page2";
+import Page3 from "./page3";
 
 const SPACING = 30;
 const BGS = ["#665DF5", "#2e2e2e"];
@@ -18,56 +19,36 @@ const Profile: FC<Props> = ({ toggleIsProfileVisible }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const onViewableItemsChanged = (viewableItems: any) => {
-    if (viewableItems.viewableItems[0].index === 1) {
+    if (viewableItems.viewableItems[0].index === Pages.length - 1) {
       input1.current.focus();
     }
   };
 
+  const Pages: JSX.Element[] = [
+    <Page1 />,
+    <Page2 />,
+    <Page3 toggleIsProfileVisible={toggleIsProfileVisible} input1={input1} />,
+  ];
+
   return (
-    <KeyboardAwareScrollView style={{ width, height }}>
-      <View style={{ flex: 1 }}>
-        <Animated.FlatList
-          data={BGS}
-          keyExtractor={(_: string, index: number) => `Page` + index}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          pagingEnabled
-          onViewableItemsChanged={onViewableItemsChanged}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: false }
-          )}
-          renderItem={({ _, index }) => {
-            const inputRange = [
-              ((index - 1) * width) / 2,
-              index * width,
-              ((index + 1) * width) / 2,
-            ];
-            const opacity = scrollX.interpolate({
-              inputRange,
-              outputRange: [0.2, 1, 0.2],
-            });
-            const scale = scrollX.interpolate({
-              inputRange,
-              outputRange: [0.95, 1, 0.95],
-            });
-            return (
-              <Animated.View style={{ opacity, transform: [{ scale }] }}>
-                {index === 0 ? (
-                  <Page1 />
-                ) : (
-                  <Page2
-                    toggleIsProfileVisible={toggleIsProfileVisible}
-                    input1={input1}
-                  />
-                )}
-              </Animated.View>
-            );
-          }}
-        />
-      </View>
+    <KeyboardAwareScrollView style={{ flex: 1 }}>
+      <Animated.FlatList
+        data={Pages}
+        keyExtractor={(_, index: number) => `Page` + index}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        pagingEnabled
+        style={{ height: height * 0.8 - SPACING }}
+        onViewableItemsChanged={onViewableItemsChanged}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: false }
+        )}
+        renderItem={({ item }) => item}
+      />
+
       <View style={styles.indicatorContainer}>
-        {BGS.map((_, index) => {
+        {Pages.map((_, index) => {
           const inputRange = [
             (index - 1) * width,
             index * width,
@@ -103,16 +84,15 @@ const styles = StyleSheet.create({
   indicatorContainer: {
     position: "absolute",
     flexDirection: "row",
-    bottom: 0,
+    bottom: SPACING,
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: SPACING / 2,
   },
   indicator: {
     width: SPACING / 2,
     height: SPACING / 2,
     borderRadius: SPACING / 2,
-    marginHorizontal: SPACING / 3,
+    marginHorizontal: SPACING / 4,
   },
 });

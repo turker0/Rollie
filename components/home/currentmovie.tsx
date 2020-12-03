@@ -37,82 +37,62 @@ interface Props {
 
 const CurrentMovie: FC<Props> = ({ current, navigation }) => {
   const dispatch = useDispatch();
-  const [movie, setMovie] = useState<Movie>();
 
   const buttonHandler = (key: string) => {
-    // dispatch(actionCreators.addMovie(current, key));
-    // dispatch(actionCreators.removeMovie(current, "current"));
-    // dispatch(actionCreators.editUserByKey(false,"isRolled"));
+    dispatch(actionCreators.addMovie(current, key));
+    dispatch(actionCreators.setCurrentMovie({}));
+    dispatch(actionCreators.editUserByKey(false, "isRolled"));
   };
 
-  useEffect(() => {
-    fetch(fetchURL + current + apiTail, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setMovie(res);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  if (movie) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.header}>
-          <Text style={styles.highlighted}>Current:</Text> {movie.Title}
-        </Text>
-        <View style={styles.contentContainer}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("MoviePage", {
-                movie: movie,
-              })
-            }
-            style={{
-              padding: 2,
-            }}
-          >
-            <LinearGradient
-              colors={["#e76f51", "#2a9d8f"]}
-              style={styles.gradient}
-            />
-            <Image style={styles.image} source={{ uri: movie.Poster }} />
-          </TouchableOpacity>
-          <View style={styles.detailsContainer}>
-            <View>
-              <Text style={styles.text}>
-                <FontAwesome name="star" size={16} color="#fcf300" />
-                {"  "}
-                {movie.imdbRating} {"  "}
-                {movie.Year} {"  "}
-                {movie.Runtime}
-              </Text>
-              <Text style={styles.text}>{movie.Genre}</Text>
-            </View>
-            <View style={{ flex: 1, justifyContent: "space-evenly" }}>
-              {BUTTONS.map((item) => {
-                return (
-                  <Buttons
-                    key={item.id}
-                    id={item.id}
-                    text={item.text}
-                    handler={buttonHandler}
-                  />
-                );
-              })}
-            </View>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>
+        <Text style={styles.highlighted}>Current:</Text> {current.Title}
+      </Text>
+      <View style={styles.contentContainer}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("MoviePage", {
+              movie: current,
+            })
+          }
+          style={{
+            padding: 2,
+          }}
+        >
+          <LinearGradient
+            colors={["#e76f51", "#2a9d8f"]}
+            style={styles.gradient}
+          />
+          <Image style={styles.image} source={{ uri: current.Poster }} />
+        </TouchableOpacity>
+        <View style={styles.detailsContainer}>
+          <View>
+            <Text style={styles.text}>
+              <FontAwesome name="star" size={16} color="#fcf300" />
+              {"  "}
+              {current.imdbRating} {"  "}
+              {current.Year} {"  "}
+              {current.Runtime}
+            </Text>
+            <Text style={styles.text}>{current.Genre}</Text>
+          </View>
+          <View style={{ flex: 1, justifyContent: "space-evenly" }}>
+            {BUTTONS.map((item) => {
+              return (
+                <Buttons
+                  key={item.id}
+                  id={item.id}
+                  text={item.text}
+                  handler={buttonHandler}
+                />
+              );
+            })}
           </View>
         </View>
       </View>
-    );
-  } else {
-    return <AppLoading />;
-  }
+    </View>
+  );
 };
 
 export default CurrentMovie;

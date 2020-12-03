@@ -3,6 +3,7 @@ import {
   EDITUSERBYKEY,
   ADDMOVIE,
   REMOVEMOVIE,
+  SETCURRENTMOVIE,
   Movie,
   Initial,
   ActionTypes,
@@ -10,6 +11,7 @@ import {
   editUserByKeyAction,
   addMovieAction,
   removeMovieAction,
+  setCurrentMovieAction,
 } from "./types";
 
 const initialState: Initial = {
@@ -71,6 +73,16 @@ const removeMovie = (state: Initial, action: removeMovieAction) => {
   };
 };
 
+const setCurrentMovie = (state: Initial, action: setCurrentMovieAction) => {
+  return {
+    ...state,
+    movies: {
+      ...state.movies,
+      current: action.payload,
+    },
+  };
+};
+
 const reducer = (state = initialState, action: ActionTypes): Initial => {
   switch (action.type) {
     case REGISTERUSER:
@@ -81,7 +93,8 @@ const reducer = (state = initialState, action: ActionTypes): Initial => {
       return addMovie(state, action);
     case REMOVEMOVIE:
       return removeMovie(state, action);
-
+    case SETCURRENTMOVIE:
+      return setCurrentMovie(state, action);
     default:
       return state;
   }

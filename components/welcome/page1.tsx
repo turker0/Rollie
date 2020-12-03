@@ -14,9 +14,6 @@ const Page1 = () => {
         <Text style={styles.highlighted}>1000 iMDB 7+</Text> movies.
       </Text>
       <CouchSVG />
-      <Text style={styles.swipeText}>
-        Swipe left and <Text style={styles.highlighted}>create a profile</Text>.
-      </Text>
     </View>
   );
 };
@@ -37,10 +34,5 @@ const styles = StyleSheet.create({
   highlighted: {
     color: "#665DF5",
     fontFamily: "RalewayBold",
-  },
-  swipeText: {
-    fontSize: 18,
-    fontFamily: "RalewaySemiBold",
-    color: "#fff",
   },
 });

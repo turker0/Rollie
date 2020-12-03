@@ -14,20 +14,20 @@ const SPACING = 30;
 
 const BUTTONS = [
   {
-    text: "Add",
+    text: "plus",
     id: "current",
   },
   {
-    text: "Next",
+    text: "x",
     id: "declined",
   },
   {
-    text: "Later",
-    id: "later",
+    text: "check",
+    id: "watched",
   },
   {
-    text: "Watched",
-    id: "watched",
+    text: "clock",
+    id: "later",
   },
 ];
 
@@ -42,15 +42,19 @@ const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll, navigation }) => {
   const dispatch = useDispatch();
 
   const handler = (key: string) => {
-    dispatch(actionCreators.addMovie(movie.Title, key));
     if (key === "current") {
-      dispatch(actionCreators.setIsRolled(true));
+      dispatch(actionCreators.setCurrentMovie(movie));
+      dispatch(actionCreators.editUserByKey(true, "isRolled"));
       setIsFetched(false);
       navigation.navigate("Home");
     } else {
+      dispatch(actionCreators.addMovie(movie, key));
       roll();
     }
   };
+
+  console.log(movie);
+
   return (
     <View style={{ flex: 1, backgroundColor: "#000" }}>
       <Image
@@ -62,29 +66,6 @@ const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll, navigation }) => {
       <View style={styles.blacked} />
       <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <View style={styles.container}>
-          <View style={styles.buttonContainer}>
-            <FlatList
-              data={BUTTONS}
-              horizontal
-              bounces={false}
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item, index }) => {
-                return (
-                  <Buttons
-                    text={item.text}
-                    id={item.id}
-                    handler={handler}
-                    margin={
-                      index % 2 === 0 && index !== BUTTONS.length - 1
-                        ? SPACING / 3
-                        : 0
-                    }
-                  />
-                );
-              }}
-            />
-          </View>
           <Text style={styles.title}>{movie.Title}</Text>
           <View style={styles.rowLine}>
             <FontAwesome name="star" size={24} color="#fcf300" />
@@ -104,6 +85,25 @@ const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll, navigation }) => {
           <MoviePageText text={movie.Production} title="Production" />
         </View>
       </ScrollView>
+      <View style={styles.buttonContainer}>
+        <FlatList
+          data={BUTTONS}
+          horizontal
+          bounces={false}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => {
+            return (
+              <Buttons
+                text={item.text}
+                id={item.id}
+                handler={handler}
+                border={index}
+              />
+            );
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -113,7 +113,9 @@ export default RolledMovie;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: SPACING,
+    paddingHorizontal: SPACING,
+    paddingTop: SPACING,
+    paddingBottom: SPACING * 2,
     elevation: 2,
     zIndex: 2,
   },
@@ -165,8 +167,13 @@ const styles = StyleSheet.create({
     borderColor: "#fafafa",
   },
   buttonContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
     width: "100%",
     alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    paddingVertical: SPACING / 3,
   },
 
   hightlighted: {

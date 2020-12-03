@@ -33,20 +33,18 @@ const Top10Selector = () => {
   }, [listIndex]);
 
   const onHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
-    //check end
     if (listIndex === top11.length - 1) {
       dispatch(actionCreators.editUserByKey(false, "isNew"));
-    }
-
-    if (event.nativeEvent.state === State.END) {
-      if (event.nativeEvent.translationX < -(width * 0.125)) {
-        nextAnimation();
-      } else if (event.nativeEvent.translationX > width * 0.125) {
-        //add movie to watchedS
-        dispatch(actionCreators.addMovie(top11[listIndex], "watched"));
-        nextAnimation();
-      } else {
-        resetAnimation();
+    } else {
+      if (event.nativeEvent.state === State.END) {
+        if (event.nativeEvent.translationX < -(width * 0.125)) {
+          nextAnimation();
+        } else if (event.nativeEvent.translationX > width * 0.125) {
+          dispatch(actionCreators.addMovie(top11[listIndex], "watched"));
+          nextAnimation();
+        } else {
+          resetAnimation();
+        }
       }
     }
   };
@@ -70,19 +68,53 @@ const Top10Selector = () => {
 
   const opacity = translateX.interpolate({
     inputRange: [-width * 0.25, 0, width * 0.25],
-    outputRange: [0.25, 1, 0.25],
+    outputRange: [0.6, 1, 0.6],
+  });
+
+  const scale = translateX.interpolate({
+    inputRange: [-width * 0.25, 0, width * 0.25],
+    outputRange: [0.92, 1, 0.92],
+  });
+
+  const opacityNo = translateX.interpolate({
+    inputRange: [-width * 0.25, 0, width * 0.25],
+    outputRange: [0.2, 1, 1],
+  });
+
+  const opacityYes = translateX.interpolate({
+    inputRange: [-width * 0.25, 0, width * 0.25],
+    outputRange: [1, 1, 0.2],
   });
 
   return (
     <View style={styles.container}>
       <Text style={styles.description}>Let's get started</Text>
+      <Text style={styles.itemTitle} numberOfLines={2}>
+        <Text style={styles.highlighted}>{listIndex + 1}.</Text>
+        {" " + top11[listIndex].Title}
+      </Text>
       <View style={styles.cardsContainer}>
         <View style={[styles.cardsContainer]}>
+          <Animated.Text
+            style={[
+              styles.direction,
+              { left: 0, color: "#e76f51", opacity: opacityNo },
+            ]}
+          >
+            No
+          </Animated.Text>
+          <Animated.Text
+            style={[
+              styles.direction,
+              { right: 0, color: "#2a9d8f", opacity: opacityYes },
+            ]}
+          >
+            Yes
+          </Animated.Text>
           {top10.map((item, index) => {
             const elevation = top10.length - index,
-              zIndex = elevation;
-            const scale = 1 - index / 90;
-            const top = index * 5;
+              zIndex = elevation,
+              top = index * 5;
             return (
               <PanGestureHandler
                 onGestureEvent={Animated.event(
@@ -120,7 +152,7 @@ const Top10Selector = () => {
                             },
                           ],
                         }
-                      : { transform: [{ scale }] },
+                      : { transform: [{ scale: 1 - index / 90 }] },
                   ]}
                 >
                   <LinearGradient
@@ -155,14 +187,14 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   cardsContainer: {
-    width: width * 0.5 + 2,
-    height: width * 0.5 * 1.48 + 2,
-    alignSelf: "center",
+    // width: width * 0.5 + 2,
+    // height: width * 0.5 * 1.48 + 2,
+    // alignSelf: "center",
   },
   cardWrapper: {
     position: "absolute",
     top: 0,
-    left: 0,
+    alignSelf: "center",
     padding: 1,
     shadowColor: "#000",
     shadowOffset: {
@@ -185,21 +217,23 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
 
-  itemTextWrapper: {
-    width: width - SPACING * 2,
+  direction: {
+    position: "absolute",
+    top: 0,
+    height: width * 0.5 * 1.48,
+    textAlignVertical: "center",
+    fontSize: 20,
+    fontFamily: "RalewayBold",
+    color: "#e5e5e5",
+    letterSpacing: 1,
   },
   itemTitle: {
     fontSize: 20,
     fontFamily: "RalewayBold",
     color: "#e5e5e5",
     letterSpacing: 1,
-    marginBottom: SPACING / 6,
-  },
-  itemDetails: {
-    fontSize: 16,
-    fontFamily: "RalewayMedium",
-    color: "#CDCBCB",
-    letterSpacing: 1,
+    marginTop: SPACING / 2,
+    marginBottom: SPACING / 1.5,
   },
   highlighted: {
     color: "#665DF5",

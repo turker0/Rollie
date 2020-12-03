@@ -6,7 +6,7 @@ interface User {
   password: string;
   isNew: boolean;
   isRolled: boolean;
-  avatar?: Svg;
+  avatar?: JSX.Element;
 }
 
 interface Movie {
@@ -26,7 +26,7 @@ interface Movie {
   Production?: string;
 }
 interface Movies {
-  [key: string]: any; //bak
+  [key: string]: any; //
   watched: Movie[];
   later: Movie[];
   declined: Movie[];
@@ -42,6 +42,7 @@ const REGISTERUSER = "REGISTERUSER";
 const EDITUSERBYKEY = "EDITUSERBYKEY";
 const ADDMOVIE = "ADDMOVIE";
 const REMOVEMOVIE = "REMOVEMOVIE";
+const SETCURRENTMOVIE = "SETCURRENTMOVIE";
 
 interface registerUserAction {
   type: typeof REGISTERUSER;
@@ -50,7 +51,7 @@ interface registerUserAction {
 
 interface editUserByKeyAction {
   type: typeof EDITUSERBYKEY;
-  payload: string | boolean | Svg;
+  payload: string | boolean | JSX.Element;
   key: string;
 }
 
@@ -66,11 +67,17 @@ interface removeMovieAction {
   key: string;
 }
 
+interface setCurrentMovieAction {
+  type: typeof SETCURRENTMOVIE;
+  payload: Movie;
+}
+
 export {
   REGISTERUSER,
   EDITUSERBYKEY,
   ADDMOVIE,
   REMOVEMOVIE,
+  SETCURRENTMOVIE,
   User,
   Movie,
   Movies,
@@ -79,10 +86,12 @@ export {
   editUserByKeyAction,
   addMovieAction,
   removeMovieAction,
+  setCurrentMovieAction,
 };
 
 export type ActionTypes =
   | registerUserAction
   | editUserByKeyAction
   | addMovieAction
-  | removeMovieAction;
+  | removeMovieAction
+  | setCurrentMovieAction;

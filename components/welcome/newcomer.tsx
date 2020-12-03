@@ -1,13 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
-import {
-  StatusBar,
-  Text,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Dimensions,
-  View,
-} from "react-native";
+import { StatusBar, Text, StyleSheet, Dimensions, View } from "react-native";
 import Profile from "./profile";
 import Top10Selector from "./top10selector";
 
@@ -18,7 +11,7 @@ const Newcomer = () => {
   const [isProfileVisible, setIsProfileVisible] = useState<boolean>(false);
   const toggleIsProfileVisible = () => setIsProfileVisible(!isProfileVisible);
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <View style={styles.container}>
       <LinearGradient
         colors={["#000", "#13112D"]}
         style={{
@@ -39,7 +32,7 @@ const Newcomer = () => {
       ) : (
         <Top10Selector />
       )}
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
@@ -50,8 +43,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    paddingTop: SPACING * 2,
+    height: "20%",
     paddingLeft: SPACING,
+    textAlignVertical: "bottom",
     fontSize: 32,
     color: "#fff",
     fontFamily: "RalewayBlack",

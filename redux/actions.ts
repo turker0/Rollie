@@ -1,9 +1,9 @@
-import Svg from "react-native-svg";
 import {
   REGISTERUSER,
   EDITUSERBYKEY,
   ADDMOVIE,
   REMOVEMOVIE,
+  SETCURRENTMOVIE,
   Movie,
   ActionTypes,
   User,
@@ -17,7 +17,7 @@ const registerUser = (user: User): ActionTypes => {
 };
 
 const editUserByKey = (
-  load: string | boolean | Svg,
+  load: string | boolean | JSX.Element,
   key: string
 ): ActionTypes => {
   return {
@@ -42,11 +42,19 @@ const removeMovie = (movie: Movie, key: string): ActionTypes => {
   };
 };
 
+const setCurrentMovie = (movie: Movie): ActionTypes => {
+  return {
+    type: SETCURRENTMOVIE,
+    payload: movie,
+  };
+};
+
 const actionCreators = {
   registerUser,
   addMovie,
   removeMovie,
   editUserByKey,
+  setCurrentMovie,
 };
 
 export { actionCreators };

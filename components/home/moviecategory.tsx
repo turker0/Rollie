@@ -27,7 +27,7 @@ const MovieCategory: FC<Props> = ({ title, movies, navigation }) => {
         data={movies}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => String(item)}
+        keyExtractor={(item) => String(item.Title)}
         contentContainerStyle={styles.contentContainer}
         renderItem={({ item, index }) => {
           return (

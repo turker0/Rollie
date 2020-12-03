@@ -18,8 +18,6 @@ const Content: FC<Props> = ({ navigation }) => {
   );
   const movies: Movies = useSelector((state: Initial) => state.movies);
 
-  console.log(movies);
-
   const roll = () => {
     navigation.navigate("Roll");
   };
