@@ -1,0 +1,64 @@
+import React, { useEffect, useState } from "react";
+import { Animated, Easing } from "react-native";
+
+import full from "../database/full.json";
+import { useSelector } from "react-redux";
+import RolledMovie from "../components/roll/rolledmovie";
+import Rolling from "../components/roll/rolling";
+import { Initial, Movie, Movies } from "../redux/types";
+
+const fetchURL = "http://www.omdbapi.com/?t=",
+  apiTail = "&apikey=3c88863d";
+
+const Roll = ({}) => {
+  const [isFetched, setIsFetched] = useState<boolean>(false);
+  const movies: Movies = useSelector((state: Initial) => state.movies);
+  const [movie, setMovie] = useState<Movie>({});
+  const svganim = new Animated.Value(0);
+
+  const roll = () => {
+    if (movies.current) {
+      let x: any = [];
+      movies.watched.map((item) => x.push(item.Title));
+      let filtered: String[] = full.filter((item) => !x.includes(item));
+
+      let mov = filtered[Math.floor(Math.random() * filtered.length)];
+
+      Animated.timing(svganim, {
+        toValue: 4,
+        duration: 2000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }).start(() => {
+        fetch(fetchURL + mov + apiTail, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            setMovie(res);
+          })
+          .catch((err) => console.log(err));
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (movie.Title !== undefined) {
+      setIsFetched(true);
+    }
+  }, [movie.Title]);
+
+  if (!isFetched) {
+    return <Rolling roll={roll} svganim={svganim} />;
+  } else {
+    return (
+      <RolledMovie setIsFetched={setIsFetched} movie={movie} roll={roll} />
+    );
+  }
+};
+
+export default Roll;
