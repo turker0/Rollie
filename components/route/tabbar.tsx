@@ -1,8 +1,10 @@
-import { LinearGradient } from "expo-linear-gradient";
 import React, { FC } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import GradientHorizontal from "../shared/gradienthorizontal";
+import colors from "../../style/colors";
+import fonts from "../../style/fonts";
 
 const totalWidth = Dimensions.get("window").width;
 const ICONS = ["home-circle", "movie-roll", "google-analytics"];
@@ -16,12 +18,7 @@ interface Props {
 const Tabbar: FC<Props> = ({ state, descriptors, navigation }) => {
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={["#e76f51", "#2a9d8f"]}
-        start={{ x: 0, y: 1 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.gradient}
-      />
+      <GradientHorizontal />
       <View style={styles.routesWrapper}>
         {state.routes.map((route: any, index: any) => {
           const { options } = descriptors[route.key];
@@ -71,12 +68,12 @@ const Tabbar: FC<Props> = ({ state, descriptors, navigation }) => {
               <MaterialCommunityIcons
                 name={ICONS[index]}
                 size={18}
-                color={isFocused ? "#665DF5" : "#707070"}
+                color={isFocused ? colors.purple : colors.gray}
               />
               <Text
                 style={[
                   styles.text,
-                  isFocused ? { color: "#665DF5" } : { color: "#707070" },
+                  isFocused ? { color: colors.purple } : { color: colors.gray },
                 ]}
               >
                 {label}
@@ -104,24 +101,12 @@ const styles = StyleSheet.create({
     elevation: 7,
     bottom: 0,
   },
-  gradient: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: 60,
-    zIndex: -1,
-    elevation: -1,
-  },
   routesWrapper: {
     flex: 1,
-    borderTopRightRadius: 4,
-    borderTopLeftRadius: 4,
     flexDirection: "row",
-    backgroundColor: "rgba(0,0,0,0.9)",
+    backgroundColor: colors.dark,
     marginTop: 1,
-    marginLeft: 1,
-    marginRight: 1,
+
     alignItems: "center",
     justifyContent: "space-evenly",
   },
@@ -133,7 +118,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "RalewayBold",
-    fontSize: 14,
-    color: "#707070",
+    fontSize: fonts.text14,
   },
 });

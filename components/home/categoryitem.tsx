@@ -3,16 +3,19 @@ import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
 import { Movie } from "../../redux/types";
+import { useNavigation } from "@react-navigation/native";
+import colors from "../../style/colors";
+import fonts from "../../style/fonts";
 
 const { width } = Dimensions.get("window");
 const SPACING = 30;
 
 interface Props {
   movie: Movie;
-  navigation: any;
 }
 
-const CategoryItem: FC<Props> = ({ movie, navigation }) => {
+const CategoryItem: FC<Props> = ({ movie }) => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       onPress={() =>
@@ -35,7 +38,7 @@ const CategoryItem: FC<Props> = ({ movie, navigation }) => {
           {movie.Title}
         </Text>
         <View style={styles.ratingWrapper}>
-          <FontAwesome name="star" size={14} color="#fcf300" />
+          <FontAwesome name="star" size={14} color={colors.yellow} />
           <Text style={[styles.movieText1, { marginLeft: 5 }]}>
             {movie.imdbRating} {"  "} {movie.Year}
           </Text>
@@ -54,28 +57,27 @@ const styles = StyleSheet.create({
   itemContainer: {
     width: width * 0.35 + 2,
     height: width * 0.35 * 1.48 + 100 + 2,
-    backgroundColor: "#1F1F1F",
+    backgroundColor: colors.black,
     borderWidth: 1,
-    borderColor: "#2e2e2e",
+    borderColor: colors.black,
     marginRight: SPACING / 4,
-    borderRadius: 4,
-    elevation: 5,
-    zIndex: 5,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    zIndex: 7,
+    elevation: 7,
+    overflow: "hidden",
   },
   poster: {
     width: width * 0.35,
     height: width * 0.35 * 1.48,
     marginRight: SPACING,
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
-  },
-  placeholder: {
-    width: width * 0.35,
-    height: width * 0.35 * 1.48,
-    marginRight: SPACING,
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
-    backgroundColor: "#fff",
   },
   movieDetailContainer: {
     paddingVertical: SPACING / 6,
@@ -83,19 +85,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   movieTitle: {
-    fontSize: 14,
-    color: "#fff",
+    fontSize: fonts.text16,
+    color: colors.white,
     fontFamily: "RalewayMedium",
   },
   movieText1: {
-    fontSize: 12,
+    fontSize: fonts.text14,
     fontFamily: "RalewayRegular",
-    color: "#fafafa",
+    color: colors.purple,
   },
   movieText2: {
-    fontSize: 12,
+    fontSize: fonts.text12,
     fontFamily: "RalewayLight",
-    color: "#e5e5e5",
+    color: colors.gray,
   },
   ratingWrapper: {
     flexDirection: "row",

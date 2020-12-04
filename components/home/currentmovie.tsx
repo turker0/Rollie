@@ -1,42 +1,41 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actions";
-import { AppLoading } from "expo";
 import { FontAwesome } from "@expo/vector-icons";
 import Buttons from "./buttons";
-import { LinearGradient } from "expo-linear-gradient";
 import { Movie } from "../../redux/types";
+import { useNavigation } from "@react-navigation/native";
+import fonts from "../../style/fonts";
+import colors from "../../style/colors";
+import GradientColored from "../shared/gradientcolored";
 
 const { width } = Dimensions.get("window"),
   SPACING = 30;
-const fetchURL = "http://www.omdbapi.com/?t=",
-  apiTail = "&apikey=3c88863d";
 
 const BUTTONS = [
   {
-    text: "Watched",
+    text: "check",
     id: "watched",
   },
   {
-    text: "Drop",
+    text: "x",
     id: "declined",
   },
   {
-    text: "Later",
+    text: "clock",
     id: "later",
   },
 ];
 
 interface Props {
   current: Movie;
-  navigation: any;
 }
 
-const CurrentMovie: FC<Props> = ({ current, navigation }) => {
+const CurrentMovie: FC<Props> = ({ current }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const buttonHandler = (key: string) => {
     dispatch(actionCreators.addMovie(current, key));
@@ -46,9 +45,7 @@ const CurrentMovie: FC<Props> = ({ current, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>
-        <Text style={styles.highlighted}>Current:</Text> {current.Title}
-      </Text>
+      <Text style={styles.header}>{current.Title}</Text>
       <View style={styles.contentContainer}>
         <TouchableOpacity
           onPress={() =>
@@ -60,24 +57,27 @@ const CurrentMovie: FC<Props> = ({ current, navigation }) => {
             padding: 2,
           }}
         >
-          <LinearGradient
-            colors={["#e76f51", "#2a9d8f"]}
-            style={styles.gradient}
-          />
+          <GradientColored />
           <Image style={styles.image} source={{ uri: current.Poster }} />
         </TouchableOpacity>
         <View style={styles.detailsContainer}>
           <View>
-            <Text style={styles.text}>
-              <FontAwesome name="star" size={16} color="#fcf300" />
+            <Text style={styles.topDetails}>
+              <FontAwesome name="star" size={16} color={colors.yellow} />
               {"  "}
               {current.imdbRating} {"  "}
-              {current.Year} {"  "}
-              {current.Runtime}
+              {current.Year}
             </Text>
-            <Text style={styles.text}>{current.Genre}</Text>
+            <Text style={styles.details}>
+              {current.Runtime} {current.Genre}
+            </Text>
           </View>
-          <View style={{ flex: 1, justifyContent: "space-evenly" }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "space-evenly",
+            }}
+          >
             {BUTTONS.map((item) => {
               return (
                 <Buttons
@@ -103,20 +103,11 @@ const styles = StyleSheet.create({
     padding: SPACING,
   },
   header: {
-    fontSize: 20,
+    fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
-    color: "#fafafa",
+    color: colors.white,
+    letterSpacing: 0.5,
     marginBottom: SPACING / 3,
-  },
-  gradient: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    zIndex: -1,
-    elevation: -1,
-    borderRadius: 4,
   },
   image: {
     width: width * 0.4,
@@ -133,32 +124,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING * 0.5,
     height: width * 0.4 * 1.48,
   },
-  text: {
-    fontSize: 16,
+  topDetails: {
+    fontSize: fonts.text16,
     fontFamily: "RalewaySemiBold",
-    color: "#c2c2c2",
+    color: colors.white,
   },
-  button: {
-    width: "100%",
-    height: SPACING * 1.2,
-    alignSelf: "center",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingLeft: SPACING / 2,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: "#2e2e2e",
-    backgroundColor: "#e2e2e2",
-  },
-  buttonText: {
-    fontSize: 14,
-    fontFamily: "RalewayBold",
-    color: "#000",
-    marginLeft: SPACING / 4,
-    textTransform: "capitalize",
-  },
-  highlighted: {
-    color: "#665DF5",
-    fontSize: 19,
+  details: {
+    fontSize: fonts.text14,
+    marginVertical: 5,
+    fontFamily: "RalewaySemiBold",
+    color: colors.gray,
   },
 });

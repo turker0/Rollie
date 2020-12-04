@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: SPACING / 2,
+    marginTop: SPACING * 2,
   },
 });

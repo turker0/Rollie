@@ -1,13 +1,9 @@
-import React, { FC } from "react";
+import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import Content from "../components/home/content";
-import { LinearGradient } from "expo-linear-gradient";
+import GradientBG from "../components/shared/gradientbg";
 
-interface Props {
-  navigation: any;
-}
-
-const Home: FC<Props> = ({ navigation }) => {
+const Home = ({}) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -15,19 +11,8 @@ const Home: FC<Props> = ({ navigation }) => {
       contentContainerStyle={{ flexGrow: 1 }}
       style={{ flex: 1, backgroundColor: "#000" }}
     >
-      <LinearGradient
-        colors={["#000", "#13112D"]}
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 0,
-          zIndex: -1,
-          elevation: -1,
-          height: "100%",
-        }}
-      />
-      <Content navigation={navigation} />
+      <GradientBG />
+      <Content />
     </ScrollView>
   );
 };

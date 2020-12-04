@@ -6,7 +6,8 @@ import { Provider } from "react-redux";
 import reducer from "./redux/reducers";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Welcome from "./screens/Welcome";
+import HomeBottomTabs from "./routes/homebottomtabs";
+import WelcomeRoute from "./routes/welcomeroute";
 
 const store = createStore(reducer);
 const Stack = createStackNavigator();
@@ -32,7 +33,8 @@ export default function App() {
               headerShown: false,
             }}
           >
-            <Stack.Screen name="Welcome" component={Welcome} />
+            <Stack.Screen name="Welcome" component={WelcomeRoute} />
+            <Stack.Screen name="Home" component={HomeBottomTabs} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

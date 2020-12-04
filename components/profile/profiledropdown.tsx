@@ -4,6 +4,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { Movie } from "../../redux/types";
 import Animated, { Easing } from "react-native-reanimated";
+import colors from "../../style/colors";
+import fonts from "../../style/fonts";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
@@ -11,9 +13,10 @@ const { width } = Dimensions.get("window");
 interface Props {
   title: string;
   list: Movie[];
+  color: string;
 }
 
-const ProfileDropdown: FC<Props> = ({ title, list }) => {
+const ProfileDropdown: FC<Props> = ({ title, list, color }) => {
   const [hide, setHide] = useState(false);
   const anim = useRef(new Animated.Value(0)).current;
 
@@ -24,7 +27,7 @@ const ProfileDropdown: FC<Props> = ({ title, list }) => {
   const animateDropDown = () => {
     Animated.timing(anim, {
       toValue: hide !== false ? 0 : 1,
-      duration: 300,
+      duration: 500,
       easing: Easing.linear,
     }).start(() => setHide(!hide));
   };
@@ -36,7 +39,7 @@ const ProfileDropdown: FC<Props> = ({ title, list }) => {
 
   const widthAnim = anim.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, width - SPACING * 2],
+    outputRange: [0, width - width * 0.16],
   });
 
   return (
@@ -46,7 +49,7 @@ const ProfileDropdown: FC<Props> = ({ title, list }) => {
         <Ionicons
           name={hide ? "md-arrow-dropdown" : "ios-remove"}
           size={24}
-          color="#665DF5"
+          color={colors.purple}
         />
         <Animated.View style={[styles.border, { width: widthAnim }]} />
       </TouchableOpacity>
@@ -55,8 +58,10 @@ const ProfileDropdown: FC<Props> = ({ title, list }) => {
           {list.map((item, index) => {
             return (
               <View key={index}>
-                <Text style={styles.itemText} numberOfLines={1}>
-                  <Text style={{ color: "#cacaca" }}>{index + 1 + ". "}</Text>
+                <Text style={[styles.itemText, { color }]} numberOfLines={1}>
+                  <Text style={{ color: colors.white }}>
+                    {index + 1 + ". "}
+                  </Text>
                   {item.Title}
                 </Text>
               </View>
@@ -87,14 +92,13 @@ const styles = StyleSheet.create({
     padding: SPACING / 6,
   },
   title: {
-    fontSize: 18,
+    fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
-    color: "#ccc",
+    color: colors.white,
   },
   itemText: {
     fontSize: 16,
     fontFamily: "RalewayRegular",
-    color: "#e5e5e5",
     paddingVertical: SPACING / 6,
   },
   listWrapper: {
@@ -117,6 +121,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 4,
     bottom: 0,
-    backgroundColor: "#665DF5",
+    backgroundColor: colors.purple,
   },
 });

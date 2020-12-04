@@ -2,6 +2,8 @@ import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { Movie } from "../../redux/types";
+import colors from "../../style/colors";
+import fonts from "../../style/fonts";
 import CategoryItem from "./categoryitem";
 
 const SPACING = 30;
@@ -9,10 +11,9 @@ const SPACING = 30;
 interface Props {
   title: string;
   movies: Movie[];
-  navigation: any;
 }
 
-const MovieCategory: FC<Props> = ({ title, movies, navigation }) => {
+const MovieCategory: FC<Props> = ({ title, movies }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleWrapper}>
@@ -20,7 +21,7 @@ const MovieCategory: FC<Props> = ({ title, movies, navigation }) => {
           {title}
         </Text>
         <Text style={styles.count} numberOfLines={1}>
-          {movies.length}
+          ({movies.length})
         </Text>
       </View>
       <FlatList
@@ -30,9 +31,7 @@ const MovieCategory: FC<Props> = ({ title, movies, navigation }) => {
         keyExtractor={(item) => String(item.Title)}
         contentContainerStyle={styles.contentContainer}
         renderItem={({ item, index }) => {
-          return (
-            <CategoryItem movie={item} key={index} navigation={navigation} />
-          );
+          return <CategoryItem movie={item} key={index} />;
         }}
       />
       {1 > movies.length ? (
@@ -56,26 +55,26 @@ const styles = StyleSheet.create({
     marginBottom: SPACING / 3,
   },
   title: {
-    fontSize: 20,
+    fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
-    color: "#fff",
+    color: colors.white,
     flex: 1,
   },
   count: {
-    fontSize: 20,
+    fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
-    color: "#c2c2c2",
+    color: colors.purple,
   },
   contentContainer: {
     paddingHorizontal: SPACING,
   },
   error: {
-    fontSize: 16,
+    fontSize: fonts.text16,
     fontFamily: "RalewaySemiBold",
-    color: "#c2c2c2",
+    color: colors.gray,
     borderLeftWidth: 4,
     borderRadius: 2,
-    borderColor: "#665DF5",
+    borderColor: colors.purple,
     marginLeft: SPACING,
     paddingLeft: SPACING / 6 + 5,
   },

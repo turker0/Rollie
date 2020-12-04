@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
-import { Animated, StyleSheet, Easing } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Animated, Easing } from "react-native";
 
 import full from "../database/full.json";
 import { useSelector } from "react-redux";
@@ -9,13 +9,8 @@ import { Initial, Movie, Movies } from "../redux/types";
 
 const fetchURL = "http://www.omdbapi.com/?t=",
   apiTail = "&apikey=3c88863d";
-const SPACING = 30;
 
-interface Props {
-  navigation: any;
-}
-
-const Roll: FC<Props> = ({ navigation }) => {
+const Roll = ({}) => {
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const movies: Movies = useSelector((state: Initial) => state.movies);
   const [movie, setMovie] = useState<Movie>({});
@@ -30,8 +25,8 @@ const Roll: FC<Props> = ({ navigation }) => {
       let mov = filtered[Math.floor(Math.random() * filtered.length)];
 
       Animated.timing(svganim, {
-        toValue: 1,
-        duration: 444,
+        toValue: 4,
+        duration: 2000,
         easing: Easing.linear,
         useNativeDriver: true,
       }).start(() => {
@@ -61,34 +56,9 @@ const Roll: FC<Props> = ({ navigation }) => {
     return <Rolling roll={roll} svganim={svganim} />;
   } else {
     return (
-      <RolledMovie
-        setIsFetched={setIsFetched}
-        movie={movie}
-        roll={roll}
-        navigation={navigation}
-      />
+      <RolledMovie setIsFetched={setIsFetched} movie={movie} roll={roll} />
     );
   }
 };
 
 export default Roll;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#000",
-  },
-  title: {
-    fontSize: 32,
-    color: "#fff",
-    fontFamily: "RalewayBlack",
-    marginBottom: SPACING / 2,
-    letterSpacing: 0.5,
-    paddingTop: SPACING,
-  },
-  hightlighted: {
-    color: "#665DF5",
-  },
-});

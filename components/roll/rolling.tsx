@@ -1,7 +1,9 @@
-import { LinearGradient } from "expo-linear-gradient";
 import React, { FC } from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import colors from "../../style/colors";
+import fonts from "../../style/fonts";
+import GradientBG from "../shared/gradientbg";
 import RollSVG from "./rollsvg";
 
 const SPACING = 30;
@@ -12,43 +14,28 @@ interface Props {
 }
 
 const Rolling: FC<Props> = ({ roll, svganim }) => {
-  const rotate = svganim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "720deg"],
-  });
   const scale = svganim.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [1, 0, 1],
+    inputRange: [0, 0.2, 4],
+    outputRange: [1, 0.4, 12],
+  });
+
+  const opacity = svganim.interpolate({
+    inputRange: [0, 3, 4],
+    outputRange: [1, 1, 0],
   });
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={["#000", "#13112D"]}
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 0,
-          zIndex: -1,
-          elevation: -1,
-          height: "100%",
-        }}
-      />
-      <TouchableOpacity onPress={roll}>
-        <Animated.View
-          style={{
-            transform: [{ rotate, scale }],
-          }}
-        >
+      <GradientBG />
+      <Animated.View style={{ opacity, transform: [{ scale }] }}>
+        <TouchableOpacity onPress={roll}>
           <RollSVG />
-        </Animated.View>
-
-        <Text style={styles.title}>
-          <Text style={styles.hightlighted}>ROLL</Text> A{" "}
-          <Text style={styles.hightlighted2}>MOVIE</Text>
-        </Text>
-      </TouchableOpacity>
+          <Text style={styles.title}>
+            <Text style={styles.hightlighted}>ROLL</Text> A{" "}
+            <Text style={styles.hightlighted2}>MOVIE</Text>
+          </Text>
+        </TouchableOpacity>
+      </Animated.View>
     </View>
   );
 };
@@ -60,20 +47,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#000",
   },
   title: {
-    fontSize: 32,
-    color: "#fff",
+    fontSize: fonts.text32,
+    color: colors.white,
     fontFamily: "RalewayBlack",
     marginBottom: SPACING / 2,
     letterSpacing: 0.5,
     paddingTop: SPACING,
   },
   hightlighted: {
-    color: "#665DF5",
+    color: colors.purple,
   },
   hightlighted2: {
-    color: "#e50914",
+    color: colors.red,
   },
 });

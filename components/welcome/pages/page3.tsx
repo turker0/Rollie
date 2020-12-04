@@ -1,9 +1,13 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { FC, RefObject, useEffect, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import Animated, { Easing } from "react-native-reanimated";
 import { useSelector } from "react-redux";
-import { Initial } from "../../redux/types";
+import { Initial } from "../../../redux/types";
+import colors from "../../../style/colors";
+import fonts from "../../../style/fonts";
+import TextWrapper from "../../shared/textwrapper";
 import Input from "./input";
 
 const SPACING = 30;
@@ -18,8 +22,8 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   const input3: any = useRef<TextInput>(null);
   const user = useSelector((state: Initial) => state.user);
   const [error, setError] = useState<boolean>(true);
-
   const opacity = useRef(new Animated.Value(0)).current;
+  const navigation = useNavigation();
 
   const input2Focus = () => {
     if (input2.current !== null) {
@@ -55,9 +59,15 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
     });
   };
 
+  const navigate = () => {
+    navigation.navigate("Top10Selector");
+  };
+
   return (
     <View style={styles.page}>
-      <Text style={styles.description}>Create a profile</Text>
+      <Text style={styles.description}>
+        But first to continue, create a profile.
+      </Text>
       <Input
         placeholder="E-mail"
         id="mail"
@@ -79,12 +89,12 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
         ref={input3}
         maxLength={20}
       />
-      <TouchableOpacity
-        onPress={() => (!error ? toggleIsProfileVisible() : null)}
-      >
-        <Animated.Text style={[styles.buttonTet, { opacity }]}>
-          Create
-        </Animated.Text>
+      <TouchableOpacity onPress={navigate}>
+        <Animated.View style={{ opacity }}>
+          <TextWrapper style={styles.wrapper}>
+            <Text style={styles.buttonTet}>create</Text>
+          </TextWrapper>
+        </Animated.View>
       </TouchableOpacity>
     </View>
   );
@@ -94,25 +104,25 @@ export default Page3;
 
 const styles = StyleSheet.create({
   page: {
+    flex: 1,
     width,
-    paddingHorizontal: SPACING,
-    paddingVertical: SPACING / 2,
+    paddingHorizontal: "8%",
   },
   description: {
-    fontSize: 20,
-    fontFamily: "RalewaySemiBold",
-    color: "#f5f5f5",
+    fontSize: fonts.text20,
+    color: colors.white,
+    fontFamily: "RalewayMedium",
+  },
+  wrapper: {
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.purple,
+    marginTop: SPACING,
   },
   buttonTet: {
-    paddingVertical: SPACING / 6,
-    paddingHorizontal: SPACING / 2,
-    marginTop: SPACING,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: "#665DF5",
-    fontSize: 18,
-    fontFamily: "RalewayBold",
-    color: "#665DF5",
-    alignSelf: "flex-start",
+    fontSize: fonts.text20,
+    fontFamily: "RalewaySemiBold",
+    color: colors.white,
   },
 });

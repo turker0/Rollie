@@ -7,6 +7,9 @@ import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actions";
 import Buttons from "./buttons";
 import { Movie } from "../../redux/types";
+import { useNavigation } from "@react-navigation/native";
+import colors from "../../style/colors";
+import fonts from "../../style/fonts";
 
 const { width, height } = Dimensions.get("window");
 
@@ -35,11 +38,11 @@ interface Props {
   setIsFetched: (bool: boolean) => void;
   movie: Movie;
   roll: any;
-  navigation: any;
 }
 
-const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll, navigation }) => {
+const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const handler = (key: string) => {
     if (key === "current") {
@@ -53,10 +56,8 @@ const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll, navigation }) => {
     }
   };
 
-  console.log(movie);
-
   return (
-    <View style={{ flex: 1, backgroundColor: "#000" }}>
+    <View style={{ flex: 1 }}>
       <Image
         source={{ uri: movie.Poster }}
         style={styles.image}
@@ -64,11 +65,15 @@ const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll, navigation }) => {
         blurRadius={0.25}
       />
       <View style={styles.blacked} />
-      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingHorizontal: "4%" }}
+      >
         <View style={styles.container}>
           <Text style={styles.title}>{movie.Title}</Text>
           <View style={styles.rowLine}>
-            <FontAwesome name="star" size={24} color="#fcf300" />
+            <FontAwesome name="star" size={24} color={colors.yellow} />
             <Text style={[styles.details, { marginLeft: 10 }]}>
               {movie.imdbRating} {"   "} {movie.Year} {"   "} {movie.Runtime}
             </Text>
@@ -113,7 +118,7 @@ export default RolledMovie;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: SPACING,
+    paddingHorizontal: "4%",
     paddingTop: SPACING,
     paddingBottom: SPACING * 2,
     elevation: 2,
@@ -144,27 +149,18 @@ const styles = StyleSheet.create({
     marginBottom: SPACING / 6,
   },
   title: {
-    fontSize: 32,
-    color: "#fff",
+    fontSize: fonts.text32,
+    color: colors.white,
     fontFamily: "RalewayBlack",
     marginBottom: SPACING / 2,
     letterSpacing: 0.5,
-    paddingTop: SPACING,
+    paddingTop: SPACING * 3,
   },
   details: {
-    fontSize: 20,
+    fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
-    color: "#fff",
+    color: colors.white,
     lineHeight: SPACING * 1,
-  },
-  text: {
-    fontSize: 16,
-    fontFamily: "RalewaySemiBold",
-    color: "#fafafa",
-    paddingVertical: SPACING / 2,
-    lineHeight: SPACING,
-    borderTopWidth: 1,
-    borderColor: "#fafafa",
   },
   buttonContainer: {
     position: "absolute",
@@ -172,11 +168,9 @@ const styles = StyleSheet.create({
     left: 0,
     width: "100%",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
+    borderTopWidth: 1,
+    borderColor: colors.black,
+    backgroundColor: colors.dark,
     paddingVertical: SPACING / 3,
-  },
-
-  hightlighted: {
-    color: "#665DF5",
   },
 });

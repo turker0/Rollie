@@ -1,5 +1,7 @@
 import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import colors from "../../style/colors";
+import fonts from "../../style/fonts";
 
 const SPACING = 30;
 
@@ -21,23 +23,36 @@ export default MoviePageText;
 const styles = StyleSheet.create({
   container: {
     paddingVertical: SPACING / 3,
+    paddingHorizontal: "4%",
     marginBottom: SPACING,
+    backgroundColor: "rgba(0,0,0,.85)",
+    borderRadius: 4,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    zIndex: 7,
+    elevation: 7,
   },
   text: {
-    fontSize: 16,
+    fontSize: fonts.text16,
     fontFamily: "RalewayRegular",
-    color: "#fafafa",
+    color: colors.white,
     lineHeight: SPACING,
+    paddingTop: SPACING / 4,
   },
   title: {
-    fontSize: 18,
-    color: "#665DF5",
+    fontSize: fonts.text20,
+    color: colors.pink,
     fontFamily: "RalewayBold",
-    paddingBottom: SPACING / 10,
+    paddingLeft: SPACING / 2,
     paddingRight: SPACING / 4,
-    borderBottomWidth: 2,
+    borderLeftWidth: 5,
     borderRadius: 2,
-    borderColor: "#665DF5",
+    borderColor: colors.pink,
     alignSelf: "flex-start",
   },
 });
