@@ -29,12 +29,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: "8%",
   },
   description: {
-    fontSize: fonts.text20,
-    color: colors.white,
+    fontSize: fonts.text24,
+    color: colors.pink,
     fontFamily: "RalewayMedium",
   },
   highlighted: {
-    color: "#665DF5",
     fontFamily: "RalewayBold",
   },
 });

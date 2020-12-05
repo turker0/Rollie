@@ -57,7 +57,7 @@ const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: colors.dark }}>
       <Image
         source={{ uri: movie.Poster }}
         style={styles.image}

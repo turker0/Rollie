@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
-    color: colors.white,
+    color: colors.pink,
     letterSpacing: 0.5,
     marginBottom: SPACING / 3,
   },

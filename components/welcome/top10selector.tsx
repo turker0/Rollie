@@ -92,7 +92,7 @@ const Top10Selector = () => {
         <Text style={styles.description}>Let's get started</Text>
         <Text style={styles.itemTitle} numberOfLines={2}>
           <Text style={styles.highlighted}>{listIndex + 1}.</Text>
-          {" " + top11[listIndex].Title}
+          {" " + top11[listIndex].Title + "\n"}
         </Text>
         <View style={styles.cardsContainer}>
           <View style={[styles.cardsContainer]}>
@@ -102,7 +102,7 @@ const Top10Selector = () => {
                 { left: 0, color: colors.red, opacity: opacityNo },
               ]}
             >
-              No
+              {"< "}No
             </Animated.Text>
             <Animated.Text
               style={[
@@ -110,7 +110,7 @@ const Top10Selector = () => {
                 { right: 0, color: colors.green, opacity: opacityYes },
               ]}
             >
-              Yes
+              Yes{" >"}
             </Animated.Text>
             {top10.map((item, index) => {
               const elevation = top10.length - index,
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
     marginTop: SPACING / 2,
-    color: colors.white,
+    color: colors.pink,
   },
   cardsContainer: {
     // width: width * 0.5 + 2,

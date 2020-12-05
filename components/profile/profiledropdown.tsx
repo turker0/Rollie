@@ -49,7 +49,7 @@ const ProfileDropdown: FC<Props> = ({ title, list, color }) => {
         <Ionicons
           name={hide ? "md-arrow-dropdown" : "ios-remove"}
           size={24}
-          color={colors.purple}
+          color={colors.pink}
         />
         <Animated.View style={[styles.border, { width: widthAnim }]} />
       </TouchableOpacity>
@@ -88,13 +88,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 5,
     borderWidth: 1,
-
     padding: SPACING / 6,
   },
   title: {
     fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
-    color: colors.white,
+    color: colors.gray,
   },
   itemText: {
     fontSize: 16,
@@ -121,6 +120,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 4,
     bottom: 0,
-    backgroundColor: colors.purple,
+    backgroundColor: colors.pink,
   },
 });

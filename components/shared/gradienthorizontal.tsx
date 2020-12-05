@@ -6,7 +6,7 @@ import colors from "../../style/colors";
 const GradientHorizontal = () => {
   return (
     <LinearGradient
-      colors={[colors.blue, colors.yellow]}
+      colors={[colors.purple, colors.pink]}
       start={{ x: 0, y: 1 }}
       end={{ x: 1, y: 1 }}
       style={styles.gradient}

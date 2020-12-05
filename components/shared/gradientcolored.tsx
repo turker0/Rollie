@@ -6,7 +6,7 @@ import colors from "../../style/colors";
 const GradientColored = () => {
   return (
     <LinearGradient
-      colors={[colors.gray, colors.dark]}
+      colors={[colors.pink, colors.purple]}
       style={[styles.gradient, StyleSheet.absoluteFillObject]}
     />
   );

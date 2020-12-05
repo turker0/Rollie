@@ -128,7 +128,7 @@ const Input = React.forwardRef<TextInput, Props>(
           keyboardType={id === "mail" ? "email-address" : "default"}
           style={styles.input}
           underlineColorAndroid="transparent"
-          placeholderTextColor={colors.gray}
+          placeholderTextColor={colors.white}
         />
       </View>
     );
@@ -142,25 +142,25 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: "RalewaySemiBold",
     paddingVertical: SPACING / 6,
-    paddingLeft: SPACING / 6,
+    paddingLeft: 2,
     fontSize: fonts.text20,
     color: colors.white,
     letterSpacing: 1,
     borderBottomWidth: 2,
     borderRadius: 2,
-    borderColor: colors.purple,
+    borderColor: colors.gray,
   },
   placeholder: {
-    fontSize: fonts.text16,
-    fontFamily: "RalewayRegular",
+    fontSize: fonts.text14,
+    fontFamily: "RalewayBold",
     color: colors.gray,
     position: "absolute",
     right: 0,
     top: 0,
   },
   error: {
-    fontSize: fonts.text14,
-    fontFamily: "RalewayRegular",
+    fontSize: fonts.text12,
+    fontFamily: "RalewayBold",
   },
 });
 

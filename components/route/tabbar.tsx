@@ -68,12 +68,12 @@ const Tabbar: FC<Props> = ({ state, descriptors, navigation }) => {
               <MaterialCommunityIcons
                 name={ICONS[index]}
                 size={18}
-                color={isFocused ? colors.purple : colors.gray}
+                color={isFocused ? colors.pink : colors.gray}
               />
               <Text
                 style={[
                   styles.text,
-                  isFocused ? { color: colors.purple } : { color: colors.gray },
+                  isFocused ? { color: colors.pink } : { color: colors.gray },
                 ]}
               >
                 {label}
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: colors.dark,
     marginTop: 1,
-
     alignItems: "center",
     justifyContent: "space-evenly",
   },

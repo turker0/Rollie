@@ -36,7 +36,6 @@ const Profile = ({}) => {
             colors={[colors.pink, colors.purple]}
             style={styles.gradient}
           />
-
           <View style={styles.overlay}>
             {!user.avatar ? (
               <Feather name="plus" size={24} color={colors.white} />
@@ -91,7 +90,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 36,
-    padding: 4,
   },
   modal: {
     margin: 0,
@@ -100,7 +98,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   overlay: {
-    flex: 1,
+    width: 62,
+    height: 62,
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: colors.dark,
     borderRadius: 36,
   },
@@ -112,7 +113,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: -1,
     elevation: -1,
-
     borderRadius: 36,
   },
 });

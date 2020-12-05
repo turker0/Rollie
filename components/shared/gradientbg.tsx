@@ -6,7 +6,7 @@ import colors from "../../style/colors";
 const GradientBG = () => {
   return (
     <LinearGradient
-      colors={[colors.black, colors.dark]}
+      colors={[colors.dark, "#050A24", colors.dark]}
       style={styles.container}
     />
   );

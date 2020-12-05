@@ -21,7 +21,7 @@ const MovieCategory: FC<Props> = ({ title, movies }) => {
           {title}
         </Text>
         <Text style={styles.count} numberOfLines={1}>
-          ({movies.length})
+          {movies.length}
         </Text>
       </View>
       <FlatList
@@ -57,13 +57,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
-    color: colors.white,
+    color: colors.pink,
     flex: 1,
   },
   count: {
     fontSize: fonts.text20,
-    fontFamily: "RalewaySemiBold",
-    color: colors.purple,
+    fontFamily: "RalewayBold",
+    color: colors.white,
   },
   contentContainer: {
     paddingHorizontal: SPACING,
@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
     color: colors.gray,
     borderLeftWidth: 4,
     borderRadius: 2,
-    borderColor: colors.purple,
-    marginLeft: SPACING,
+    borderColor: colors.pink,
+    margin: SPACING,
     paddingLeft: SPACING / 6 + 5,
   },
 });

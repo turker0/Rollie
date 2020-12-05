@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
+import colors from "../../style/colors";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
@@ -19,10 +20,10 @@ const Buttons: FC<Props> = ({ handler, id, text, border }) => {
       <Feather
         name={text}
         size={24}
-        color="#665DF5"
+        color={colors.pink}
         style={[
           styles.border,
-          border === 0 ? { borderLeftWidth: 0 } : { borderLeftWidth: 2 },
+          border === 0 ? { borderLeftWidth: 0 } : { borderLeftWidth: 1 },
         ]}
       />
     </TouchableOpacity>
@@ -41,6 +42,6 @@ const styles = StyleSheet.create({
   border: {
     flex: 1,
     textAlign: "center",
-    borderColor: "#665DF5",
+    borderColor: colors.gray,
   },
 });

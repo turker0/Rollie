@@ -1,10 +1,9 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Svg, { G, Circle, Path, Ellipse } from "react-native-svg";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actions";
-import { Initial, User } from "../../redux/types";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
@@ -15,7 +14,6 @@ interface Props {
 
 const AvatarsList: FC<Props> = ({ toggleAvatar }) => {
   const dispatch = useDispatch();
-  const user: User = useSelector((state: Initial) => state.user);
 
   const avatars = [
     <Svg viewBox="0 0 61.8 61.804" width={62} height={62}>
@@ -577,7 +575,11 @@ const AvatarsList: FC<Props> = ({ toggleAvatar }) => {
     <View style={styles.container}>
       {avatars.map((avatar, index) => {
         return (
-          <TouchableOpacity key={index} onPress={() => onPress(avatar)}>
+          <TouchableOpacity
+            key={index}
+            onPress={() => onPress(avatar)}
+            style={{ margin: 2.5 }}
+          >
             {avatar}
           </TouchableOpacity>
         );
@@ -594,7 +596,6 @@ const styles = StyleSheet.create({
     marginVertical: SPACING / 2,
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
     alignSelf: "center",
   },
 });

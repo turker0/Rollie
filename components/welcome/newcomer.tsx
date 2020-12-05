@@ -108,7 +108,7 @@ const Newcomer = () => {
           });
           const backgroundColor = scrollX.interpolate({
             inputRange,
-            outputRange: [colors.purple, colors.pink, colors.purple],
+            outputRange: [colors.gray, colors.pink, colors.gray],
           });
           return (
             <Animated.View

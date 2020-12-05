@@ -35,7 +35,7 @@ const CategoryItem: FC<Props> = ({ movie }) => {
 
       <View style={styles.movieDetailContainer}>
         <Text style={styles.movieTitle} numberOfLines={2}>
-          {movie.Title}
+          {movie.Title + "\n"}
         </Text>
         <View style={styles.ratingWrapper}>
           <FontAwesome name="star" size={14} color={colors.yellow} />
@@ -44,7 +44,7 @@ const CategoryItem: FC<Props> = ({ movie }) => {
           </Text>
         </View>
         <Text style={styles.movieText2} numberOfLines={2}>
-          {movie.Runtime} {"  "} {movie.Genre}
+          {movie.Runtime} {"  "} {movie.Genre + "\n"}
         </Text>
       </View>
     </TouchableOpacity>
@@ -55,14 +55,12 @@ export default CategoryItem;
 
 const styles = StyleSheet.create({
   itemContainer: {
-    width: width * 0.35 + 2,
-    height: width * 0.35 * 1.48 + 100 + 2,
+    width: width * 0.35,
+    height: "auto",
     backgroundColor: colors.black,
-    borderWidth: 1,
-    borderColor: colors.black,
     marginRight: SPACING / 4,
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
+    paddingVertical: 5,
+    borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -92,7 +90,7 @@ const styles = StyleSheet.create({
   movieText1: {
     fontSize: fonts.text14,
     fontFamily: "RalewayRegular",
-    color: colors.purple,
+    color: colors.white,
   },
   movieText2: {
     fontSize: fonts.text12,

@@ -10,7 +10,6 @@ import {
 import colors from "../../../style/colors";
 import fonts from "../../../style/fonts";
 import { FontAwesome } from "@expo/vector-icons";
-import TextWrapper from "../../shared/textwrapper";
 
 const { width } = Dimensions.get("window");
 const words = " Roll a movie to your watcher. Oh valley of plenty."
@@ -28,7 +27,7 @@ const Page0 = ({}) => {
     const animations = words.map((_: string, index: number) => {
       return Animated.timing(animatedWords[index], {
         toValue: 1,
-        duration: 1000,
+        duration: 300,
         easing: Easing.linear,
         useNativeDriver: false,
       });
@@ -85,23 +84,18 @@ const Page0 = ({}) => {
           );
         })}
       </View>
-      <View style={{ justifyContent: "center", flex: 1 }}>
+      <View
+        style={{ justifyContent: "center", alignItems: "flex-end", flex: 1 }}
+      >
         <Animated.View
-          style={{
-            opacity: nextAnimation,
-          }}
+          style={{ opacity: nextAnimation, transform: [{ translateX }] }}
         >
-          <TextWrapper style={styles.wrapper}>
-            <Text style={styles.swipe}>slide</Text>
-            <Animated.View style={{ transform: [{ translateX }] }}>
-              <FontAwesome
-                name="angle-right"
-                size={24}
-                color={colors.white}
-                style={{ marginTop: 2.5, marginLeft: 5 }}
-              />
-            </Animated.View>
-          </TextWrapper>
+          <FontAwesome
+            name="angle-right"
+            size={32}
+            color={colors.white}
+            style={{ marginTop: 2.5, marginLeft: 5 }}
+          />
         </Animated.View>
       </View>
     </Animated.View>
@@ -119,16 +113,5 @@ const styles = StyleSheet.create({
   text: {
     fontSize: fonts.text52,
     fontFamily: "RalewayBold",
-  },
-  wrapper: {
-    alignSelf: "flex-end",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.pink,
-  },
-  swipe: {
-    fontSize: fonts.text20,
-    fontFamily: "RalewaySemiBold",
-    color: colors.white,
   },
 });

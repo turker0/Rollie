@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeBottomTabs from "./routes/homebottomtabs";
 import WelcomeRoute from "./routes/welcomeroute";
+import Header from "./components/route/header";
 
 const store = createStore(reducer);
 const Stack = createStackNavigator();
@@ -28,13 +29,22 @@ export default function App() {
     return (
       <Provider store={store}>
         <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="Welcome" component={WelcomeRoute} />
-            <Stack.Screen name="Home" component={HomeBottomTabs} />
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Welcome"
+              options={{
+                headerShown: false,
+              }}
+              component={WelcomeRoute}
+            />
+            <Stack.Screen
+              name="Home"
+              options={{
+                headerShown: true,
+                header: () => <Header />,
+              }}
+              component={HomeBottomTabs}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

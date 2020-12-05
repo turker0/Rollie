@@ -109,15 +109,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: "8%",
   },
   description: {
-    fontSize: fonts.text20,
-    color: colors.white,
+    fontSize: fonts.text24,
+    color: colors.pink,
     fontFamily: "RalewayMedium",
+    marginBottom: 50,
   },
   wrapper: {
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.purple,
+    backgroundColor: colors.pink,
     marginTop: SPACING,
   },
   buttonTet: {

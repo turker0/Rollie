@@ -13,7 +13,7 @@ interface Props {
 const Buttons: FC<Props> = ({ handler, id, text }) => {
   return (
     <TouchableOpacity onPress={() => handler(id)} style={styles.button}>
-      <Feather name={text} size={24} color={colors.purple} />
+      <Feather name={text} size={24} color={colors.pink} />
     </TouchableOpacity>
   );
 };
