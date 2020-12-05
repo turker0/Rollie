@@ -8,3 +8,5 @@ Roll a movie to your watcher oh valley of plenty
 
 ### start expo `expo start` then press `a` to run on android.
 
+### not tested on ios yet.
+
