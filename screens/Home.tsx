@@ -1,9 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import Content from "../components/home/content";
 import GradientBG from "../components/shared/gradientbg";
 
-const Home = ({}) => {
+interface Props {
+  route: any;
+}
+
+const Home: FC<Props> = ({}) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}

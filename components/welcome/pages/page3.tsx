@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { FC, RefObject, useEffect, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated, { Easing } from "react-native-reanimated";
 import { useSelector } from "react-redux";
 import { Initial } from "../../../redux/types";
@@ -38,8 +39,10 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   };
 
   useEffect(() => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
     if (
-      user.username.length >= 3 &&
+      re.test(String(user.mail).toLowerCase()) &&
       user.mail.length >= 3 &&
       user.password.length >= 3
     ) {
@@ -64,39 +67,41 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   };
 
   return (
-    <View style={styles.page}>
-      <Text style={styles.description}>
-        But first to continue, create a profile.
-      </Text>
-      <Input
-        placeholder="E-mail"
-        id="mail"
-        ref={input1}
-        nextHandler={input2Focus}
-        maxLength={32}
-      />
-      <Input
-        placeholder="Username"
-        id="username"
-        ref={input2}
-        nextHandler={input3Focus}
-        maxLength={16}
-      />
-      <Input
-        placeholder="Password"
-        id="password"
-        isPassword
-        ref={input3}
-        maxLength={20}
-      />
-      <TouchableOpacity onPress={navigate}>
-        <Animated.View style={{ opacity }}>
-          <TextWrapper style={styles.wrapper}>
-            <Text style={styles.buttonTet}>create</Text>
-          </TextWrapper>
-        </Animated.View>
-      </TouchableOpacity>
-    </View>
+    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+      <View style={styles.page}>
+        <Text style={styles.description}>
+          But first to continue, create a profile.
+        </Text>
+        <Input
+          placeholder="E-mail"
+          id="mail"
+          ref={input1}
+          nextHandler={input2Focus}
+          maxLength={32}
+        />
+        <Input
+          placeholder="Username"
+          id="username"
+          ref={input2}
+          nextHandler={input3Focus}
+          maxLength={16}
+        />
+        <Input
+          placeholder="Password"
+          id="password"
+          isPassword
+          ref={input3}
+          maxLength={20}
+        />
+        <TouchableOpacity onPress={navigate}>
+          <Animated.View style={{ opacity }}>
+            <TextWrapper style={styles.wrapper}>
+              <Text style={styles.buttonTet}>create</Text>
+            </TextWrapper>
+          </Animated.View>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 

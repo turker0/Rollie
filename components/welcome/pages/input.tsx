@@ -35,9 +35,9 @@ const Input = React.forwardRef<TextInput, Props>(
       } else {
         placeholderAnimation(1);
       }
-      if (text.length >= 3) {
+      if (validateText(text)) {
         greenTextColor(1, true);
-      } else if (text.length < 3) {
+      } else {
         greenTextColor(0, false);
       }
       dispatch(actionCreators.editUserByKey(text, id));
@@ -78,6 +78,15 @@ const Input = React.forwardRef<TextInput, Props>(
       }).start();
     }, []);
 
+    const validateText = (text: string) => {
+      //https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+      if (id === "mail") {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(text).toLowerCase());
+      }
+      return text.length >= 3;
+    };
+
     const translateY = animatedPlaceholder.interpolate({
       inputRange: [0, 1],
       outputRange: [5, 0],
@@ -101,7 +110,9 @@ const Input = React.forwardRef<TextInput, Props>(
       <View style={styles.container}>
         <Animated.Text style={[styles.error, { opacity, color }]}>
           {!isRight
-            ? "Must be between 3-" + maxLength + " characters."
+            ? id !== "mail"
+              ? "Must be between 3-" + maxLength + " characters"
+              : "Wrong E-mail entry"
             : "Correct"}
         </Animated.Text>
         <Animated.Text

@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text, View, Image } from "react-native";
-
-import top11 from "../../database/top10.json";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actions";
 import {
@@ -15,14 +13,15 @@ import GradientBG from "../shared/gradientbg";
 import fonts from "../../style/fonts";
 import colors from "../../style/colors";
 import GradientColored from "../shared/gradientcolored";
+import topraw from "../../database/top10.json";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
 
 const Top10Selector = () => {
   const [listIndex, setListIndex] = useState<number>(0);
+  const [top10, setTop10] = useState(topraw);
   const dispatch = useDispatch();
-  const [top10, setTop10] = useState(top11);
   const translateX = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
 
@@ -30,13 +29,16 @@ const Top10Selector = () => {
     translateX.setValue(0);
     if (listIndex > 0) {
       setTop10(
-        top10.filter((item) => item.Title !== top11[listIndex - 1].Title)
+        top10.filter((item) => item.Title !== topraw[listIndex - 1].Title)
       );
     }
   }, [listIndex]);
 
   const onHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
-    if (listIndex === top11.length - 1) {
+    if (listIndex === topraw.length - 1) {
+      if (event.nativeEvent.translationX > width * 0.125) {
+        dispatch(actionCreators.addMovie(topraw[listIndex], "watched"));
+      }
       dispatch(actionCreators.editUserByKey(false, "isNew"));
       navigation.navigate("Home");
     } else {
@@ -44,7 +46,7 @@ const Top10Selector = () => {
         if (event.nativeEvent.translationX < -(width * 0.125)) {
           nextAnimation();
         } else if (event.nativeEvent.translationX > width * 0.125) {
-          dispatch(actionCreators.addMovie(top11[listIndex], "watched"));
+          dispatch(actionCreators.addMovie(topraw[listIndex], "watched"));
           nextAnimation();
         } else {
           resetAnimation();
@@ -89,81 +91,81 @@ const Top10Selector = () => {
     <View style={{ flex: 1 }}>
       <GradientBG />
       <View style={styles.container}>
-        <Text style={styles.description}>Let's get started</Text>
+        <Text style={styles.description}>
+          Let's get started. How many movies you watched among iMDB Top10 List?
+        </Text>
         <Text style={styles.itemTitle} numberOfLines={2}>
           <Text style={styles.highlighted}>{listIndex + 1}.</Text>
-          {" " + top11[listIndex].Title + "\n"}
+          {" " + topraw[listIndex].Title + "\n"}
         </Text>
         <View style={styles.cardsContainer}>
-          <View style={[styles.cardsContainer]}>
-            <Animated.Text
-              style={[
-                styles.direction,
-                { left: 0, color: colors.red, opacity: opacityNo },
-              ]}
-            >
-              {"< "}No
-            </Animated.Text>
-            <Animated.Text
-              style={[
-                styles.direction,
-                { right: 0, color: colors.green, opacity: opacityYes },
-              ]}
-            >
-              Yes{" >"}
-            </Animated.Text>
-            {top10.map((item, index) => {
-              const elevation = top10.length - index,
-                zIndex = elevation,
-                top = index * 5;
-              return (
-                <PanGestureHandler
-                  onGestureEvent={Animated.event(
-                    [
-                      {
-                        nativeEvent: {
-                          translationX: translateX,
-                        },
-                      },
-                    ],
+          <Animated.Text
+            style={[
+              styles.direction,
+              { left: 0, color: colors.red, opacity: opacityNo },
+            ]}
+          >
+            {"< "}No
+          </Animated.Text>
+          <Animated.Text
+            style={[
+              styles.direction,
+              { right: 0, color: colors.green, opacity: opacityYes },
+            ]}
+          >
+            Yes{" >"}
+          </Animated.Text>
+          {top10.map((item, index) => {
+            const elevation = top10.length - index,
+              zIndex = elevation,
+              top = index * 5;
+            return (
+              <PanGestureHandler
+                onGestureEvent={Animated.event(
+                  [
                     {
-                      useNativeDriver: true,
-                    }
-                  )}
-                  onHandlerStateChange={onHandlerStateChange}
-                  key={index}
-                >
-                  <Animated.View
-                    style={[
-                      styles.cardWrapper,
-                      {
-                        elevation,
-                        zIndex,
-                        top,
+                      nativeEvent: {
+                        translationX: translateX,
                       },
-                      index === 0
-                        ? {
-                            opacity,
-                            transform: [
-                              {
-                                scale,
-                                translateX,
-                              },
-                            ],
-                          }
-                        : { transform: [{ scale: 1 - index / 90 }] },
-                    ]}
-                  >
-                    <GradientColored />
-                    <Image
-                      style={styles.itemImage}
-                      source={{ uri: item.Poster }}
-                    />
-                  </Animated.View>
-                </PanGestureHandler>
-              );
-            })}
-          </View>
+                    },
+                  ],
+                  {
+                    useNativeDriver: true,
+                  }
+                )}
+                onHandlerStateChange={onHandlerStateChange}
+                key={index}
+              >
+                <Animated.View
+                  style={[
+                    styles.cardWrapper,
+                    {
+                      elevation,
+                      zIndex,
+                      top,
+                    },
+                    index === 0
+                      ? {
+                          opacity,
+                          transform: [
+                            {
+                              scale,
+                              translateX,
+                            },
+                          ],
+                        }
+                      : { transform: [{ scale: 1 - index / 90 }] },
+                  ]}
+                >
+                  <GradientColored />
+                  <Image
+                    style={styles.itemImage}
+                    source={{ uri: item.Poster }}
+                  />
+                </Animated.View>
+              </PanGestureHandler>
+            );
+          })}
         </View>
       </View>
     </View>
@@ -176,7 +178,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: "8%",
-    paddingTop: SPACING * 3,
+    paddingTop: SPACING,
   },
   description: {
     fontSize: fonts.text20,

@@ -20,7 +20,7 @@ const Tabbar: FC<Props> = ({ state, descriptors, navigation }) => {
     <View style={styles.container}>
       <GradientHorizontal />
       <View style={styles.routesWrapper}>
-        {state.routes.map((route: any, index: any) => {
+        {state.routes.map((route: any, index: number) => {
           const { options } = descriptors[route.key];
           const label =
             options.tabBarLabel !== undefined
@@ -53,6 +53,7 @@ const Tabbar: FC<Props> = ({ state, descriptors, navigation }) => {
           return (
             <TouchableOpacity
               accessibilityRole="button"
+              key={index}
               accessibilityState={isFocused ? { selected: true } : {}}
               accessibilityLabel={options.tabBarAccessibilityLabel}
               testID={options.tabBarTestID}

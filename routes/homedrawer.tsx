@@ -7,7 +7,7 @@ import Declined from "../screens/Declined";
 
 const Drawer = createDrawerNavigator();
 
-const HomeDrawer = () => {
+const HomeDrawer = ({}) => {
   return (
     <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen name="Home" component={Home} />

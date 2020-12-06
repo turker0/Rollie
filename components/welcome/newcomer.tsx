@@ -32,21 +32,28 @@ const Newcomer = () => {
     <Page3 toggleIsProfileVisible={toggleIsProfileVisible} input1={input1} />,
   ];
 
-  const indicatiorAnimation = () => {
+  const indicatiorAnimation = (toValue: number) => {
     Animated.timing(opacity, {
-      toValue: 1,
-      duration: 500,
+      toValue,
+      duration: 200,
       easing: Easing.linear,
       useNativeDriver: true,
     }).start();
   };
 
   const onViewableItemsChanged = (viewableItems: any) => {
-    if (viewableItems.viewableItems[0].index === 1) {
-      indicatiorAnimation();
-    }
-    if (viewableItems.viewableItems[0].index === Pages.length - 1) {
-      input1.current.focus();
+    if (
+      viewableItems.viewableItems[0].index === 1 ||
+      viewableItems.viewableItems[0].index === 2
+    ) {
+      indicatiorAnimation(1);
+    } else {
+      indicatiorAnimation(0);
+      if (viewableItems.viewableItems[0].index === Pages.length - 1) {
+        if (input1.current !== null) {
+          input1.current.focus();
+        }
+      }
     }
   };
 
@@ -109,6 +116,7 @@ const Newcomer = () => {
           const backgroundColor = scrollX.interpolate({
             inputRange,
             outputRange: [colors.gray, colors.pink, colors.gray],
+            extrapolate: "clamp",
           });
           return (
             <Animated.View

@@ -1,36 +1,42 @@
 import MaskedView from "@react-native-community/masked-view";
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import colors from "../../style/colors";
 import fonts from "../../style/fonts";
 import GradientHorizontal from "../shared/gradienthorizontal";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 
-const Header = () => {
+const Header = ({}) => {
   const navigation = useNavigation();
+
   const toggleDrawer = () => {
-    navigation.openDrawer();
+    navigation.dispatch(DrawerActions.toggleDrawer());
   };
+
   return (
-    <View style={styles.container}>
-      <GradientHorizontal />
-      <View style={styles.wrapper}>
-        <MaskedView
-          style={{ flex: 1, flexDirection: "row", height: "100%" }}
-          maskElement={
-            <View style={styles.masked}>
-              <TouchableOpacity style={styles.icon} onPress={toggleDrawer}>
-                <MaterialIcons name="menu" size={24} color="black" />
-              </TouchableOpacity>
-              <Text style={styles.title}>Rollie</Text>
-            </View>
-          }
-        >
-          <GradientHorizontal />
-        </MaskedView>
+    <TouchableWithoutFeedback onPress={toggleDrawer}>
+      <View style={styles.container}>
+        <GradientHorizontal />
+        <View style={styles.wrapper}>
+          <MaskedView
+            style={{ flex: 1, flexDirection: "row", height: "100%" }}
+            maskElement={
+              <View style={styles.masked}>
+                <View style={styles.icon}>
+                  <MaterialIcons name="menu" size={24} color="black" />
+                </View>
+
+                <Text style={styles.title}>Rollie</Text>
+              </View>
+            }
+          >
+            <GradientHorizontal />
+          </MaskedView>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -40,7 +46,6 @@ const styles = StyleSheet.create({
   container: {
     height: 60,
     width: "100%",
-    //justifyContent: "space-between",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
