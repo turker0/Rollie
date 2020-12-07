@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Home from "../screens/Home";
 import Watched from "../screens/Watched";

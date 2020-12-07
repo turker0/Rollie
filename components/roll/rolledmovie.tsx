@@ -1,5 +1,12 @@
 import React, { FC } from "react";
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
 import MoviePageText from "./moviepagetext";
@@ -10,6 +17,7 @@ import { Movie } from "../../redux/types";
 import { useNavigation } from "@react-navigation/native";
 import colors from "../../style/colors";
 import fonts from "../../style/fonts";
+import GradientBG from "../shared/gradientbg";
 
 const { width, height } = Dimensions.get("window");
 
@@ -35,20 +43,21 @@ const BUTTONS = [
 ];
 
 interface Props {
-  setIsFetched: (bool: boolean) => void;
   movie: Movie;
   roll: any;
+  setMovie: React.Dispatch<React.SetStateAction<Movie>>;
+  rolling: boolean;
 }
 
-const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll }) => {
+const RolledMovie: FC<Props> = ({ movie, roll, setMovie, rolling }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const handler = (key: string) => {
     if (key === "current") {
+      setMovie({});
       dispatch(actionCreators.setCurrentMovie(movie));
       dispatch(actionCreators.editUserByKey(true, "isRolled"));
-      setIsFetched(false);
       navigation.navigate("Home");
     } else {
       dispatch(actionCreators.addMovie(movie, key));
@@ -56,15 +65,31 @@ const RolledMovie: FC<Props> = ({ setIsFetched, movie, roll }) => {
     }
   };
 
+  if (rolling) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <GradientBG />
+        <ActivityIndicator color={colors.pink} size="large" />
+      </View>
+    );
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: colors.dark }}>
+      <View style={styles.blacked} />
       <Image
         source={{ uri: movie.Poster }}
         style={styles.image}
         resizeMode="cover"
         blurRadius={0.25}
       />
-      <View style={styles.blacked} />
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ flex: 1 }}

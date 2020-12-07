@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Animated, Easing } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, Easing, Text } from "react-native";
 
 import full from "../database/full.json";
 import { useSelector } from "react-redux";
@@ -11,54 +11,71 @@ const fetchURL = "http://www.omdbapi.com/?t=",
   apiTail = "&apikey=3c88863d";
 
 const Roll = ({}) => {
-  const [isFetched, setIsFetched] = useState<boolean>(false);
-  const movies: Movies = useSelector((state: Initial) => state.movies);
+  const isRolled: boolean = useSelector(
+    (state: Initial) => state.user.isRolled
+  );
+  const svganim = useRef(new Animated.Value(0)).current;
   const [movie, setMovie] = useState<Movie>({});
-  const svganim = new Animated.Value(0);
+  const movies: Movies = useSelector((state: Initial) => state.movies);
+  const [rolling, setRolling] = useState<boolean>(false);
+
+  useEffect(() => {
+    setRolling(false);
+  }, [movie.Title]);
+
+  useEffect(() => {
+    if (rolling) {
+      fetchMovie();
+    }
+  }, [rolling]);
 
   const roll = () => {
-    if (movies.current) {
-      let x: any = [];
-      movies.watched.map((item) => x.push(item.Title));
-      let filtered: String[] = full.filter((item) => !x.includes(item));
-
-      let mov = filtered[Math.floor(Math.random() * filtered.length)];
-
+    if (!rolling) {
       Animated.timing(svganim, {
         toValue: 4,
-        duration: 2000,
+        duration: 600,
         easing: Easing.linear,
         useNativeDriver: true,
-      }).start(() => {
-        fetch(fetchURL + mov + apiTail, {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            setMovie(res);
-          })
-          .catch((err) => console.log(err));
-      });
+      }).start(() => setRolling(true));
     }
   };
 
-  useEffect(() => {
-    if (movie.Title !== undefined) {
-      setIsFetched(true);
-    }
-  }, [movie.Title]);
+  const fetchMovie = () => {
+    let x: any = [];
+    movies.watched.forEach((item) => x.push(item.Title));
+    let filtered: String[] = full.filter((item) => !x.includes(item));
+    let mov = filtered[Math.floor(Math.random() * filtered.length)];
 
-  if (!isFetched) {
-    return <Rolling roll={roll} svganim={svganim} />;
-  } else {
+    fetch(fetchURL + mov + apiTail, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setMovie(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  if (isRolled) {
+    return <Text style={{ fontSize: 55, color: "#fff" }}>FILM BULDU</Text>;
+  }
+
+  if (movie.Title) {
     return (
-      <RolledMovie setIsFetched={setIsFetched} movie={movie} roll={roll} />
+      <RolledMovie
+        movie={movie}
+        roll={roll}
+        setMovie={setMovie}
+        rolling={rolling}
+      />
     );
   }
+
+  return <Rolling roll={roll} svganim={svganim} />;
 };
 
 export default Roll;

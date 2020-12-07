@@ -1,5 +1,11 @@
 import React, { FC } from "react";
-import { Animated, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Animated,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../style/colors";
 import fonts from "../../style/fonts";
@@ -55,6 +61,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING / 2,
     letterSpacing: 0.5,
     paddingTop: SPACING,
+    textAlign: "center",
   },
   hightlighted: {
     color: colors.purple,
