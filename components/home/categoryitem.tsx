@@ -12,15 +12,17 @@ const SPACING = 30;
 
 interface Props {
   movie: Movie;
+  type: string;
 }
 
-const CategoryItem: FC<Props> = ({ movie }) => {
+const CategoryItem: FC<Props> = ({ movie, type }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate("MoviePage", {
           movie: movie,
+          type: type,
         })
       }
       style={styles.itemContainer}

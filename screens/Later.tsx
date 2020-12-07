@@ -1,24 +1,21 @@
-import { useIsDrawerOpen } from "@react-navigation/drawer";
-import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { animateHeader } from "../components/route/header";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import MovieList from "../components/shared/movielist";
 
-interface Props {}
-
-const LaterMovies = (props: Props) => {
-  const isDrawerOpen = useIsDrawerOpen();
-  useEffect(() => {
-    if (!isDrawerOpen) {
-      animateHeader(0);
-    }
-  }, [isDrawerOpen]);
+const LaterMovies = () => {
   return (
-    <View>
-      <Text>LaterMovies</Text>
+    <View style={styles.container}>
+      <MovieList name="later" />
     </View>
   );
 };
 
 export default LaterMovies;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

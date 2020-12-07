@@ -1,20 +1,19 @@
 import MaskedView from "@react-native-community/masked-view";
 import React from "react";
-import { Animated, StyleSheet, Text, View, Easing } from "react-native";
+import { Animated, StyleSheet, Text, View } from "react-native";
 import colors from "../../style/colors";
 import fonts from "../../style/fonts";
 import GradientHorizontal from "../shared/gradienthorizontal";
 import { MaterialIcons } from "@expo/vector-icons";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 const scrollY = new Animated.Value(0);
 
 const animateHeader = (toValue: number) => {
-  Animated.timing(scrollY, {
+  Animated.spring(scrollY, {
     toValue,
-    duration: 100,
-    easing: Easing.linear,
+    friction: 15,
     useNativeDriver: true,
   }).start();
 };
@@ -23,7 +22,6 @@ const Header = ({}) => {
   const navigation = useNavigation();
 
   const toggleDrawer = () => {
-    animateHeader(60);
     navigation.dispatch(DrawerActions.toggleDrawer());
   };
 
@@ -34,8 +32,8 @@ const Header = ({}) => {
 
   return (
     <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-      <TouchableWithoutFeedback style={{ height: 60 }} onPress={toggleDrawer}>
-        <GradientHorizontal />
+      <GradientHorizontal />
+      <TouchableHighlight style={{ height: 60 }} onPress={toggleDrawer}>
         <View style={styles.wrapper}>
           <MaskedView
             style={{ flex: 1, flexDirection: "row", height: "100%" }}
@@ -52,7 +50,7 @@ const Header = ({}) => {
             <GradientHorizontal />
           </MaskedView>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableHighlight>
     </Animated.View>
   );
 };

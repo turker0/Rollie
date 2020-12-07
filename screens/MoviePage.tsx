@@ -1,20 +1,49 @@
 import React, { FC } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { ScrollView } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import MoviePageText from "../components/roll/moviepagetext";
 import colors from "../style/colors";
 import fonts from "../style/fonts";
+import Buttons from "../components/roll/buttons";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { actionCreators } from "../redux/actions";
 
 const SPACING = 30;
 const { width, height } = Dimensions.get("window");
 
 interface Props {
   route: any;
+  type?: string;
 }
 
+const BUTTONS = [
+  {
+    text: "x",
+    id: "declined",
+  },
+  {
+    text: "check",
+    id: "watched",
+  },
+  {
+    text: "clock",
+    id: "later",
+  },
+];
+
 const MoviePage: FC<Props> = ({ route }) => {
-  const { movie } = route.params;
+  const { movie, type } = route.params;
+
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const handler = (key: string) => {
+    dispatch(actionCreators.addMovie(movie, key));
+    dispatch(actionCreators.removeMovie(movie, type));
+    navigation.goBack();
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -50,25 +79,38 @@ const MoviePage: FC<Props> = ({ route }) => {
           <MoviePageText text={movie.Production} title="Production" />
         </View>
       </ScrollView>
-      {/* <View style={styles.buttonContainer}>
-        <FlatList
-          data={BUTTONS}
-          horizontal
-          bounces={false}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => {
-            return (
-              <Buttons
-                text={item.text}
-                id={item.id}
-                handler={handler}
-                border={index}
-              />
-            );
+      {type && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            alignItems: "center",
+            justifyContent: "center",
+            alignSelf: "center",
+            backgroundColor: colors.dark,
+            width: "100%",
+            paddingVertical: 5,
           }}
-        />
-      </View> */}
+        >
+          <FlatList
+            data={BUTTONS.filter((item) => item.id !== type)}
+            horizontal
+            bounces={false}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item, index }) => {
+              return (
+                <Buttons
+                  text={item.text}
+                  id={item.id}
+                  handler={handler}
+                  border={index}
+                />
+              );
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 };

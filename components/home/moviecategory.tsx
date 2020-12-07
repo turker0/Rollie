@@ -1,7 +1,8 @@
 import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { Movie } from "../../redux/types";
+import { useSelector } from "react-redux";
+import { Initial, Movie } from "../../redux/types";
 import colors from "../../style/colors";
 import fonts from "../../style/fonts";
 import CategoryItem from "./categoryitem";
@@ -10,10 +11,11 @@ const SPACING = 30;
 
 interface Props {
   title: string;
-  movies: Movie[];
+  type: string;
 }
 
-const MovieCategory: FC<Props> = ({ title, movies }) => {
+const MovieCategory: FC<Props> = ({ title, type }) => {
+  const movies: Movie[] = useSelector((state: Initial) => state.movies[type]);
   return (
     <View style={styles.container}>
       <View style={styles.titleWrapper}>
@@ -31,7 +33,7 @@ const MovieCategory: FC<Props> = ({ title, movies }) => {
         keyExtractor={(item) => String(item.Title)}
         contentContainerStyle={styles.contentContainer}
         renderItem={({ item, index }) => {
-          return <CategoryItem movie={item} key={index} />;
+          return <CategoryItem movie={item} key={index} type={type} />;
         }}
       />
       {1 > movies.length ? (

@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, Easing, Text } from "react-native";
+import { Animated, Easing, Text, View } from "react-native";
 
 import full from "../database/full.json";
 import { useSelector } from "react-redux";
 import RolledMovie from "../components/roll/rolledmovie";
 import Rolling from "../components/roll/rolling";
 import { Initial, Movie, Movies } from "../redux/types";
+import fonts from "../style/fonts";
+import colors from "../style/colors";
+import GradientBG from "../components/shared/gradientbg";
 
 const fetchURL = "http://www.omdbapi.com/?t=",
   apiTail = "&apikey=3c88863d";
@@ -61,7 +64,29 @@ const Roll = ({}) => {
   };
 
   if (isRolled) {
-    return <Text style={{ fontSize: 55, color: "#fff" }}>FILM BULDU</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          paddingHorizontal: 30,
+        }}
+      >
+        <GradientBG />
+        <Text
+          style={{
+            fontSize: fonts.text24,
+            fontFamily: "RalewayBold",
+            color: colors.pink,
+            textAlign: "center",
+          }}
+        >
+          You have already rolled a movie.{"\n\n"}
+          <Text style={{ letterSpacing: 1 }}>Enjoy!</Text>
+        </Text>
+      </View>
+    );
   }
 
   if (movie.Title) {

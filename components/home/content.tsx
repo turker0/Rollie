@@ -31,17 +31,9 @@ const Content = ({}) => {
       ) : (
         <CurrentMovie current={movies.current} />
       )}
-      <MovieCategory
-        title="Your last movies"
-        movies={movies.watched
-          .reverse()
-          .filter((_: any, index: number) => index < 10)}
-      />
-      <MovieCategory title="I'll watch later" movies={movies.later.reverse()} />
-      <MovieCategory
-        title="Movies you have declined"
-        movies={movies.declined.reverse()}
-      />
+      <MovieCategory title="Your last movies" type="watched" />
+      <MovieCategory title="I'll watch later" type="later" />
+      <MovieCategory title="Movies you have declined" type="declined" />
     </View>
   );
 };

@@ -5,7 +5,7 @@ import ProfileDropdown from "../components/profile/profiledropdown";
 import { useSelector } from "react-redux";
 import AvatarsList from "../components/profile/avatarslist";
 import { Feather } from "@expo/vector-icons";
-import { Initial, Movies, User } from "../redux/types";
+import { Initial, User } from "../redux/types";
 import GradientBG from "../components/shared/gradientbg";
 import colors from "../style/colors";
 import fonts from "../style/fonts";
@@ -15,7 +15,6 @@ const SPACING = 30;
 
 const Profile = ({}) => {
   const user: User = useSelector((state: Initial) => state.user);
-  const movies: Movies = useSelector((state: Initial) => state.movies);
   const [avatar, setAvatar] = useState<boolean>(false);
   const toggleAvatar = () => {
     setAvatar(!avatar);
@@ -46,16 +45,9 @@ const Profile = ({}) => {
         </TouchableOpacity>
         {avatar && <AvatarsList toggleAvatar={toggleAvatar} />}
         <Text style={styles.dummy}>{user.mail}</Text>
-        <ProfileDropdown
-          title={"Watched (" + movies.watched.length + ")"}
-          color={colors.green}
-          list={movies.watched}
-        />
-        <ProfileDropdown
-          title={"Later (" + movies.later.length + ")"}
-          color={colors.red}
-          list={movies.later}
-        />
+        <ProfileDropdown title="Watched Movies" type="watched" />
+        <ProfileDropdown title="Later Movies" type="later" />
+        <ProfileDropdown title="Declined Movies" type="declined" />
       </View>
     </ScrollView>
   );
