@@ -17,7 +17,7 @@ const Roll = ({}) => {
   const isRolled: boolean = useSelector(
     (state: Initial) => state.user.isRolled
   );
-  const svganim = useRef(new Animated.Value(0)).current;
+  const svganim = new Animated.Value(0);
   const [movie, setMovie] = useState<Movie>({});
   const movies: Movies = useSelector((state: Initial) => state.movies);
   const [rolling, setRolling] = useState<boolean>(false);
@@ -89,7 +89,7 @@ const Roll = ({}) => {
     );
   }
 
-  if (movie.Title) {
+  if (movie.Title !== undefined) {
     return (
       <RolledMovie
         movie={movie}

@@ -1,5 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, StyleSheet, Text, View, Image } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  BackHandler,
+} from "react-native";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actions";
 import {
@@ -8,7 +15,7 @@ import {
   State,
 } from "react-native-gesture-handler";
 import Animated, { Easing } from "react-native-reanimated";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import GradientBG from "../shared/gradientbg";
 import fonts from "../../style/fonts";
 import colors from "../../style/colors";
@@ -33,6 +40,24 @@ const Top10Selector = () => {
       );
     }
   }, [listIndex]);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const onBackPress = () => {
+  //       if (isSelectionModeEnabled()) {
+  //         disableSelectionMode();
+  //         return true;
+  //       } else {
+  //         return false;
+  //       }
+  //     };
+
+  //     BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+  //     return () =>
+  //       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+  //   }, [isSelectionModeEnabled, disableSelectionMode])
+  // );
 
   const onHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
     if (listIndex === topraw.length - 1) {

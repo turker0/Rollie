@@ -1,8 +1,9 @@
 import React, { FC } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
 import colors from "../../style/colors";
+import fonts from "../../style/fonts";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
@@ -10,22 +11,28 @@ const { width } = Dimensions.get("window");
 interface Props {
   handler: (id: string) => void;
   id: string;
+  name: string;
   text: string;
   border: number;
 }
 
-const Buttons: FC<Props> = ({ handler, id, text, border }) => {
+const Buttons: FC<Props> = ({ handler, id, name, border, text }) => {
   return (
-    <TouchableOpacity onPress={() => handler(id)} style={styles.button}>
-      <Feather
-        name={text}
-        size={24}
-        color={colors.pink}
+    <TouchableOpacity onPress={() => handler(id)}>
+      <View
         style={[
-          styles.border,
-          border === 0 ? { borderLeftWidth: 0 } : { borderLeftWidth: 1 },
+          styles.button,
+          border !== 0
+            ? {
+                borderLeftWidth: 1,
+                borderLeftColor: colors.gray,
+              }
+            : null,
         ]}
-      />
+      >
+        <Feather name={name} size={24} color={colors.pink} />
+        <Text style={styles.text}>{text}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -33,15 +40,18 @@ export default Buttons;
 
 const styles = StyleSheet.create({
   button: {
-    height: SPACING * 1.2,
     width: width * 0.25,
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
   border: {
-    flex: 1,
     textAlign: "center",
-    borderColor: colors.gray,
+  },
+  text: {
+    width: "100%",
+    fontSize: fonts.text12,
+    fontFamily: "RalewayMedium",
+    color: colors.pink,
+    textAlign: "center",
   },
 });

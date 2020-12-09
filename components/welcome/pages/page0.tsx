@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width,
     paddingHorizontal: "8%",
+    paddingTop: "20%",
   },
   text: {
     fontSize: fonts.text52,

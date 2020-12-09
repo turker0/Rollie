@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import { Initial } from "../../../redux/types";
 import colors from "../../../style/colors";
 import fonts from "../../../style/fonts";
-import TextWrapper from "../../shared/textwrapper";
 import Input from "./input";
 
 const SPACING = 30;
@@ -67,8 +66,8 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   };
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
-      <View style={styles.page}>
+    <View style={styles.page}>
+      <KeyboardAwareScrollView>
         <Text style={styles.description}>
           But first to continue, create a profile.
         </Text>
@@ -94,14 +93,12 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
           maxLength={20}
         />
         <TouchableOpacity onPress={navigate}>
-          <Animated.View style={{ opacity }}>
-            <TextWrapper style={styles.wrapper}>
-              <Text style={styles.buttonTet}>create</Text>
-            </TextWrapper>
+          <Animated.View style={[styles.wrapper, { opacity }]}>
+            <Text style={styles.buttonTet}>create</Text>
           </Animated.View>
         </TouchableOpacity>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </View>
   );
 };
 
@@ -111,6 +108,7 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     width,
+    paddingTop: "20%",
     paddingHorizontal: "8%",
   },
   description: {
@@ -123,8 +121,19 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: "7.5%",
+    paddingVertical: "2.5%",
+    borderRadius: 4,
     backgroundColor: colors.pink,
     marginTop: SPACING,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
   },
   buttonTet: {
     fontSize: fonts.text20,

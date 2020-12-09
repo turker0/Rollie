@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
-import MoviePageText from "./moviepagetext";
+import MoviePageText from "../shared/moviepagetext";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../../redux/actions";
 import Buttons from "./buttons";
@@ -18,6 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import colors from "../../style/colors";
 import fonts from "../../style/fonts";
 import GradientBG from "../shared/gradientbg";
+import MovieStatText from "../shared/moviestattext";
 
 const { width, height } = Dimensions.get("window");
 
@@ -25,26 +26,30 @@ const SPACING = 30;
 
 const BUTTONS = [
   {
-    text: "plus",
+    name: "plus",
     id: "current",
+    text: "current",
   },
   {
-    text: "x",
+    name: "x",
     id: "declined",
+    text: "next",
   },
   {
-    text: "check",
+    name: "check",
     id: "watched",
+    text: "watched",
   },
   {
-    text: "clock",
+    name: "clock",
     id: "later",
+    text: "later",
   },
 ];
 
 interface Props {
   movie: Movie;
-  roll: any;
+  roll: () => void;
   setMovie: React.Dispatch<React.SetStateAction<Movie>>;
   rolling: boolean;
 }
@@ -89,7 +94,6 @@ const RolledMovie: FC<Props> = ({ movie, roll, setMovie, rolling }) => {
         resizeMode="cover"
         blurRadius={0.25}
       />
-
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ flex: 1 }}
@@ -97,16 +101,18 @@ const RolledMovie: FC<Props> = ({ movie, roll, setMovie, rolling }) => {
       >
         <View style={styles.container}>
           <Text style={styles.title}>{movie.Title}</Text>
-          <View style={styles.rowLine}>
-            <FontAwesome name="star" size={24} color={colors.yellow} />
-            <Text style={[styles.details, { marginLeft: 10 }]}>
-              {movie.imdbRating} {"   "} {movie.Year} {"   "} {movie.Runtime}
-            </Text>
+          <View style={styles.statsBG}>
+            <View style={styles.rowLine}>
+              <MovieStatText icon="star" text={movie.imdbRating} margin />
+              <MovieStatText icon="calendar" text={movie.Year} margin />
+              <MovieStatText icon="clock-o" text={movie.Runtime} />
+            </View>
+            <View style={styles.rowLine}>
+              <MovieStatText icon="filter" text={movie.Genre} margin />
+              <MovieStatText icon="globe" text={movie.Country} margin />
+              <MovieStatText icon="comments" text={movie.Language} />
+            </View>
           </View>
-          <Text style={[styles.details, { marginBottom: SPACING }]}>
-            {movie.Genre} {"   "} {movie.Country} {"   "} Language:{" "}
-            {movie.Language}
-          </Text>
           <MoviePageText text={movie.Plot} title="Plot" />
           <MoviePageText text={movie.Director} title="Director" />
           <MoviePageText text={movie.Writer} title="Writer" />
@@ -125,6 +131,7 @@ const RolledMovie: FC<Props> = ({ movie, roll, setMovie, rolling }) => {
           renderItem={({ item, index }) => {
             return (
               <Buttons
+                name={item.name}
                 text={item.text}
                 id={item.id}
                 handler={handler}
@@ -170,22 +177,42 @@ const styles = StyleSheet.create({
   },
   rowLine: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
     marginBottom: SPACING / 6,
-  },
-  title: {
-    fontSize: fonts.text32,
-    color: colors.white,
-    fontFamily: "RalewayBlack",
-    marginBottom: SPACING / 2,
-    letterSpacing: 0.5,
-    paddingTop: SPACING * 3,
   },
   details: {
     fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
     color: colors.white,
     lineHeight: SPACING * 1,
+  },
+  statsBG: {
+    paddingVertical: SPACING / 3,
+    paddingHorizontal: "4%",
+    marginBottom: SPACING,
+    backgroundColor: "rgba(0,0,0,.85)",
+    borderRadius: 4,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    zIndex: 7,
+    elevation: 7,
+  },
+  title: {
+    fontSize: fonts.text32,
+    color: colors.pink,
+    fontFamily: "RalewayBlack",
+    paddingHorizontal: "4%",
+    letterSpacing: 0.5,
+    marginVertical: 15,
+    paddingVertical: 10,
+    backgroundColor: "rgba(0,0,0,.85)",
+    borderRadius: 4,
   },
   buttonContainer: {
     position: "absolute",

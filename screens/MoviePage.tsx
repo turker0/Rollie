@@ -2,13 +2,15 @@ import React, { FC } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
-import MoviePageText from "../components/roll/moviepagetext";
+import MoviePageText from "../components/shared/moviepagetext";
 import colors from "../style/colors";
 import fonts from "../style/fonts";
 import Buttons from "../components/roll/buttons";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { actionCreators } from "../redux/actions";
+import BackButton from "../components/shared/backbutton";
+import MovieStatText from "../components/shared/moviestattext";
 
 const SPACING = 30;
 const { width, height } = Dimensions.get("window");
@@ -20,16 +22,19 @@ interface Props {
 
 const BUTTONS = [
   {
-    text: "x",
+    name: "x",
     id: "declined",
+    text: "next",
   },
   {
-    text: "check",
+    name: "check",
     id: "watched",
+    text: "watched",
   },
   {
-    text: "clock",
+    name: "clock",
     id: "later",
+    text: "later",
   },
 ];
 
@@ -60,17 +65,20 @@ const MoviePage: FC<Props> = ({ route }) => {
         contentContainerStyle={{ paddingHorizontal: "4%" }}
       >
         <View style={styles.container}>
+          <BackButton title={movie.Title} />
           <Text style={styles.title}>{movie.Title}</Text>
-          <View style={styles.rowLine}>
-            <FontAwesome name="star" size={24} color={colors.yellow} />
-            <Text style={[styles.details, { marginLeft: 10 }]}>
-              {movie.imdbRating} {"   "} {movie.Year} {"   "} {movie.Runtime}
-            </Text>
+          <View style={styles.statsBG}>
+            <View style={styles.rowLine}>
+              <MovieStatText icon="star" text={movie.imdbRating} margin />
+              <MovieStatText icon="calendar" text={movie.Year} margin />
+              <MovieStatText icon="clock-o" text={movie.Runtime} />
+            </View>
+            <View style={styles.rowLine}>
+              <MovieStatText icon="filter" text={movie.Genre} margin />
+              <MovieStatText icon="globe" text={movie.Country} margin />
+              <MovieStatText icon="comments" text={movie.Language} />
+            </View>
           </View>
-          <Text style={[styles.details, { marginBottom: SPACING }]}>
-            {movie.Genre} {"   "} {movie.Country} {"   "} Language:{" "}
-            {movie.Language}
-          </Text>
           <MoviePageText text={movie.Plot} title="Plot" />
           <MoviePageText text={movie.Director} title="Director" />
           <MoviePageText text={movie.Writer} title="Writer" />
@@ -80,18 +88,7 @@ const MoviePage: FC<Props> = ({ route }) => {
         </View>
       </ScrollView>
       {type && (
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            alignItems: "center",
-            justifyContent: "center",
-            alignSelf: "center",
-            backgroundColor: colors.dark,
-            width: "100%",
-            paddingVertical: 5,
-          }}
-        >
+        <View style={styles.buttonContainer}>
           <FlatList
             data={BUTTONS.filter((item) => item.id !== type)}
             horizontal
@@ -101,6 +98,7 @@ const MoviePage: FC<Props> = ({ route }) => {
             renderItem={({ item, index }) => {
               return (
                 <Buttons
+                  name={item.name}
                   text={item.text}
                   id={item.id}
                   handler={handler}
@@ -147,22 +145,42 @@ const styles = StyleSheet.create({
   },
   rowLine: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
     marginBottom: SPACING / 6,
-  },
-  title: {
-    fontSize: fonts.text32,
-    color: colors.white,
-    fontFamily: "RalewayBlack",
-    marginBottom: SPACING / 2,
-    letterSpacing: 0.5,
-    paddingTop: SPACING * 3,
   },
   details: {
     fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
     color: colors.white,
     lineHeight: SPACING * 1,
+  },
+  statsBG: {
+    paddingVertical: SPACING / 3,
+    paddingHorizontal: "4%",
+    marginBottom: SPACING,
+    backgroundColor: "rgba(0,0,0,.85)",
+    borderRadius: 4,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    zIndex: 7,
+    elevation: 7,
+  },
+  title: {
+    fontSize: fonts.text32,
+    color: colors.pink,
+    fontFamily: "RalewayBlack",
+    paddingHorizontal: "4%",
+    letterSpacing: 0.5,
+    marginVertical: 15,
+    paddingVertical: 10,
+    backgroundColor: "rgba(0,0,0,.85)",
+    borderRadius: 4,
   },
   buttonContainer: {
     position: "absolute",

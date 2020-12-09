@@ -73,9 +73,6 @@ const Newcomer = () => {
         horizontal
         pagingEnabled
         onViewableItemsChanged={onViewableItemsChanged}
-        contentContainerStyle={{
-          paddingTop: SPACING * 3,
-        }}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
           { useNativeDriver: false }

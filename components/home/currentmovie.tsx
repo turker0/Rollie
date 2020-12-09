@@ -16,16 +16,19 @@ const { width } = Dimensions.get("window"),
 
 const BUTTONS = [
   {
-    text: "check",
+    name: "check",
     id: "watched",
+    text: "watched",
   },
   {
-    text: "x",
+    name: "x",
     id: "declined",
+    text: "next",
   },
   {
-    text: "clock",
+    name: "clock",
     id: "later",
+    text: "later",
   },
 ];
 
@@ -75,7 +78,6 @@ const CurrentMovie: FC<Props> = ({ current }) => {
           <View
             style={{
               flex: 1,
-              justifyContent: "space-evenly",
             }}
           >
             {BUTTONS.map((item) => {
@@ -83,6 +85,7 @@ const CurrentMovie: FC<Props> = ({ current }) => {
                 <Buttons
                   key={item.id}
                   id={item.id}
+                  name={item.name}
                   text={item.text}
                   handler={buttonHandler}
                 />

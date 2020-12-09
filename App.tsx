@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AppLoading } from "expo";
 import { useFonts } from "expo-font";
 import { createStore } from "redux";
@@ -22,6 +22,18 @@ export default function App() {
     RalewaySemiBold: require("./assets/fonts/Raleway-SemiBold.ttf"),
   });
 
+  const [isNew, setIsNew] = useState(true);
+
+  useEffect(() => {
+    console.log("xddd");
+    checkIsNew();
+  }, []);
+
+  const checkIsNew = () => {
+    console.log("checking...");
+    //setIsNew(false);
+  };
+
   if (!loaded) {
     return <AppLoading />;
   } else {
@@ -32,9 +44,10 @@ export default function App() {
             screenOptions={{
               headerShown: false,
             }}
+            initialRouteName={isNew ? "Welcome" : "Home"}
           >
-            <Stack.Screen name="Home" component={HomeBottomTabs} />
             <Stack.Screen name="Welcome" component={WelcomeRoute} />
+            <Stack.Screen name="Home" component={HomeBottomTabs} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

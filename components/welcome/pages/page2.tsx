@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     width,
+    paddingTop: "20%",
     paddingHorizontal: "8%",
   },
   description: {
