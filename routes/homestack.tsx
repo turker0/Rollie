@@ -9,7 +9,7 @@ import Header from "../components/route/header";
 
 const Stack = createStackNavigator();
 
-export default function HomeStack({}) {
+export default function HomeStack() {
   return (
     <Stack.Navigator
       initialRouteName="Home"

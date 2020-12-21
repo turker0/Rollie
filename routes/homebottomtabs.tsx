@@ -7,7 +7,7 @@ import Tabbar from "../components/route/tabbar";
 
 const Tab = createBottomTabNavigator();
 
-export default function HomeBottomTabs({}) {
+export default function HomeBottomTabs() {
   return (
     <Tab.Navigator
       initialRouteName="Home"

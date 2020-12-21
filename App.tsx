@@ -8,6 +8,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeBottomTabs from "./routes/homebottomtabs";
 import WelcomeRoute from "./routes/welcomeroute";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/react-hooks";
+
+const client = new ApolloClient({
+  uri: "http://192.168.1.6:8080/graphql",
+  cache: new InMemoryCache(),
+});
 
 const store = createStore(reducer);
 const Stack = createStackNavigator();
@@ -31,7 +38,7 @@ export default function App() {
 
   const checkIsNew = () => {
     console.log("checking...");
-    //setIsNew(false);
+    setIsNew(false);
   };
 
   if (!loaded) {
@@ -39,17 +46,19 @@ export default function App() {
   } else {
     return (
       <Provider store={store}>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-            initialRouteName={isNew ? "Welcome" : "Home"}
-          >
-            <Stack.Screen name="Welcome" component={WelcomeRoute} />
-            <Stack.Screen name="Home" component={HomeBottomTabs} />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <ApolloProvider client={client}>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+              initialRouteName="Welcome"
+            >
+              <Stack.Screen name="Welcome" component={WelcomeRoute} />
+              <Stack.Screen name="Home" component={HomeBottomTabs} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </ApolloProvider>
       </Provider>
     );
   }

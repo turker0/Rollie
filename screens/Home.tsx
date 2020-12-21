@@ -4,11 +4,7 @@ import GradientBG from "../components/shared/gradientbg";
 import { scrollY } from "../components/route/header";
 import { Animated } from "react-native";
 
-interface Props {
-  route: any;
-}
-
-const Home: FC<Props> = ({}) => {
+const Home = () => {
   return (
     <Animated.ScrollView
       showsVerticalScrollIndicator={false}

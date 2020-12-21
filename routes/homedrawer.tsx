@@ -8,7 +8,7 @@ import Drawer from "../components/route/drawer";
 
 const DrawerStack = createDrawerNavigator();
 
-const HomeDrawer = ({}) => {
+const HomeDrawer = () => {
   return (
     <DrawerStack.Navigator
       initialRouteName="Home"

@@ -1,6 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { FC, RefObject, useEffect, useRef, useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated, { Easing } from "react-native-reanimated";
@@ -9,6 +15,8 @@ import { Initial } from "../../../redux/types";
 import colors from "../../../style/colors";
 import fonts from "../../../style/fonts";
 import Input from "./input";
+import { useMutation } from "@apollo/react-hooks";
+import { register } from "../../../graphql/queries";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
@@ -24,6 +32,8 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   const [error, setError] = useState<boolean>(true);
   const opacity = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
+  const [registerUser, { data }] = useMutation(register);
+  const [isSending, setisSending] = useState<boolean>(false);
 
   const input2Focus = () => {
     if (input2.current !== null) {
@@ -51,6 +61,13 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    setisSending(false);
+    if (data !== undefined && data.register === true) {
+      navigation.navigate("Top10Selector");
+    }
+  }, [data]);
+
   const animateButton = (toValue: number) => {
     Animated.timing(opacity, {
       toValue,
@@ -61,8 +78,15 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
     });
   };
 
-  const navigate = () => {
-    navigation.navigate("Top10Selector");
+  const registerHandle = async () => {
+    setisSending(true);
+    await registerUser({
+      variables: {
+        username: user.username,
+        email: user.mail,
+        password: user.password,
+      },
+    });
   };
 
   return (
@@ -71,6 +95,9 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
         <Text style={styles.description}>
           But first to continue, create a profile.
         </Text>
+        {data !== undefined && data.register === false ? (
+          <Text style={styles.error}>Email is used.</Text>
+        ) : null}
         <Input
           placeholder="E-mail"
           id="mail"
@@ -92,10 +119,18 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
           ref={input3}
           maxLength={20}
         />
-        <TouchableOpacity onPress={navigate}>
-          <Animated.View style={[styles.wrapper, { opacity }]}>
-            <Text style={styles.buttonTet}>create</Text>
-          </Animated.View>
+        <TouchableOpacity onPress={registerHandle}>
+          {!isSending ? (
+            <Animated.View style={[styles.wrapper, { opacity }]}>
+              <Text style={styles.buttonText}>create</Text>
+            </Animated.View>
+          ) : (
+            <ActivityIndicator
+              size="large"
+              color="#fff"
+              style={styles.wrapper}
+            />
+          )}
         </TouchableOpacity>
       </KeyboardAwareScrollView>
     </View>
@@ -135,9 +170,15 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 7,
   },
-  buttonTet: {
+  buttonText: {
     fontSize: fonts.text20,
     fontFamily: "RalewaySemiBold",
     color: colors.white,
+  },
+  error: {
+    fontSize: fonts.text16,
+    color: colors.red,
+    fontFamily: "RalewaySemiBold",
+    marginBottom: 15,
   },
 });
