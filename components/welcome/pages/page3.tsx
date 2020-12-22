@@ -11,10 +11,10 @@ import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated, { Easing } from "react-native-reanimated";
 import { useSelector } from "react-redux";
-import { Initial } from "../../../redux/types";
+import { User } from "../../../redux/types";
 import colors from "../../../style/colors";
 import fonts from "../../../style/fonts";
-import Input from "./input";
+import Input from "../../shared/input";
 import { useMutation } from "@apollo/react-hooks";
 import { register } from "../../../graphql/queries";
 
@@ -28,12 +28,12 @@ interface Props {
 const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   const input2: any = useRef<TextInput>(null);
   const input3: any = useRef<TextInput>(null);
-  const user = useSelector((state: Initial) => state.user);
+  const user = useSelector((state: User) => state);
   const [error, setError] = useState<boolean>(true);
   const opacity = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
   const [registerUser, { data }] = useMutation(register);
-  const [isSending, setisSending] = useState<boolean>(false);
+  const [isSending, setIsSending] = useState<boolean>(false);
 
   const input2Focus = () => {
     if (input2.current !== null) {
@@ -62,8 +62,9 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   }, [user]);
 
   useEffect(() => {
-    setisSending(false);
+    setIsSending(false);
     if (data !== undefined && data.register === true) {
+      //dispatch setuser data
       navigation.navigate("Top10Selector");
     }
   }, [data]);
@@ -79,7 +80,7 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   };
 
   const registerHandle = async () => {
-    setisSending(true);
+    setIsSending(true);
     await registerUser({
       variables: {
         username: user.username,

@@ -1,55 +1,60 @@
 import {
-  REGISTERUSER,
   EDITUSERBYKEY,
   ADDMOVIE,
   REMOVEMOVIE,
   SETCURRENTMOVIE,
+  User,
   Movie,
-  Initial,
-  ActionTypes,
-  registerUserAction,
+  Movies,
   editUserByKeyAction,
   addMovieAction,
   removeMovieAction,
   setCurrentMovieAction,
+  setUserAction,
+  ActionTypes,
+  SETUSER,
 } from "./types";
 
-const initialState: Initial = {
-  user: {
-    username: "",
-    mail: "",
-    password: "",
-    avatar: undefined,
-    isNew: true,
-    isRolled: false,
-  },
+const initialState: User = {
+  username: "",
+  mail: "",
+  password: "",
+  avatar: undefined,
+  isNew: true,
+  isRolled: false,
+  isLoggedIn: false,
   movies: {
     watched: [],
-    //notWatched: [],
     later: [],
     declined: [],
     current: {},
   },
 };
 
-const registerUser = (state: Initial, action: registerUserAction) => {
+export const resetState: User = {
+  username: "",
+  mail: "",
+  password: "",
+  avatar: undefined,
+  isNew: false,
+  isRolled: false,
+  isLoggedIn: false,
+  movies: {
+    watched: [],
+    later: [],
+    declined: [],
+    current: {},
+  },
+};
+
+const editUserByKey = (state: User, action: editUserByKeyAction) => {
   return {
     ...state,
-    user: action.payload,
+    [action.key]: action.payload,
   };
 };
 
-const editUserByKey = (state: Initial, action: editUserByKeyAction) => {
-  return {
-    ...state,
-    user: {
-      ...state.user,
-      [action.key]: action.payload,
-    },
-  };
-};
-
-const addMovie = (state: Initial, action: addMovieAction) => {
+const addMovie = (state: User, action: addMovieAction) => {
   return {
     ...state,
     movies: {
@@ -59,7 +64,7 @@ const addMovie = (state: Initial, action: addMovieAction) => {
   };
 };
 
-const removeMovie = (state: Initial, action: removeMovieAction) => {
+const removeMovie = (state: User, action: removeMovieAction) => {
   return {
     ...state,
     movies: {
@@ -73,7 +78,7 @@ const removeMovie = (state: Initial, action: removeMovieAction) => {
   };
 };
 
-const setCurrentMovie = (state: Initial, action: setCurrentMovieAction) => {
+const setCurrentMovie = (state: User, action: setCurrentMovieAction) => {
   return {
     ...state,
     movies: {
@@ -83,10 +88,16 @@ const setCurrentMovie = (state: Initial, action: setCurrentMovieAction) => {
   };
 };
 
-const reducer = (state = initialState, action: ActionTypes): Initial => {
+const setUser = (state: User, action: setUserAction) => {
+  return {
+    ...resetState,
+  };
+};
+
+const reducer = (state = initialState, action: ActionTypes): User => {
   switch (action.type) {
-    case REGISTERUSER:
-      return registerUser(state, action);
+    case SETUSER:
+      return setUser(state, action);
     case EDITUSERBYKEY:
       return editUserByKey(state, action);
     case ADDMOVIE:

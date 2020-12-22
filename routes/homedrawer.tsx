@@ -5,6 +5,7 @@ import Watched from "../screens/Watched";
 import Later from "../screens/Later";
 import Declined from "../screens/Declined";
 import Drawer from "../components/route/drawer";
+import Logout from "../screens/Logout";
 
 const DrawerStack = createDrawerNavigator();
 
@@ -23,6 +24,7 @@ const HomeDrawer = () => {
       <DrawerStack.Screen name="Watched" component={Watched} />
       <DrawerStack.Screen name="Later" component={Later} />
       <DrawerStack.Screen name="Declined" component={Declined} />
+      <DrawerStack.Screen name="Logout" component={Logout} />
     </DrawerStack.Navigator>
   );
 };

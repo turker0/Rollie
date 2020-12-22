@@ -15,7 +15,7 @@ import {
   State,
 } from "react-native-gesture-handler";
 import Animated, { Easing } from "react-native-reanimated";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import GradientBG from "../shared/gradientbg";
 import fonts from "../../style/fonts";
 import colors from "../../style/colors";

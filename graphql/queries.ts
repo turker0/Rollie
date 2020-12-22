@@ -5,3 +5,24 @@ export const register = gql`
     register(input: { username: $username, email: $email, password: $password })
   }
 `;
+
+export const login = gql`
+  mutation($email: String!, $password: String!) {
+    login(input: { email: $email, password: $password }) {
+      username
+      email
+      password
+      movies {
+        watched {
+          Title
+        }
+        later {
+          Title
+        }
+        declined {
+          Title
+        }
+      }
+    }
+  }
+`;

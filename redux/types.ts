@@ -1,12 +1,12 @@
-import Svg from "react-native-svg";
-
 interface User {
   username: string;
   mail: string;
   password: string;
   isNew: boolean;
   isRolled: boolean;
+  isLoggedIn: boolean;
   avatar?: JSX.Element;
+  movies: Movies;
 }
 
 interface Movie {
@@ -26,28 +26,18 @@ interface Movie {
   Production?: string;
 }
 interface Movies {
-  [key: string]: any; //
+  [key: string]: any;
   watched: Movie[];
   later: Movie[];
   declined: Movie[];
   current: {};
 }
 
-interface Initial {
-  user: User;
-  movies: Movies;
-}
-
-const REGISTERUSER = "REGISTERUSER";
+const SETUSER = "SETUSER";
 const EDITUSERBYKEY = "EDITUSERBYKEY";
 const ADDMOVIE = "ADDMOVIE";
 const REMOVEMOVIE = "REMOVEMOVIE";
 const SETCURRENTMOVIE = "SETCURRENTMOVIE";
-
-interface registerUserAction {
-  type: typeof REGISTERUSER;
-  payload: User;
-}
 
 interface editUserByKeyAction {
   type: typeof EDITUSERBYKEY;
@@ -72,26 +62,27 @@ interface setCurrentMovieAction {
   payload: Movie;
 }
 
-export {
-  REGISTERUSER,
-  EDITUSERBYKEY,
-  ADDMOVIE,
-  REMOVEMOVIE,
-  SETCURRENTMOVIE,
+interface setUserAction {
+  type: typeof SETUSER;
+  payload: User;
+}
+
+export { EDITUSERBYKEY, ADDMOVIE, REMOVEMOVIE, SETCURRENTMOVIE, SETUSER };
+
+export type ActionTypes =
+  | editUserByKeyAction
+  | addMovieAction
+  | removeMovieAction
+  | setCurrentMovieAction
+  | setUserAction;
+
+export type {
   User,
   Movie,
   Movies,
-  Initial,
-  registerUserAction,
   editUserByKeyAction,
   addMovieAction,
   removeMovieAction,
   setCurrentMovieAction,
+  setUserAction,
 };
-
-export type ActionTypes =
-  | registerUserAction
-  | editUserByKeyAction
-  | addMovieAction
-  | removeMovieAction
-  | setCurrentMovieAction;

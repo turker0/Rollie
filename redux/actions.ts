@@ -1,5 +1,5 @@
 import {
-  REGISTERUSER,
+  SETUSER,
   EDITUSERBYKEY,
   ADDMOVIE,
   REMOVEMOVIE,
@@ -9,9 +9,9 @@ import {
   User,
 } from "./types";
 
-const registerUser = (user: User): ActionTypes => {
+const setUser = (user: User): ActionTypes => {
   return {
-    type: REGISTERUSER,
+    type: SETUSER,
     payload: user,
   };
 };
@@ -50,7 +50,7 @@ const setCurrentMovie = (movie: Movie): ActionTypes => {
 };
 
 const actionCreators = {
-  registerUser,
+  setUser,
   addMovie,
   removeMovie,
   editUserByKey,

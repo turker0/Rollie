@@ -26,6 +26,11 @@ const drawerTabs = [
     to: "Later",
     icon: "clock",
   },
+  {
+    label: "Logout",
+    to: "Logout",
+    icon: "log-out",
+  },
 ];
 
 interface Props {

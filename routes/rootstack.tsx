@@ -2,14 +2,16 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Initial } from "../redux/types";
+import { User } from "../redux/types";
+import Login from "../screens/Login";
 import HomeBottomTabs from "./homebottomtabs";
 import WelcomeRoute from "./welcomeroute";
 
 const Stack = createStackNavigator();
 
 const RootStack = () => {
-  const isNew = useSelector((state: Initial) => state.user.isNew);
+  const isNew = useSelector((state: User) => state.isNew);
+  const isLoggedIn = useSelector((state: User) => state.isLoggedIn);
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -19,7 +21,10 @@ const RootStack = () => {
         initialRouteName={isNew ? "Welcome" : "Home"}
       >
         <Stack.Screen name="Welcome" component={WelcomeRoute} />
-        <Stack.Screen name="Home" component={HomeBottomTabs} />
+        <Stack.Screen
+          name="Home"
+          component={isLoggedIn ? HomeBottomTabs : Login}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

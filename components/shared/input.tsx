@@ -2,9 +2,9 @@ import React, { Ref, RefObject, useCallback, useRef, useState } from "react";
 import { StyleSheet, View, Animated, Easing } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
-import { actionCreators } from "../../../redux/actions";
-import colors from "../../../style/colors";
-import fonts from "../../../style/fonts";
+import { actionCreators } from "../../redux/actions";
+import colors from "../../style/colors";
+import fonts from "../../style/fonts";
 
 const SPACING = 30;
 
@@ -15,11 +15,12 @@ interface Props {
   ref: RefObject<TextInput>;
   nextHandler?: () => void;
   isPassword?: boolean;
+  setter?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Input = React.forwardRef<TextInput, Props>(
   (
-    { placeholder, id, maxLength, nextHandler, isPassword },
+    { placeholder, id, maxLength, nextHandler, isPassword, setter },
     ref: Ref<TextInput>
   ) => {
     const dispatch = useDispatch();
@@ -30,6 +31,18 @@ const Input = React.forwardRef<TextInput, Props>(
     const animatedPlaceholder = useRef(new Animated.Value(0)).current;
 
     const onChangeHandler = (text: string) => {
+      inputAnimations(text);
+      dispatch(actionCreators.editUserByKey(text, id));
+    };
+
+    function onChangeHandlerState(text: string) {
+      inputAnimations(text);
+      if (setter) {
+        setter(text);
+      }
+    }
+
+    function inputAnimations(text: string) {
       if (text.length === 0) {
         placeholderAnimation(0);
       } else {
@@ -40,8 +53,7 @@ const Input = React.forwardRef<TextInput, Props>(
       } else {
         greenTextColor(0, false);
       }
-      dispatch(actionCreators.editUserByKey(text, id));
-    };
+    }
 
     const onFocus = () => {
       if (!isFocused) {
@@ -129,7 +141,11 @@ const Input = React.forwardRef<TextInput, Props>(
         <TextInput
           ref={ref}
           placeholder={placeholder}
-          onChangeText={(text) => onChangeHandler(text)}
+          onChangeText={(text) =>
+            setter !== undefined
+              ? onChangeHandlerState(text)
+              : onChangeHandler(text)
+          }
           maxLength={maxLength}
           onFocus={onFocus}
           onSubmitEditing={nextHandler}

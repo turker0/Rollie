@@ -3,7 +3,6 @@ import { AppLoading } from "expo";
 import { useFonts } from "expo-font";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { createStackNavigator } from "@react-navigation/stack";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/react-hooks";
 import reduxStore from "./redux/store";
