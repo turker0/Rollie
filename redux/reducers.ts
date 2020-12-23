@@ -46,6 +46,21 @@ export const resetState: User = {
     current: {},
   },
 };
+export const hardReset: User = {
+  username: "",
+  mail: "",
+  password: "",
+  avatar: undefined,
+  isNew: true,
+  isRolled: false,
+  isLoggedIn: false,
+  movies: {
+    watched: [],
+    later: [],
+    declined: [],
+    current: {},
+  },
+};
 
 const editUserByKey = (state: User, action: editUserByKeyAction) => {
   return {
@@ -90,7 +105,7 @@ const setCurrentMovie = (state: User, action: setCurrentMovieAction) => {
 
 const setUser = (state: User, action: setUserAction) => {
   return {
-    ...resetState,
+    ...action.payload,
   };
 };
 

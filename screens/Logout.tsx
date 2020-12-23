@@ -14,12 +14,6 @@ const Logout = (props: Props) => {
     dispatch(actionCreators.setUser(resetState));
   }, []);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  //dispatch(actionCreators.editUserByKey(false, "isLoggedIn"));
-
   return <View />;
 };
 

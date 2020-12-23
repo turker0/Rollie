@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Roll from "./roll";
 import CurrentMovie from "./currentmovie";
 import MovieCategory from "./moviecategory";
-import { Initial, Movies } from "../../redux/types";
+import { User, Movies } from "../../redux/types";
 import { useNavigation } from "@react-navigation/native";
 import fonts from "../../style/fonts";
 import colors from "../../style/colors";
@@ -13,10 +13,8 @@ const SPACING = 30;
 
 const Content = ({}) => {
   const navigation = useNavigation();
-  const isRolled: boolean = useSelector(
-    (state: Initial) => state.user.isRolled
-  );
-  const movies: Movies = useSelector((state: Initial) => state.movies);
+  const isRolled: boolean = useSelector((state: User) => state.isRolled);
+  const movies: Movies = useSelector((state: User) => state.movies);
 
   const roll = () => {
     navigation.navigate("Roll");

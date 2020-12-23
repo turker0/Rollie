@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Animated, Easing, Text, View } from "react-native";
 
 import full from "../database/full.json";
 import { useSelector } from "react-redux";
 import RolledMovie from "../components/roll/rolledmovie";
 import Rolling from "../components/roll/rolling";
-import { Initial, Movie, Movies } from "../redux/types";
+import { User, Movie, Movies } from "../redux/types";
 import fonts from "../style/fonts";
 import colors from "../style/colors";
 import GradientBG from "../components/shared/gradientbg";
@@ -14,12 +14,10 @@ const fetchURL = "http://www.omdbapi.com/?t=",
   apiTail = "&apikey=3c88863d";
 
 const Roll = ({}) => {
-  const isRolled: boolean = useSelector(
-    (state: Initial) => state.user.isRolled
-  );
+  const isRolled: boolean = useSelector((state: User) => state.isRolled);
   const svganim = new Animated.Value(0);
   const [movie, setMovie] = useState<Movie>({});
-  const movies: Movies = useSelector((state: Initial) => state.movies);
+  const movies: Movies = useSelector((state: User) => state.movies);
   const [rolling, setRolling] = useState<boolean>(false);
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import ProfileDropdown from "../components/profile/profiledropdown";
 import { useSelector } from "react-redux";
 import AvatarsList from "../components/profile/avatarslist";
 import { Feather } from "@expo/vector-icons";
-import { Initial, User } from "../redux/types";
+import { User } from "../redux/types";
 import GradientBG from "../components/shared/gradientbg";
 import colors from "../style/colors";
 import fonts from "../style/fonts";
@@ -14,7 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 const SPACING = 30;
 
 const Profile = ({}) => {
-  const user: User = useSelector((state: Initial) => state.user);
+  const user: User = useSelector((state: User) => state);
   const [avatar, setAvatar] = useState<boolean>(false);
   const toggleAvatar = () => {
     setAvatar(!avatar);

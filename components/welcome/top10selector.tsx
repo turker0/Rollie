@@ -7,7 +7,7 @@ import {
   Image,
   BackHandler,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux/actions";
 import {
   PanGestureHandler,
@@ -15,12 +15,14 @@ import {
   State,
 } from "react-native-gesture-handler";
 import Animated, { Easing } from "react-native-reanimated";
-import { useNavigation } from "@react-navigation/native";
 import GradientBG from "../shared/gradientbg";
 import fonts from "../../style/fonts";
 import colors from "../../style/colors";
 import GradientColored from "../shared/gradientcolored";
 import topraw from "../../database/top10.json";
+import { useMutation } from "@apollo/react-hooks";
+import { update } from "../../graphql/queries";
+import { User } from "../../redux/types";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
@@ -30,7 +32,10 @@ const Top10Selector = () => {
   const [top10, setTop10] = useState(topraw);
   const dispatch = useDispatch();
   const translateX = useRef(new Animated.Value(0)).current;
-  const navigation = useNavigation();
+  const movies = useSelector((state: User) => state.movies);
+  const mail = useSelector((state: User) => state.mail);
+  const [isDone, setIsDone] = useState<boolean>(false);
+  const [updateRequest, { data }] = useMutation(update);
 
   useEffect(() => {
     translateX.setValue(0);
@@ -38,6 +43,10 @@ const Top10Selector = () => {
       setTop10(
         top10.filter((item) => item.Title !== topraw[listIndex - 1].Title)
       );
+    }
+    if (listIndex === 10) {
+      console.log("son");
+      updateTop10();
     }
   }, [listIndex]);
 
@@ -64,8 +73,8 @@ const Top10Selector = () => {
       if (event.nativeEvent.translationX > width * 0.125) {
         dispatch(actionCreators.addMovie(topraw[listIndex], "watched"));
       }
-      dispatch(actionCreators.editUserByKey(false, "isNew"));
-      navigation.navigate("Home");
+      nextAnimation();
+      //setIsDone(true);
     } else {
       if (event.nativeEvent.state === State.END) {
         if (event.nativeEvent.translationX < -(width * 0.125)) {
@@ -79,6 +88,17 @@ const Top10Selector = () => {
       }
     }
   };
+
+  async function updateTop10() {
+    await updateRequest({
+      variables: {
+        mail: mail,
+        movies: movies,
+      },
+    });
+    dispatch(actionCreators.editUserByKey(true, "isLoggedIn"));
+    dispatch(actionCreators.editUserByKey(false, "isNew"));
+  }
 
   const nextAnimation = () => {
     setListIndex(listIndex + 1);
@@ -171,7 +191,7 @@ const Top10Selector = () => {
                     },
                     index === 0
                       ? {
-                          opacity,
+                          opacity: listIndex === 10 ? 0 : opacity,
                           transform: [
                             {
                               scale,

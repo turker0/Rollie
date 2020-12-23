@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
-import { Initial, Movie } from "../../redux/types";
+import { User, Movie } from "../../redux/types";
 import colors from "../../style/colors";
 import fonts from "../../style/fonts";
 import CategoryItem from "./categoryitem";
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const MovieCategory: FC<Props> = ({ title, type }) => {
-  const movies: Movie[] = useSelector((state: Initial) => state.movies[type]);
+  const movies: Movie[] = useSelector((state: User) => state.movies[type]);
   return (
     <View style={styles.container}>
       <View style={styles.titleWrapper}>

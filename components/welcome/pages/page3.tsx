@@ -84,7 +84,7 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
     await registerUser({
       variables: {
         username: user.username,
-        email: user.mail,
+        mail: user.mail,
         password: user.password,
       },
     });

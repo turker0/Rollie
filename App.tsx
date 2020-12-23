@@ -10,7 +10,9 @@ import RootStack from "./routes/rootstack";
 
 const client = new ApolloClient({
   uri: "http://192.168.1.6:8080/graphql",
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    addTypename: false,
+  }),
 });
 
 export default function App() {

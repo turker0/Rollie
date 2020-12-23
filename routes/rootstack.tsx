@@ -12,6 +12,7 @@ const Stack = createStackNavigator();
 const RootStack = () => {
   const isNew = useSelector((state: User) => state.isNew);
   const isLoggedIn = useSelector((state: User) => state.isLoggedIn);
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -20,10 +21,9 @@ const RootStack = () => {
         }}
         initialRouteName={isNew ? "Welcome" : "Home"}
       >
-        <Stack.Screen name="Welcome" component={WelcomeRoute} />
         <Stack.Screen
-          name="Home"
-          component={isLoggedIn ? HomeBottomTabs : Login}
+          name="Welcome"
+          component={isNew ? WelcomeRoute : isLoggedIn ? HomeBottomTabs : Login}
         />
       </Stack.Navigator>
     </NavigationContainer>

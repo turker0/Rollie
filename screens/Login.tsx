@@ -14,31 +14,30 @@ import colors from "../style/colors";
 import fonts from "../style/fonts";
 import { login } from "../graphql/queries";
 import { useMutation } from "@apollo/react-hooks";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators } from "../redux/actions";
-import { User } from "../redux/types";
+import { hardReset } from "../redux/reducers";
 
 const Login = () => {
   const input2: any = useRef<TextInput>(null);
   const input3: any = useRef<TextInput>(null);
-  const [email, setEmail] = useState<string>("");
+  const [mail, setMail] = useState<string>("");
   const [pass, setPass] = useState<string>("");
   const [isSending, setIsSending] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const opacity = useRef(new Animated.Value(0)).current;
   const [loginRequest, { data }] = useMutation(login);
   const dispatch = useDispatch();
-  const user = useSelector((state: User) => state);
 
   useEffect(() => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (re.test(String(email).toLowerCase()) && pass.length >= 3) {
+    if (re.test(String(mail).toLowerCase()) && pass.length >= 3) {
       animateButton(1);
     } else {
       animateButton(0);
     }
-  }, [email, pass]);
+  }, [mail, pass]);
 
   useEffect(() => {
     setIsSending(false);
@@ -46,7 +45,7 @@ const Login = () => {
       if (data.login) {
         dispatch(actionCreators.setUser(data.login));
         dispatch(actionCreators.editUserByKey(true, "isLoggedIn"));
-        console.log(user);
+        //console.log(user);
       } else {
         setError("Wrong e-mail or password.");
       }
@@ -57,10 +56,14 @@ const Login = () => {
     setIsSending(true);
     await loginRequest({
       variables: {
-        email: email,
+        mail: mail,
         password: pass,
       },
     });
+  }
+
+  function reset() {
+    dispatch(actionCreators.setUser(hardReset));
   }
 
   function animateButton(toValue: number) {
@@ -81,7 +84,7 @@ const Login = () => {
         id="mail"
         ref={input2}
         maxLength={32}
-        setter={setEmail}
+        setter={setMail}
       />
       <Input
         placeholder="Password"
@@ -99,6 +102,9 @@ const Login = () => {
         ) : (
           <ActivityIndicator size="large" color="#fff" style={styles.wrapper} />
         )}
+      </TouchableOpacity>
+      <TouchableOpacity onPress={reset}>
+        <Text style={styles.buttonText}>RESET</Text>
       </TouchableOpacity>
     </View>
   );
