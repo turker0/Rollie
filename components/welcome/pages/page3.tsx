@@ -17,6 +17,7 @@ import fonts from "../../../style/fonts";
 import Input from "../../shared/input";
 import { useMutation } from "@apollo/react-hooks";
 import { register } from "../../../graphql/queries";
+import mailRegex from "../../../helpers/mailregex";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
@@ -29,7 +30,6 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   const input2: any = useRef<TextInput>(null);
   const input3: any = useRef<TextInput>(null);
   const user = useSelector((state: User) => state);
-  const [error, setError] = useState<boolean>(true);
   const opacity = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
   const [registerUser, { data }] = useMutation(register);
@@ -48,10 +48,8 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   };
 
   useEffect(() => {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
     if (
-      re.test(String(user.mail).toLowerCase()) &&
+      mailRegex(user.mail) &&
       user.mail.length >= 3 &&
       user.password.length >= 3
     ) {
@@ -64,7 +62,6 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
   useEffect(() => {
     setIsSending(false);
     if (data !== undefined && data.register === true) {
-      //dispatch setuser data
       navigation.navigate("Top10Selector");
     }
   }, [data]);
@@ -74,9 +71,7 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
       toValue,
       duration: 222,
       easing: Easing.linear,
-    }).start(() => {
-      setError(toValue === 1 ? false : true);
-    });
+    }).start();
   };
 
   const registerHandle = async () => {

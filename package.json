@@ -12,7 +12,6 @@
     "@apollo/client": "^3.3.6",
     "@apollo/react-hooks": "^4.0.0",
     "@react-native-async-storage/async-storage": "^1.13.2",
-    "@react-native-community/checkbox": "^0.5.6",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.10.4",
     "@react-navigation/drawer": "^5.11.4",
@@ -21,7 +20,9 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-native": "^0.63.37",
+    "@types/react-native-dotenv": "^0.2.0",
     "@types/react-redux": "^7.1.11",
+    "css-tree": "1.0.0-alpha.39",
     "expo": "~38.0.8",
     "expo-linear-gradient": "~8.2.1",
     "expo-status-bar": "^1.0.2",
@@ -32,7 +33,6 @@
     "react-native-gesture-handler": "~1.6.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-reanimated": "~1.9.0",
-    "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
     "react-native-svg": "12.1.0",
     "react-native-svg-transformer": "^0.14.3",
@@ -51,7 +51,9 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-react-hooks": "^4.2.0"
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "metro-react-native-babel-preset": "^0.64.0",
+    "react-native-dotenv": "^2.4.3"
   },
   "private": true
 }

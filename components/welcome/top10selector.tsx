@@ -23,6 +23,7 @@ import topraw from "../../database/top10.json";
 import { useMutation } from "@apollo/react-hooks";
 import { update } from "../../graphql/queries";
 import { User } from "../../redux/types";
+import { useFocusEffect } from "@react-navigation/native";
 
 const SPACING = 30;
 const { width } = Dimensions.get("window");
@@ -45,23 +46,19 @@ const Top10Selector = () => {
     }
   }, [listIndex]);
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     const onBackPress = () => {
-  //       if (isSelectionModeEnabled()) {
-  //         disableSelectionMode();
-  //         return true;
-  //       } else {
-  //         return false;
-  //       }
-  //     };
+  const hardwareBackPressCustom = useCallback(() => {
+    return true;
+  }, []);
 
-  //     BackHandler.addEventListener("hardwareBackPress", onBackPress);
-
-  //     return () =>
-  //       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
-  //   }, [isSelectionModeEnabled, disableSelectionMode])
-  // );
+  useFocusEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", hardwareBackPressCustom);
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        hardwareBackPressCustom
+      );
+    };
+  });
 
   const onHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
     if (listIndex === topraw.length - 1) {

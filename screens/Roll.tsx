@@ -11,9 +11,7 @@ import colors from "../style/colors";
 import GradientBG from "../components/shared/gradientbg";
 import { useMutation } from "@apollo/react-hooks";
 import { update } from "../graphql/queries";
-
-const fetchURL = "http://www.omdbapi.com/?t=",
-  apiTail = "&apikey=3c88863d";
+import { FETCH_URI, API_TAIL } from "@env";
 
 const Roll = ({}) => {
   const isRolled: boolean = useSelector((state: User) => state.isRolled);
@@ -55,7 +53,7 @@ const Roll = ({}) => {
     let filtered: String[] = full.filter((item) => !x.includes(item));
     let mov = filtered[Math.floor(Math.random() * filtered.length)];
 
-    fetch(fetchURL + mov + apiTail, {
+    fetch(FETCH_URI + mov + API_TAIL, {
       method: "GET",
       headers: {
         Accept: "application/json",

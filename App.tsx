@@ -7,9 +7,10 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/react-hooks";
 import reduxStore from "./redux/store";
 import RootStack from "./routes/rootstack";
+import { APOLLO_CLIENT_URI } from "@env";
 
 const client = new ApolloClient({
-  uri: "http://192.168.1.6:8080/graphql",
+  uri: String(APOLLO_CLIENT_URI) + "/graphql",
   cache: new InMemoryCache({
     addTypename: false,
   }),
