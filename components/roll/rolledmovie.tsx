@@ -52,9 +52,16 @@ interface Props {
   roll: () => void;
   setMovie: React.Dispatch<React.SetStateAction<Movie>>;
   rolling: boolean;
+  updateMovie: () => Promise<void>;
 }
 
-const RolledMovie: FC<Props> = ({ movie, roll, setMovie, rolling }) => {
+const RolledMovie: FC<Props> = ({
+  movie,
+  roll,
+  setMovie,
+  rolling,
+  updateMovie,
+}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 

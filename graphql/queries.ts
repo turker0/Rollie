@@ -142,6 +142,36 @@ export const login = gql`
           Website
           Response
         }
+        current {
+          Title
+          Year
+          Rated
+          Released
+          Runtime
+          Genre
+          Director
+          Writer
+          Actors
+          Plot
+          Language
+          Country
+          Awards
+          Poster
+          Ratings {
+            Source
+            Value
+          }
+          Metascore
+          imdbRating
+          imdbVotes
+          imdbID
+          Type
+          DVD
+          BoxOffice
+          Production
+          Website
+          Response
+        }
       }
     }
   }

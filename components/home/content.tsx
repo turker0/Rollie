@@ -13,7 +13,6 @@ const SPACING = 30;
 
 const Content = ({}) => {
   const navigation = useNavigation();
-  const isRolled: boolean = useSelector((state: User) => state.isRolled);
   const movies: Movies = useSelector((state: User) => state.movies);
 
   const roll = () => {
@@ -24,7 +23,7 @@ const Content = ({}) => {
     <View style={styles.container}>
       <StatusBar barStyle="default" />
       <Text style={styles.title}>Rolled Movie</Text>
-      {!isRolled ? (
+      {movies.current.Title === null || movies.current.Title === undefined ? (
         <Roll roll={roll} />
       ) : (
         <CurrentMovie current={movies.current} />

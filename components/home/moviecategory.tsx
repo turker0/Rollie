@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   contentContainer: {
+    flexDirection: "row-reverse",
     paddingHorizontal: SPACING,
   },
   error: {

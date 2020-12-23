@@ -10,6 +10,9 @@ import {
 import colors from "../../../style/colors";
 import fonts from "../../../style/fonts";
 import { FontAwesome } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { actionCreators } from "../../../redux/actions";
+import { useDispatch } from "react-redux";
 
 const { width } = Dimensions.get("window");
 const words = " Roll a movie to your watcher. Oh valley of plenty."
@@ -21,6 +24,7 @@ words.forEach((word: string, index: number) => {
 });
 
 const Page0 = ({}) => {
+  const dispatch = useDispatch();
   useEffect(() => startAnimation(), []);
 
   const startAnimation = () => {
@@ -57,6 +61,13 @@ const Page0 = ({}) => {
           flexWrap: "wrap",
         }}
       >
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(actionCreators.editUserByKey(false, "isNew"));
+          }}
+        >
+          <Text style={styles.text}>RESET</Text>
+        </TouchableOpacity>
         {words.map((word: string, index: number) => {
           const color = animatedWords[index].interpolate({
             inputRange: [0, 1],

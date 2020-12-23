@@ -30,7 +30,7 @@ interface Movies {
   watched: Movie[];
   later: Movie[];
   declined: Movie[];
-  current: {};
+  current: Movie;
 }
 
 const SETUSER = "SETUSER";

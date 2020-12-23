@@ -45,7 +45,6 @@ const Login = () => {
       if (data.login) {
         dispatch(actionCreators.setUser(data.login));
         dispatch(actionCreators.editUserByKey(true, "isLoggedIn"));
-        //console.log(user);
       } else {
         setError("Wrong e-mail or password.");
       }

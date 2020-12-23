@@ -9,6 +9,8 @@ import { User, Movie, Movies } from "../redux/types";
 import fonts from "../style/fonts";
 import colors from "../style/colors";
 import GradientBG from "../components/shared/gradientbg";
+import { useMutation } from "@apollo/react-hooks";
+import { update } from "../graphql/queries";
 
 const fetchURL = "http://www.omdbapi.com/?t=",
   apiTail = "&apikey=3c88863d";
@@ -18,7 +20,9 @@ const Roll = ({}) => {
   const svganim = new Animated.Value(0);
   const [movie, setMovie] = useState<Movie>({});
   const movies: Movies = useSelector((state: User) => state.movies);
+  const mail: String = useSelector((state: User) => state.mail);
   const [rolling, setRolling] = useState<boolean>(false);
+  const [updateRequest, { data }] = useMutation(update);
 
   useEffect(() => {
     setRolling(false);
@@ -29,6 +33,10 @@ const Roll = ({}) => {
       fetchMovie();
     }
   }, [rolling]);
+
+  useEffect(() => {
+    updateMovie();
+  }, [movies]);
 
   const roll = () => {
     if (!rolling) {
@@ -60,6 +68,15 @@ const Roll = ({}) => {
       })
       .catch((err) => console.log(err));
   };
+
+  async function updateMovie() {
+    await updateRequest({
+      variables: {
+        mail: mail,
+        movies: movies,
+      },
+    });
+  }
 
   if (isRolled) {
     return (
@@ -94,6 +111,7 @@ const Roll = ({}) => {
         roll={roll}
         setMovie={setMovie}
         rolling={rolling}
+        updateMovie={updateMovie}
       />
     );
   }

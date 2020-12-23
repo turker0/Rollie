@@ -1,15 +1,17 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux/actions";
 import { FontAwesome } from "@expo/vector-icons";
 import Buttons from "./buttons";
-import { Movie } from "../../redux/types";
+import { Movie, User } from "../../redux/types";
 import { useNavigation } from "@react-navigation/native";
 import fonts from "../../style/fonts";
 import colors from "../../style/colors";
 import GradientColored from "../shared/gradientcolored";
+import { useMutation } from "@apollo/react-hooks";
+import { update } from "../../graphql/queries";
 
 const { width } = Dimensions.get("window"),
   SPACING = 30;
@@ -39,6 +41,18 @@ interface Props {
 const CurrentMovie: FC<Props> = ({ current }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const movies = useSelector((state: User) => state.movies);
+  const mail = useSelector((state: User) => state.mail);
+  const [updateRequest, { data }] = useMutation(update);
+
+  useEffect(() => {
+    updateRequest({
+      variables: {
+        mail: mail,
+        movies: movies,
+      },
+    });
+  }, [movies]);
 
   const buttonHandler = (key: string) => {
     dispatch(actionCreators.addMovie(current, key));

@@ -34,7 +34,6 @@ const Top10Selector = () => {
   const translateX = useRef(new Animated.Value(0)).current;
   const movies = useSelector((state: User) => state.movies);
   const mail = useSelector((state: User) => state.mail);
-  const [isDone, setIsDone] = useState<boolean>(false);
   const [updateRequest, { data }] = useMutation(update);
 
   useEffect(() => {
@@ -43,10 +42,6 @@ const Top10Selector = () => {
       setTop10(
         top10.filter((item) => item.Title !== topraw[listIndex - 1].Title)
       );
-    }
-    if (listIndex === 10) {
-      console.log("son");
-      updateTop10();
     }
   }, [listIndex]);
 
@@ -73,8 +68,7 @@ const Top10Selector = () => {
       if (event.nativeEvent.translationX > width * 0.125) {
         dispatch(actionCreators.addMovie(topraw[listIndex], "watched"));
       }
-      nextAnimation();
-      //setIsDone(true);
+      updateTop10();
     } else {
       if (event.nativeEvent.state === State.END) {
         if (event.nativeEvent.translationX < -(width * 0.125)) {
@@ -191,7 +185,7 @@ const Top10Selector = () => {
                     },
                     index === 0
                       ? {
-                          opacity: listIndex === 10 ? 0 : opacity,
+                          opacity,
                           transform: [
                             {
                               scale,
