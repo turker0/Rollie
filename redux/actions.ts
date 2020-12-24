@@ -17,7 +17,7 @@ const setUser = (user: User): ActionTypes => {
 };
 
 const editUserByKey = (
-  load: string | boolean | JSX.Element,
+  load: string | boolean | number,
   key: string
 ): ActionTypes => {
   return {

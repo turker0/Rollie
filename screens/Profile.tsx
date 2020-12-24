@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import ProfileDropdown from "../components/profile/profiledropdown";
 import { useSelector } from "react-redux";
-import AvatarsList from "../components/profile/avatarslist";
+import AvatarsList, { getAvatar } from "../components/profile/avatarslist";
 import { Feather } from "@expo/vector-icons";
 import { User } from "../redux/types";
 import GradientBG from "../components/shared/gradientbg";
@@ -36,10 +36,10 @@ const Profile = ({}) => {
             style={styles.gradient}
           />
           <View style={styles.overlay}>
-            {!user.avatar ? (
+            {user.avatar === -1 ? (
               <Feather name="plus" size={24} color={colors.white} />
             ) : (
-              user.avatar
+              getAvatar(user.avatar)
             )}
           </View>
         </TouchableOpacity>

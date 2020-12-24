@@ -87,7 +87,7 @@ const Page3: FC<Props> = ({ toggleIsProfileVisible, input1 }) => {
 
   return (
     <View style={styles.page}>
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.description}>
           But first to continue, create a profile.
         </Text>

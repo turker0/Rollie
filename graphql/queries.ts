@@ -12,6 +12,7 @@ export const login = gql`
       username
       mail
       password
+      avatar
       movies {
         watched {
           Title
@@ -141,5 +142,11 @@ export const login = gql`
 export const update = gql`
   mutation($mail: String!, $movies: MoviesInput!) {
     update(input: { mail: $mail, movies: $movies })
+  }
+`;
+
+export const avatar = gql`
+  mutation($mail: String!, $avatar: Int!) {
+    avatar(input: { mail: $mail, avatar: $avatar })
   }
 `;

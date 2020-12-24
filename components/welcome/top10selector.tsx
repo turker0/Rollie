@@ -36,6 +36,7 @@ const Top10Selector = () => {
   const movies = useSelector((state: User) => state.movies);
   const mail = useSelector((state: User) => state.mail);
   const [updateRequest, { data }] = useMutation(update);
+  const [isDone, setIsDone] = useState<boolean>(false);
 
   useEffect(() => {
     translateX.setValue(0);
@@ -60,21 +61,29 @@ const Top10Selector = () => {
     };
   });
 
-  const onHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
-    if (listIndex === topraw.length - 1) {
-      if (event.nativeEvent.translationX > width * 0.125) {
-        dispatch(actionCreators.addMovie(topraw[listIndex], "watched"));
-      }
+  useEffect(() => {
+    if (isDone === true) {
       updateTop10();
-    } else {
-      if (event.nativeEvent.state === State.END) {
-        if (event.nativeEvent.translationX < -(width * 0.125)) {
-          nextAnimation();
-        } else if (event.nativeEvent.translationX > width * 0.125) {
+    }
+  }, [isDone]);
+
+  const onHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
+    if (event.nativeEvent.state === State.END) {
+      if (listIndex === topraw.length - 1) {
+        if (event.nativeEvent.translationX > width * 0.125) {
           dispatch(actionCreators.addMovie(topraw[listIndex], "watched"));
-          nextAnimation();
-        } else {
-          resetAnimation();
+        }
+        setIsDone(true);
+      } else {
+        if (event.nativeEvent.state === State.END) {
+          if (event.nativeEvent.translationX < -(width * 0.125)) {
+            nextAnimation();
+          } else if (event.nativeEvent.translationX > width * 0.125) {
+            dispatch(actionCreators.addMovie(topraw[listIndex], "watched"));
+            nextAnimation();
+          } else {
+            resetAnimation();
+          }
         }
       }
     }

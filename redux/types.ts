@@ -5,7 +5,7 @@ interface User {
   isNew: boolean;
   isRolled: boolean;
   isLoggedIn: boolean;
-  avatar?: JSX.Element;
+  avatar: number;
   movies: Movies;
 }
 
@@ -41,7 +41,7 @@ const SETCURRENTMOVIE = "SETCURRENTMOVIE";
 
 interface editUserByKeyAction {
   type: typeof EDITUSERBYKEY;
-  payload: string | boolean | JSX.Element;
+  payload: string | boolean | number;
   key: string;
 }
 
